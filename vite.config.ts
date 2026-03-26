@@ -10,9 +10,6 @@ export default defineConfig({
     },
     dedupe: ['react', 'react-dom'],
   },
-  optimizeDeps: {
-    exclude: ['@fayz/saas-core'],
-  },
   server: {
     port: 5180,
   },
