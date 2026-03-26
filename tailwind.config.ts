@@ -8,6 +8,7 @@ export default {
   content: [
     './index.html',
     './src/**/*.{ts,tsx}',
+    '../saas-core/src/**/*.{ts,tsx}',
     './node_modules/@fayz/saas-core/src/**/*.{ts,tsx}',
   ],
   darkMode: 'class',
