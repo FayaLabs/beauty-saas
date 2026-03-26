@@ -7,12 +7,12 @@ export const beautyTheme: SaasTheme = {
   shadow: 'subtle',
   font: 'outfit',
   sidebar: {
-    background: '330 30% 12%',
-    foreground: '330 20% 90%',
-    border: '330 20% 18%',
-    accent: '330 50% 22%',
+    background: '330 25% 18%',
+    foreground: '330 15% 88%',
+    border: '330 20% 24%',
+    accent: '330 30% 26%',
     accentForeground: '0 0% 100%',
-    muted: '330 15% 55%',
+    muted: '330 12% 55%',
   },
   content: {
     background: '330 15% 96.5%',
