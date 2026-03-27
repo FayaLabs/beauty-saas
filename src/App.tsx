@@ -16,8 +16,16 @@ export const App = createSaasApp({
   layout: 'topbar',
   supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
   supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-  auth: { adapter: 'supabase', requireAuth: true },
-  organization: { adapter: 'supabase', multiOrg: true },
+  auth: {
+    adapter: import.meta.env.VITE_SUPABASE_URL ? 'supabase' : 'mock',
+    requireAuth: true,
+    loginLayout: 'split',
+    loginTagline: 'Manage your salon with confidence',
+    loginDescription: 'Scheduling, client management, financial tracking, and marketing — all in one beautiful platform built for beauty professionals.',
+    showOAuth: true,
+    oauthProviders: ['google'],
+  },
+  organization: { adapter: import.meta.env.VITE_SUPABASE_URL ? 'supabase' : 'mock', multiOrg: true },
   permissions: {
     features: [
       { id: 'dashboard', label: 'Dashboard', group: 'Core' },
