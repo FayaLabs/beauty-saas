@@ -4,8 +4,10 @@ import { Dashboard } from './pages/Dashboard'
 import { Appointments } from './pages/Appointments'
 import { serviceEntity } from './types/service'
 import { clientEntity } from './types/client'
-import { contactEntity, staffEntity, locationEntity, originEntity, partnershipEntity, equipmentEntity, bankAccountEntity } from './types/registry'
+import { contactEntity, staffEntity, supplierEntity, originEntity, partnershipEntity, equipmentEntity, bankAccountEntity, serviceCategoryEntity } from './types/registry'
 import { createPlaceholder } from './pages/Placeholder'
+import { Sales } from './pages/Sales'
+import { Marketing } from './pages/Marketing'
 import { beautyTheme } from './theme'
 
 export const App = createSaasApp({
@@ -97,24 +99,23 @@ export const App = createSaasApp({
       ],
     },
     { path: '/inventory', label: 'Inventory', icon: 'Package', component: createPlaceholder('Inventory', 'Product catalog and stock management') },
-    { path: '/marketing', label: 'Marketing', icon: 'Megaphone', component: createPlaceholder('Marketing', 'Campaigns, automations, and communications') },
-    { path: '/sales', label: 'Sales', icon: 'Filter', component: createPlaceholder('Sales', 'CRM, quotes, and sales pipeline') },
+    { path: '/marketing', label: 'Marketing', icon: 'Megaphone', component: Marketing },
+    { path: '/sales', label: 'Sales', icon: 'Filter', component: Sales },
     { path: '/financial', label: 'Financial', icon: 'DollarSign', component: createPlaceholder('Financial', 'Invoices, payments, and cash register') },
     // Registry dropdown
     {
       path: '/registry', label: 'Registry', icon: 'ClipboardList',
       component: createPlaceholder('Registry', 'Manage your business records'),
       children: [
-        { path: '/registry/contacts', label: 'Contacts', icon: 'Contact', component: createCrudPage(contactEntity) },
-        { path: '/registry/accounts', label: 'Accounts', icon: 'Building2', component: createCrudPage(bankAccountEntity) },
-        { path: '/registry/equipment', label: 'Equipment', icon: 'Wrench', component: createCrudPage(equipmentEntity) },
-        { path: '/registry/suppliers', label: 'Suppliers', icon: 'ClipboardList', component: createCrudPage(contactEntity) },
-        { path: '/registry/staff', label: 'Staff', icon: 'UserCog', component: createCrudPage(staffEntity) },
-        { path: '/registry/locations', label: 'Locations', icon: 'MapPin', component: createCrudPage(locationEntity) },
-        { path: '/registry/origins', label: 'Origins', icon: 'Globe', component: createCrudPage(originEntity) },
-        { path: '/registry/partnerships', label: 'Partnerships', icon: 'Handshake', component: createCrudPage(partnershipEntity) },
         { path: '/registry/services', label: 'Services', icon: 'Briefcase', component: createCrudPage(serviceEntity) },
-        { path: '/registry/professionals', label: 'Professionals', icon: 'UserCog', component: createCrudPage(staffEntity) },
+        { path: '/registry/categories', label: 'Categories', icon: 'Tag', component: createCrudPage(serviceCategoryEntity) },
+        { path: '/registry/staff', label: 'Staff', icon: 'UserCog', component: createCrudPage(staffEntity) },
+        { path: '/registry/contacts', label: 'Contacts', icon: 'Contact', component: createCrudPage(contactEntity) },
+        { path: '/registry/suppliers', label: 'Suppliers', icon: 'Building2', component: createCrudPage(supplierEntity) },
+        { path: '/registry/partnerships', label: 'Partnerships', icon: 'Handshake', component: createCrudPage(partnershipEntity) },
+        { path: '/registry/equipment', label: 'Equipment', icon: 'Wrench', component: createCrudPage(equipmentEntity) },
+        { path: '/registry/origins', label: 'Origins', icon: 'Globe', component: createCrudPage(originEntity) },
+        { path: '/registry/accounts', label: 'Accounts', icon: 'Building2', component: createCrudPage(bankAccountEntity) },
       ],
     },
     // Reports

@@ -2,27 +2,33 @@ import type { EntityDef } from '@fayz/saas-core'
 
 export interface BeautyService {
   id: string
-  tenantId: string
-  createdAt: string
-  updatedAt: string
   name: string
-  category: string
-  duration: number
+  description: string
+  durationMinutes: number
   price: number
-  status: 'active' | 'inactive'
+  status: string
 }
 
+// ---------------------------------------------------------------------------
+// Services — service archetype, direct query on saas_core.services
+// ---------------------------------------------------------------------------
 export const serviceEntity: EntityDef<BeautyService> = {
   name: 'Service',
-  icon: 'Package',
+  icon: 'Briefcase',
+  layout: 'service',
   displayField: 'name',
   data: { table: 'beauty_services', tenantScoped: true, tenantIdColumn: 'tenant_id' },
   defaultSort: 'name',
   fields: [
-    { key: 'name', label: 'Service Name', type: 'text', required: true, searchable: true },
-    { key: 'category', label: 'Category', type: 'select', options: ['Hair', 'Nails', 'Skin', 'Body'], required: true },
-    { key: 'duration', label: 'Duration (min)', type: 'number', min: 5, max: 480, required: true },
-    { key: 'price', label: 'Price', type: 'currency', required: true },
-    { key: 'status', label: 'Status', type: 'select', options: ['active', 'inactive'], defaultValue: 'active' },
+    { key: 'name', label: 'Service Name', type: 'text', required: true, searchable: true, showInTable: true },
+    { key: 'description', label: 'Description', type: 'textarea', showInTable: false },
+    { key: 'durationMinutes', label: 'Duration (min)', type: 'number', required: true, showInTable: true },
+    { key: 'price', label: 'Price', type: 'currency', required: true, showInTable: true },
+    { key: 'isActive', label: 'Active', type: 'boolean', defaultValue: true },
   ],
+  data: {
+    table: 'services',
+    schema: 'saas_core',
+    tenantScoped: true,
+  },
 }

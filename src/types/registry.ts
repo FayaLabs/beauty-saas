@@ -1,105 +1,194 @@
 import type { EntityDef } from '@fayz/saas-core'
 
+// ---------------------------------------------------------------------------
+// Contacts / Suppliers — person archetype, direct query
+// ---------------------------------------------------------------------------
 export const contactEntity: EntityDef = {
   name: 'Contact',
   namePlural: 'Contacts',
   icon: 'Contact',
+  layout: 'person',
+  displayField: 'name',
+  defaultSort: 'name',
   fields: [
     { key: 'name', label: 'Name', type: 'text', required: true, showInTable: true, searchable: true },
     { key: 'email', label: 'Email', type: 'email', showInTable: true, searchable: true },
     { key: 'phone', label: 'Phone', type: 'phone', showInTable: true },
-    { key: 'type', label: 'Type', type: 'select', options: ['supplier', 'partner', 'other'], showInTable: true, defaultValue: 'supplier' },
-    { key: 'notes', label: 'Notes', type: 'textarea' },
+    { key: 'notes', label: 'Notes', type: 'textarea', showInTable: false },
+    { key: 'isActive', label: 'Active', type: 'boolean', showInTable: true, defaultValue: true },
   ],
-  data: { table: 'contacts', tenantScoped: true, tenantIdColumn: 'tenant_id' },
-  defaultSort: 'name',
-  displayField: 'name',
+  data: {
+    table: 'persons',
+    schema: 'saas_core',
+    tenantScoped: true,
+    filters: { kind: 'contact' },
+    defaults: { kind: 'contact' },
+  },
 }
 
+// ---------------------------------------------------------------------------
+// Staff — person archetype + extension table (public.staff_members)
+// ---------------------------------------------------------------------------
 export const staffEntity: EntityDef = {
   name: 'Staff',
   namePlural: 'Staff',
   icon: 'UserCog',
+  layout: 'person',
+  displayField: 'name',
+  defaultSort: 'name',
+  fieldGroups: [
+    { id: 'professional', label: 'Professional Info', columns: 2 },
+  ],
   fields: [
     { key: 'name', label: 'Name', type: 'text', required: true, showInTable: true, searchable: true },
     { key: 'email', label: 'Email', type: 'email', showInTable: true, searchable: true },
     { key: 'phone', label: 'Phone', type: 'phone', showInTable: true },
-    { key: 'role', label: 'Role', type: 'select', options: ['professional', 'employee'], showInTable: true, defaultValue: 'professional' },
-    { key: 'profession', label: 'Profession', type: 'text', showInTable: true },
-    { key: 'is_active', label: 'Active', type: 'boolean', showInTable: true, defaultValue: true },
+    { key: 'profession', label: 'Profession', type: 'text', showInTable: true, group: 'professional' },
+    { key: 'isActive', label: 'Active', type: 'boolean', showInTable: true, defaultValue: true },
   ],
-  data: { table: 'staff_members', tenantScoped: true, tenantIdColumn: 'tenant_id' },
-  defaultSort: 'name',
-  displayField: 'name',
+  data: {
+    table: 'staff_members',
+    tenantScoped: true,
+    archetype: 'person',
+    archetypeKind: 'staff',
+  },
 }
 
-export const locationEntity: EntityDef = {
-  name: 'Location',
-  namePlural: 'Locations',
-  icon: 'MapPin',
+// ---------------------------------------------------------------------------
+// Suppliers — person archetype, direct query
+// ---------------------------------------------------------------------------
+export const supplierEntity: EntityDef = {
+  name: 'Supplier',
+  namePlural: 'Suppliers',
+  icon: 'Building2',
+  layout: 'person',
+  displayField: 'name',
+  defaultSort: 'name',
   fields: [
     { key: 'name', label: 'Name', type: 'text', required: true, showInTable: true, searchable: true },
-    { key: 'capacity', label: 'Capacity', type: 'number', showInTable: true },
-    { key: 'is_active', label: 'Active', type: 'boolean', showInTable: true, defaultValue: true },
+    { key: 'email', label: 'Email', type: 'email', showInTable: true },
+    { key: 'phone', label: 'Phone', type: 'phone', showInTable: true },
+    { key: 'notes', label: 'Notes', type: 'textarea', showInTable: false },
+    { key: 'isActive', label: 'Active', type: 'boolean', showInTable: true, defaultValue: true },
   ],
-  data: { table: 'service_locations', tenantScoped: true, tenantIdColumn: 'tenant_id' },
-  defaultSort: 'name',
-  displayField: 'name',
+  data: {
+    table: 'persons',
+    schema: 'saas_core',
+    tenantScoped: true,
+    filters: { kind: 'supplier' },
+    defaults: { kind: 'supplier' },
+  },
 }
 
-export const originEntity: EntityDef = {
-  name: 'Origin',
-  namePlural: 'Origins',
-  icon: 'Globe',
-  fields: [
-    { key: 'name', label: 'Name', type: 'text', required: true, showInTable: true, searchable: true },
-  ],
-  data: { table: 'origins', tenantScoped: true, tenantIdColumn: 'tenant_id' },
-  defaultSort: 'name',
-  displayField: 'name',
-}
-
+// ---------------------------------------------------------------------------
+// Partnerships — person archetype, direct query
+// ---------------------------------------------------------------------------
 export const partnershipEntity: EntityDef = {
   name: 'Partnership',
   namePlural: 'Partnerships',
   icon: 'Handshake',
+  layout: 'person',
+  displayField: 'name',
+  defaultSort: 'name',
   fields: [
     { key: 'name', label: 'Name', type: 'text', required: true, showInTable: true, searchable: true },
-    { key: 'contact', label: 'Contact', type: 'text', showInTable: true },
     { key: 'phone', label: 'Phone', type: 'phone', showInTable: true },
-    { key: 'is_active', label: 'Active', type: 'boolean', showInTable: true, defaultValue: true },
+    { key: 'isActive', label: 'Active', type: 'boolean', showInTable: true, defaultValue: true },
   ],
-  data: { table: 'partnerships', tenantScoped: true, tenantIdColumn: 'tenant_id' },
-  defaultSort: 'name',
-  displayField: 'name',
+  data: {
+    table: 'persons',
+    schema: 'saas_core',
+    tenantScoped: true,
+    filters: { kind: 'partner' },
+    defaults: { kind: 'partner' },
+  },
 }
 
+// ---------------------------------------------------------------------------
+// Equipment — product archetype, direct query
+// ---------------------------------------------------------------------------
 export const equipmentEntity: EntityDef = {
   name: 'Equipment',
   namePlural: 'Equipment',
   icon: 'Wrench',
+  layout: 'product',
+  displayField: 'name',
+  defaultSort: 'name',
   fields: [
     { key: 'name', label: 'Name', type: 'text', required: true, showInTable: true, searchable: true },
-    { key: 'model', label: 'Model', type: 'text', showInTable: true },
-    { key: 'serial_number', label: 'Serial Number', type: 'text', showInTable: true },
+    { key: 'description', label: 'Model', type: 'text', showInTable: true },
+    { key: 'sku', label: 'Serial Number', type: 'text', showInTable: true },
     { key: 'status', label: 'Status', type: 'select', options: ['active', 'maintenance', 'retired'], showInTable: true, defaultValue: 'active' },
   ],
-  data: { table: 'equipment', tenantScoped: true, tenantIdColumn: 'tenant_id' },
-  defaultSort: 'name',
-  displayField: 'name',
+  data: {
+    table: 'products',
+    schema: 'saas_core',
+    tenantScoped: true,
+  },
 }
 
+// ---------------------------------------------------------------------------
+// Origins — category archetype, direct query
+// ---------------------------------------------------------------------------
+export const originEntity: EntityDef = {
+  name: 'Origin',
+  namePlural: 'Origins',
+  icon: 'Globe',
+  displayField: 'name',
+  defaultSort: 'name',
+  fields: [
+    { key: 'name', label: 'Name', type: 'text', required: true, showInTable: true, searchable: true },
+    { key: 'isActive', label: 'Active', type: 'boolean', showInTable: true, defaultValue: true },
+  ],
+  data: {
+    table: 'categories',
+    schema: 'saas_core',
+    tenantScoped: true,
+    filters: { kind: 'origin' },
+    defaults: { kind: 'origin' },
+  },
+}
+
+// ---------------------------------------------------------------------------
+// Service Categories — category archetype, direct query
+// ---------------------------------------------------------------------------
+export const serviceCategoryEntity: EntityDef = {
+  name: 'Service Category',
+  namePlural: 'Service Categories',
+  icon: 'Tag',
+  displayField: 'name',
+  defaultSort: 'sortOrder',
+  fields: [
+    { key: 'name', label: 'Name', type: 'text', required: true, showInTable: true, searchable: true },
+    { key: 'sortOrder', label: 'Order', type: 'number', showInTable: true, defaultValue: 0 },
+    { key: 'isActive', label: 'Active', type: 'boolean', showInTable: true, defaultValue: true },
+  ],
+  data: {
+    table: 'categories',
+    schema: 'saas_core',
+    tenantScoped: true,
+    filters: { kind: 'service_category' },
+    defaults: { kind: 'service_category' },
+  },
+}
+
+// ---------------------------------------------------------------------------
+// Bank Accounts — standalone, no archetype
+// ---------------------------------------------------------------------------
 export const bankAccountEntity: EntityDef = {
   name: 'Account',
   namePlural: 'Accounts',
   icon: 'Building2',
+  displayField: 'name',
+  defaultSort: 'name',
   fields: [
     { key: 'name', label: 'Name', type: 'text', required: true, showInTable: true, searchable: true },
     { key: 'type', label: 'Type', type: 'select', options: ['checking', 'savings', 'cash', 'credit_card'], showInTable: true },
-    { key: 'bank_name', label: 'Bank', type: 'text', showInTable: true },
-    { key: 'is_active', label: 'Active', type: 'boolean', showInTable: true, defaultValue: true },
+    { key: 'bankName', label: 'Bank', type: 'text', showInTable: true },
+    { key: 'isActive', label: 'Active', type: 'boolean', showInTable: true, defaultValue: true },
   ],
-  data: { table: 'bank_accounts', tenantScoped: true, tenantIdColumn: 'tenant_id' },
-  defaultSort: 'name',
-  displayField: 'name',
+  data: {
+    table: 'bank_accounts',
+    tenantScoped: true,
+  },
 }
