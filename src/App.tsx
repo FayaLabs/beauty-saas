@@ -16,6 +16,8 @@ export const App = createSaasApp({
   layout: 'topbar',
   supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
   supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+  coreSupabaseUrl: import.meta.env.VITE_SAAS_CORE_SUPABASE_URL,
+  coreSupabaseAnonKey: import.meta.env.VITE_SAAS_CORE_ANON_KEY,
   auth: {
     adapter: import.meta.env.VITE_SUPABASE_URL ? 'supabase' : 'mock',
     requireAuth: true,
