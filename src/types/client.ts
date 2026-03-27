@@ -22,6 +22,7 @@ export const clientEntity: EntityDef<BeautyClient> = {
   icon: 'Users',
   displayField: 'name',
   subtitleField: 'email',
+  data: { table: 'clients', tenantScoped: true, tenantIdColumn: 'tenant_id' },
   defaultSort: 'name',
   fieldGroups: [
     { id: 'contact', label: 'Contact Information', columns: 2 },

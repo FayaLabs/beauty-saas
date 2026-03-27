@@ -5,8 +5,6 @@ import { Appointments } from './pages/Appointments'
 import { serviceEntity } from './types/service'
 import { clientEntity } from './types/client'
 import { contactEntity, staffEntity, locationEntity, originEntity, partnershipEntity, equipmentEntity, bankAccountEntity } from './types/registry'
-import { mockServices } from './data/mock-services'
-import { mockClients } from './data/mock-clients'
 import { createPlaceholder } from './pages/Placeholder'
 import { beautyTheme } from './theme'
 
@@ -91,7 +89,7 @@ export const App = createSaasApp({
     // Clients dropdown
     {
       path: '/clients', label: 'Clients', icon: 'Users',
-      component: createCrudPage(clientEntity, { mockData: mockClients, feature: 'clients' }),
+      component: createCrudPage(clientEntity, { feature: 'clients' }),
       permission: { feature: 'clients', action: 'read' },
       children: [
         { path: '/clients/new', label: 'Add', icon: 'Plus' },
@@ -115,7 +113,7 @@ export const App = createSaasApp({
         { path: '/registry/locations', label: 'Locations', icon: 'MapPin', component: createCrudPage(locationEntity) },
         { path: '/registry/origins', label: 'Origins', icon: 'Globe', component: createCrudPage(originEntity) },
         { path: '/registry/partnerships', label: 'Partnerships', icon: 'Handshake', component: createCrudPage(partnershipEntity) },
-        { path: '/registry/services', label: 'Services', icon: 'Briefcase', component: createCrudPage(serviceEntity, { mockData: mockServices }) },
+        { path: '/registry/services', label: 'Services', icon: 'Briefcase', component: createCrudPage(serviceEntity) },
         { path: '/registry/professionals', label: 'Professionals', icon: 'UserCog', component: createCrudPage(staffEntity) },
       ],
     },

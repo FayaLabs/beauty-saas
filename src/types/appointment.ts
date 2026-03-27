@@ -17,6 +17,7 @@ export const appointmentEntity: EntityDef<BeautyAppointment> = {
   name: 'Appointment',
   icon: 'Calendar',
   displayField: 'client',
+  data: { table: 'appointments', tenantScoped: true, tenantIdColumn: 'tenant_id' },
   defaultSort: 'date',
   defaultSortDir: 'desc',
   fields: [

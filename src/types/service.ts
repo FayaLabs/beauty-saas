@@ -16,6 +16,7 @@ export const serviceEntity: EntityDef<BeautyService> = {
   name: 'Service',
   icon: 'Package',
   displayField: 'name',
+  data: { table: 'beauty_services', tenantScoped: true, tenantIdColumn: 'tenant_id' },
   defaultSort: 'name',
   fields: [
     { key: 'name', label: 'Service Name', type: 'text', required: true, searchable: true },
