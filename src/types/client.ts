@@ -49,5 +49,6 @@ export const clientEntity: EntityDef<BeautyClient> = {
     tenantScoped: true,
     archetype: 'person',
     archetypeKind: 'customer',
+    searchColumns: ['name', 'email', 'phone'],
   },
 }

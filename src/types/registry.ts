@@ -51,6 +51,7 @@ export const staffEntity: EntityDef = {
     tenantScoped: true,
     archetype: 'person',
     archetypeKind: 'staff',
+    searchColumns: ['name', 'email', 'phone'],
   },
 }
 
@@ -124,6 +125,8 @@ export const equipmentEntity: EntityDef = {
     table: 'products',
     schema: 'saas_core',
     tenantScoped: true,
+    filters: { kind: 'asset' },
+    defaults: { kind: 'asset' },
   },
 }
 

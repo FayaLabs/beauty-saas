@@ -1,4 +1,7 @@
-import { createSaasApp, createCrudPage } from '@fayz/saas-core'
+import { createSaasApp, createCrudPage, createArchetypeLookup } from '@fayz/saas-core'
+import { createFinancialPlugin } from '@fayz/saas-core/plugins/financial'
+import { createInventoryPlugin } from '@fayz/saas-core/plugins/inventory'
+import { createCrmPlugin } from '@fayz/saas-core/plugins/crm'
 
 import { Dashboard } from './pages/Dashboard'
 import { Appointments } from './pages/Appointments'
@@ -84,6 +87,47 @@ export const App = createSaasApp({
     ],
   },
   theme: beautyTheme,
+  plugins: (() => {
+    // Archetype lookups — query saas_core tables directly
+    const productLookup = createArchetypeLookup({ archetype: 'product' })
+    const serviceLookup = createArchetypeLookup({ archetype: 'service' })
+    const contactLookup = createArchetypeLookup({
+      archetype: 'person',
+      kind: ['customer', 'supplier', 'staff', 'lead'],
+      kindLabels: { customer: 'Client', supplier: 'Supplier', staff: 'Professional', lead: 'Lead' },
+    })
+
+    return [
+      createFinancialPlugin({
+        currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
+        entityLookups: { product: productLookup, service: serviceLookup },
+        contactLookup,
+      }),
+      createInventoryPlugin({
+        currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
+        modules: { recipes: false, batchTracking: false },
+        productTypes: [
+          { value: 'sale', label: 'Retail Product' },
+          { value: 'ingredient', label: 'Professional Supply' },
+        ],
+        labels: {
+          pageTitle: 'Inventory',
+          pageSubtitle: 'Product catalog and stock control',
+          products: 'Products',
+          stock: 'Stock',
+        },
+      }),
+      createCrmPlugin({
+        currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
+        itemTypes: [
+          { value: 'service', label: 'Service' },
+          { value: 'product', label: 'Product' },
+        ],
+        entityLookups: { product: productLookup, service: serviceLookup },
+        contactLookup,
+      }),
+    ]
+  })(),
   pages: [
     // Main navigation — matches beautyplace order
     { path: '/', label: 'Dashboard', icon: 'Home', component: Dashboard, permission: { feature: 'dashboard', action: 'read' } },
@@ -98,10 +142,7 @@ export const App = createSaasApp({
         { path: '/clients', label: 'List', icon: 'List' },
       ],
     },
-    { path: '/inventory', label: 'Inventory', icon: 'Package', component: createPlaceholder('Inventory', 'Product catalog and stock management') },
     { path: '/marketing', label: 'Marketing', icon: 'Megaphone', component: Marketing },
-    { path: '/sales', label: 'Sales', icon: 'Filter', component: Sales },
-    { path: '/financial', label: 'Financial', icon: 'DollarSign', component: createPlaceholder('Financial', 'Invoices, payments, and cash register') },
     // Registry dropdown
     {
       path: '/registry', label: 'Registry', icon: 'ClipboardList',
