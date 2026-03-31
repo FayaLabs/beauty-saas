@@ -2,9 +2,9 @@ import { createSaasApp, createCrudPage, createArchetypeLookup } from '@fayz/saas
 import { createFinancialPlugin } from '@fayz/saas-core/plugins/financial'
 import { createInventoryPlugin } from '@fayz/saas-core/plugins/inventory'
 import { createCrmPlugin } from '@fayz/saas-core/plugins/crm'
+import { createAgendaPlugin } from '@fayz/saas-core/plugins/agenda'
 
 import { Dashboard } from './pages/Dashboard'
-import { Appointments } from './pages/Appointments'
 import { serviceEntity } from './types/service'
 import { clientEntity } from './types/client'
 import { contactEntity, staffEntity, supplierEntity, originEntity, partnershipEntity, equipmentEntity, bankAccountEntity, serviceCategoryEntity } from './types/registry'
@@ -97,7 +97,38 @@ export const App = createSaasApp({
       kindLabels: { customer: 'Client', supplier: 'Supplier', staff: 'Professional', lead: 'Lead' },
     })
 
+    const professionalLookup = createArchetypeLookup({
+      archetype: 'person',
+      kind: ['staff'],
+      kindLabels: { staff: 'Professional' },
+    })
+
     return [
+      createAgendaPlugin({
+        bookingKind: 'appointment',
+        orderKind: 'service_order',
+        scheduleKind: 'working_hours',
+        professionalKind: 'staff',
+        clientKind: 'customer',
+        currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
+        contactLookup,
+        serviceLookup,
+        professionalLookup,
+        // statuses use defaults from plugin (with availableWhen rules)
+        businessHours: { startTime: '08:00', endTime: '20:00' },
+        slotDuration: 30,
+        scheduleBlockDefaults: {
+          bufferMinutes: 15,
+          maxConcurrent: 1,
+          minAdvanceHours: 2,
+          maxAdvanceDays: 30,
+        },
+        navPosition: 2,
+        confirmationChannels: [
+          { id: 'whatsapp', label: 'WhatsApp', icon: 'MessageCircle' },
+          { id: 'phone', label: 'Phone', icon: 'Phone' },
+        ],
+      }),
       createFinancialPlugin({
         currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
         entityLookups: { product: productLookup, service: serviceLookup },
@@ -131,7 +162,7 @@ export const App = createSaasApp({
   pages: [
     // Main navigation — matches beautyplace order
     { path: '/', label: 'Dashboard', icon: 'Home', component: Dashboard, permission: { feature: 'dashboard', action: 'read' } },
-    { path: '/agenda', label: 'Agenda', icon: 'Calendar', component: Appointments, permission: { feature: 'appointments', action: 'read' } },
+    // Agenda is now provided by the agenda plugin (createAgendaPlugin)
     // Clients dropdown
     {
       path: '/clients', label: 'Clients', icon: 'Users',
