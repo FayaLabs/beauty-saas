@@ -1,4 +1,5 @@
 import type { EntityDef } from '@fayz/saas-core'
+import { tl } from '../i18n/tl'
 
 export interface BeautyClient {
   id: string
@@ -17,7 +18,7 @@ export interface BeautyClient {
 // Clients — person archetype + extension table (public.clients)
 // ---------------------------------------------------------------------------
 export const clientEntity: EntityDef<BeautyClient> = {
-  name: 'Client',
+  name: tl('Client', 'Cliente'),
   icon: 'Users',
   layout: 'person',
   displayField: 'name',
@@ -25,24 +26,21 @@ export const clientEntity: EntityDef<BeautyClient> = {
   data: { table: 'clients', tenantScoped: true, tenantIdColumn: 'tenant_id' },
   defaultSort: 'name',
   fieldGroups: [
-    { id: 'personal', label: 'Personal Details', columns: 2 },
-    { id: 'stats', label: 'Statistics', description: 'Auto-calculated from activity', columns: 3 },
+    { id: 'personal', label: tl('Personal Details', 'Dados Pessoais'), columns: 2 },
+    { id: 'stats', label: tl('Statistics', 'Estatísticas'), description: tl('Auto-calculated from activity', 'Calculado automaticamente pela atividade'), columns: 3 },
   ],
   fields: [
-    // Person archetype fields (→ saas_core.persons)
-    { key: 'name', label: 'Name', type: 'text', required: true, searchable: true, showInTable: true },
-    { key: 'email', label: 'Email', type: 'email', required: true, searchable: true, showInTable: true },
-    { key: 'phone', label: 'Phone', type: 'phone', showInTable: true },
-    { key: 'dateOfBirth', label: 'Birth Date', type: 'date' },
-    { key: 'notes', label: 'Notes', type: 'textarea', showInTable: false },
-    { key: 'isActive', label: 'Active', type: 'boolean', defaultValue: true },
-    // Extension fields (→ public.clients)
-    { key: 'gender', label: 'Gender', type: 'select', options: ['male', 'female', 'other', 'prefer_not_to_say'], group: 'personal', showInTable: false },
-    { key: 'origin', label: 'Origin', type: 'text', group: 'personal', placeholder: 'How did they find us?', showInTable: false },
-    // Stats (read-only)
-    { key: 'visits', label: 'Visits', type: 'number', showInForm: false, showInTable: true, group: 'stats' },
-    { key: 'totalSpent', label: 'Total Spent', type: 'currency', showInForm: false, showInTable: true, group: 'stats' },
-    { key: 'lastVisit', label: 'Last Visit', type: 'date', showInForm: false, showInTable: false, group: 'stats' },
+    { key: 'name', label: tl('Name', 'Nome'), type: 'text', required: true, searchable: true, showInTable: true },
+    { key: 'email', label: 'E-mail', type: 'email', required: true, searchable: true, showInTable: true },
+    { key: 'phone', label: tl('Phone', 'Telefone'), type: 'phone', showInTable: true },
+    { key: 'dateOfBirth', label: tl('Birth Date', 'Data de Nascimento'), type: 'date' },
+    { key: 'notes', label: tl('Notes', 'Observações'), type: 'textarea', showInTable: false },
+    { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', defaultValue: true },
+    { key: 'gender', label: tl('Gender', 'Gênero'), type: 'select', options: ['male', 'female', 'other', 'prefer_not_to_say'], group: 'personal', showInTable: false },
+    { key: 'origin', label: tl('Origin', 'Origem'), type: 'text', group: 'personal', placeholder: tl('How did they find us?', 'Como nos encontrou?'), showInTable: false },
+    { key: 'visits', label: tl('Visits', 'Visitas'), type: 'number', showInForm: false, showInTable: true, group: 'stats' },
+    { key: 'totalSpent', label: tl('Total Spent', 'Total Gasto'), type: 'currency', showInForm: false, showInTable: true, group: 'stats' },
+    { key: 'lastVisit', label: tl('Last Visit', 'Última Visita'), type: 'date', showInForm: false, showInTable: false, group: 'stats' },
   ],
   data: {
     table: 'clients',
