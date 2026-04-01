@@ -114,6 +114,10 @@ export const App = createSaasApp({
         contactLookup,
         serviceLookup,
         professionalLookup,
+        modules: {
+          locationSelection: true,
+        },
+        locationLookup: createArchetypeLookup({ archetype: 'location' }),
         // statuses use defaults from plugin (with availableWhen rules)
         businessHours: { startTime: '08:00', endTime: '20:00' },
         slotDuration: 30,
