@@ -1,4 +1,5 @@
 import type { EntityDef } from '@fayz/saas-core'
+import { ClientOrdersTab, createClientOrdersProvider } from '@fayz/saas-core'
 import { tl } from '../i18n/tl'
 
 export interface BeautyClient {
@@ -23,7 +24,6 @@ export const clientEntity: EntityDef<BeautyClient> = {
   layout: 'person',
   displayField: 'name',
   subtitleField: 'email',
-  data: { table: 'clients', tenantScoped: true, tenantIdColumn: 'tenant_id' },
   defaultSort: 'name',
   fieldGroups: [
     { id: 'personal', label: tl('Personal Details', 'Dados Pessoais'), columns: 2 },
@@ -41,6 +41,27 @@ export const clientEntity: EntityDef<BeautyClient> = {
     { key: 'visits', label: tl('Visits', 'Visitas'), type: 'number', showInForm: false, showInTable: true, group: 'stats' },
     { key: 'totalSpent', label: tl('Total Spent', 'Total Gasto'), type: 'currency', showInForm: false, showInTable: true, group: 'stats' },
     { key: 'lastVisit', label: tl('Last Visit', 'Última Visita'), type: 'date', showInForm: false, showInTable: false, group: 'stats' },
+  ],
+  detailTabs: [
+    {
+      id: 'orders',
+      label: tl('Orders', 'Pedidos'),
+      icon: 'ShoppingBag',
+      component: ClientOrdersTab,
+      props: {
+        provider: createClientOrdersProvider(),
+        currency: { code: 'BRL', locale: 'pt-BR' },
+        onBookingClick: (orderId: string) => {
+          window.location.hash = '/agenda'
+          setTimeout(() => {
+            window.dispatchEvent(new CustomEvent('agenda:open-booking', { detail: { bookingId: orderId } }))
+          }, 100)
+        },
+        onInvoiceClick: (orderId: string) => {
+          window.location.hash = `/financial/receivables/detail/${orderId}`
+        },
+      },
+    },
   ],
   data: {
     table: 'clients',

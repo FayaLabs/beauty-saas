@@ -1,8 +1,10 @@
 import { createSaasApp, createCrudPage, createArchetypeLookup } from '@fayz/saas-core'
-import { createFinancialPlugin } from '@fayz/saas-core/plugins/financial'
+import { createFinancialPlugin, createSafeFinancialProvider } from '@fayz/saas-core/plugins/financial'
 import { createInventoryPlugin } from '@fayz/saas-core/plugins/inventory'
 import { createCrmPlugin } from '@fayz/saas-core/plugins/crm'
-import { createAgendaPlugin } from '@fayz/saas-core/plugins/agenda'
+import { createAgendaPlugin, createFinancialBridge } from '@fayz/saas-core/plugins/agenda'
+import { createReportsPlugin } from '@fayz/saas-core/plugins/reports'
+import { createCustomFormsPlugin } from '@fayz/saas-core/plugins/custom_forms'
 
 import { Dashboard } from './pages/Dashboard'
 import { serviceEntity } from './types/service'
@@ -10,7 +12,6 @@ import { clientEntity } from './types/client'
 import { contactEntity, staffEntity, supplierEntity, originEntity, partnershipEntity, equipmentEntity, bankAccountEntity, serviceCategoryEntity } from './types/registry'
 import { createPlaceholder } from './pages/Placeholder'
 import { Sales } from './pages/Sales'
-import { Marketing } from './pages/Marketing'
 import { beautyTheme } from './theme'
 import { appTranslations } from './i18n'
 import { tl } from './i18n/tl'
@@ -117,6 +118,9 @@ export const App = createSaasApp({
       kindLabels: { staff: tl('Professional', 'Profissional') },
     })
 
+    const financialProvider = createSafeFinancialProvider()
+    const financialBridge = createFinancialBridge(financialProvider)
+
     return [
       createAgendaPlugin({
         bookingKind: 'appointment',
@@ -129,8 +133,10 @@ export const App = createSaasApp({
           pageTitle: tl('Agenda', 'Agenda'),
         },
         contactLookup,
+        clientEntityDef: clientEntity,
         serviceLookup,
         professionalLookup,
+        financialBridge,
         modules: { locationSelection: true },
         locationLookup: createArchetypeLookup({ archetype: 'location' }),
         businessHours: { startTime: '08:00', endTime: '20:00' },
@@ -171,6 +177,14 @@ export const App = createSaasApp({
           cardsOverview: tl('Overview', 'Visão Geral'),
           cardsReconciliation: tl('Reconciliation', 'Conciliação'),
         },
+        onBookingClick: (orderId) => {
+          // Navigate to agenda and open the booking modal
+          window.location.hash = '/agenda'
+          // Small delay to let the agenda page mount, then open the modal
+          setTimeout(() => {
+            window.dispatchEvent(new CustomEvent('agenda:open-booking', { detail: { bookingId: orderId } }))
+          }, 100)
+        },
       }),
       createInventoryPlugin({
         currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
@@ -208,6 +222,192 @@ export const App = createSaasApp({
           quotesList: tl('List', 'Lista'),
           activities: tl('Activities', 'Atividades'),
         },
+        clientConversion: {
+          archetypeKind: 'customer',
+          extensionTable: 'clients',
+          fkColumn: 'person_id',
+        },
+      }),
+      createReportsPlugin({
+        currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
+        navPosition: 10,
+        labels: {
+          pageTitle: tl('Reports', 'Relatórios'),
+          pageSubtitle: tl('Access complete reports for analysis and decision making', 'Acesse relatórios completos para análise e tomada de decisão'),
+        },
+        reports: [
+          // --- Scheduling ---
+          {
+            id: 'appointments-by-period',
+            name: tl('Appointments by Period', 'Agendamentos por Período'),
+            description: tl('Complete appointment listing', 'Listagem completa de agendamentos'),
+            icon: 'Calendar',
+            category: tl('Scheduling & Agenda', 'Agendamentos & Agenda'),
+            columns: [
+              { key: 'date', label: tl('Date', 'Data'), type: 'date', sortable: true },
+              { key: 'clientName', label: tl('Client', 'Cliente'), type: 'person', idKey: 'clientId' },
+              { key: 'professionalName', label: tl('Professional', 'Profissional'), type: 'person', idKey: 'professionalId' },
+              { key: 'serviceName', label: tl('Service', 'Serviço'), type: 'text' },
+              { key: 'status', label: 'Status', type: 'select' },
+              { key: 'revenue', label: tl('Revenue', 'Receita'), type: 'currency', aggregate: 'sum' },
+            ],
+            filters: [
+              { key: 'professional_id', label: tl('Professional', 'Profissional'), type: 'select', options: [] },
+              { key: 'status', label: 'Status', type: 'select', options: [
+                { label: tl('Confirmed', 'Confirmado'), value: 'confirmed' },
+                { label: tl('Completed', 'Concluído'), value: 'completed' },
+                { label: tl('Cancelled', 'Cancelado'), value: 'cancelled' },
+                { label: tl('No-show', 'Não compareceu'), value: 'no_show' },
+              ]},
+            ],
+            dataSource: { kind: 'view', name: 'rep_appointments_by_period', dateColumn: 'date', defaultSort: 'date', defaultSortDir: 'desc' },
+            showSummary: true,
+          },
+          {
+            id: 'occupancy-rate',
+            name: tl('Occupancy Rate', 'Taxa de Ocupação'),
+            description: tl('Occupancy analysis by professional and period', 'Análise de ocupação por profissional e período'),
+            icon: 'Activity',
+            category: tl('Scheduling & Agenda', 'Agendamentos & Agenda'),
+            badge: 'essential',
+            columns: [
+              { key: 'professionalName', label: tl('Professional', 'Profissional'), type: 'text' },
+              { key: 'totalSlots', label: tl('Total Slots', 'Horários Totais'), type: 'number' },
+              { key: 'bookedSlots', label: tl('Booked', 'Agendados'), type: 'number' },
+              { key: 'occupancyRate', label: tl('Occupancy %', 'Ocupação %'), type: 'number' },
+            ],
+            dataSource: { kind: 'view', name: 'rep_occupancy_rate', defaultSort: 'occupancy_rate', defaultSortDir: 'desc' },
+            available: false,
+          },
+          {
+            id: 'cancellations',
+            name: tl('Cancellations', 'Cancelamentos'),
+            description: tl('Cancellation reasons and patterns', 'Análise de motivos e padrões de cancelamento'),
+            icon: 'CalendarX',
+            category: tl('Scheduling & Agenda', 'Agendamentos & Agenda'),
+            columns: [
+              { key: 'date', label: tl('Date', 'Data'), type: 'date' },
+              { key: 'clientName', label: tl('Client', 'Cliente'), type: 'text' },
+              { key: 'professionalName', label: tl('Professional', 'Profissional'), type: 'text' },
+              { key: 'serviceName', label: tl('Service', 'Serviço'), type: 'text' },
+              { key: 'reason', label: tl('Reason', 'Motivo'), type: 'text' },
+            ],
+            dataSource: { kind: 'view', name: 'rep_cancellations', defaultSort: 'date', defaultSortDir: 'desc' },
+            available: false,
+          },
+          {
+            id: 'no-shows',
+            name: tl('No-Show', 'No-Show (Faltou)'),
+            description: tl('Clients who did not show up', 'Clientes que não compareceram'),
+            icon: 'Clock',
+            category: tl('Scheduling & Agenda', 'Agendamentos & Agenda'),
+            columns: [
+              { key: 'date', label: tl('Date', 'Data'), type: 'date' },
+              { key: 'clientName', label: tl('Client', 'Cliente'), type: 'text' },
+              { key: 'professionalName', label: tl('Professional', 'Profissional'), type: 'text' },
+              { key: 'serviceName', label: tl('Service', 'Serviço'), type: 'text' },
+              { key: 'lostRevenue', label: tl('Lost Revenue', 'Receita Perdida'), type: 'currency', aggregate: 'sum' },
+            ],
+            dataSource: { kind: 'view', name: 'rep_no_shows', defaultSort: 'date', defaultSortDir: 'desc' },
+            showSummary: true,
+            available: false,
+          },
+          {
+            id: 'peak-hours',
+            name: tl('Peak Hours', 'Horários de Pico'),
+            description: tl('Most booked hours analysis', 'Análise dos horários mais agendados'),
+            icon: 'CalendarClock',
+            category: tl('Scheduling & Agenda', 'Agendamentos & Agenda'),
+            badge: 'popular',
+            columns: [
+              { key: 'dayOfWeek', label: tl('Day', 'Dia'), type: 'text' },
+              { key: 'hour', label: tl('Hour', 'Horário'), type: 'text' },
+              { key: 'bookingCount', label: tl('Bookings', 'Agendamentos'), type: 'number', aggregate: 'sum' },
+              { key: 'avgRevenue', label: tl('Avg Revenue', 'Receita Média'), type: 'currency' },
+            ],
+            dataSource: { kind: 'view', name: 'rep_peak_hours', defaultSort: 'booking_count', defaultSortDir: 'desc' },
+            available: false,
+          },
+          // --- Financial ---
+          {
+            id: 'revenue-by-service',
+            name: tl('Revenue by Service', 'Receita por Serviço'),
+            description: tl('Revenue breakdown by service type', 'Detalhamento de receita por tipo de serviço'),
+            icon: 'DollarSign',
+            category: tl('Financial', 'Financeiro'),
+            columns: [
+              { key: 'serviceName', label: tl('Service', 'Serviço'), type: 'text' },
+              { key: 'quantity', label: tl('Quantity', 'Quantidade'), type: 'number', aggregate: 'sum' },
+              { key: 'totalRevenue', label: tl('Total Revenue', 'Receita Total'), type: 'currency', aggregate: 'sum' },
+              { key: 'avgTicket', label: tl('Avg Ticket', 'Ticket Médio'), type: 'currency' },
+            ],
+            dataSource: { kind: 'view', name: 'rep_revenue_by_service', defaultSort: 'total_revenue', defaultSortDir: 'desc' },
+            showSummary: true,
+            available: false,
+          },
+          {
+            id: 'revenue-by-professional',
+            name: tl('Revenue by Professional', 'Receita por Profissional'),
+            description: tl('Revenue breakdown by staff member', 'Detalhamento de receita por profissional'),
+            icon: 'Users',
+            category: tl('Financial', 'Financeiro'),
+            badge: 'popular',
+            columns: [
+              { key: 'professionalName', label: tl('Professional', 'Profissional'), type: 'text' },
+              { key: 'appointmentCount', label: tl('Appointments', 'Atendimentos'), type: 'number', aggregate: 'sum' },
+              { key: 'totalRevenue', label: tl('Total Revenue', 'Receita Total'), type: 'currency', aggregate: 'sum' },
+              { key: 'avgTicket', label: tl('Avg Ticket', 'Ticket Médio'), type: 'currency' },
+              { key: 'commission', label: tl('Commission', 'Comissão'), type: 'currency', aggregate: 'sum' },
+            ],
+            dataSource: { kind: 'view', name: 'rep_revenue_by_professional', defaultSort: 'total_revenue', defaultSortDir: 'desc' },
+            showSummary: true,
+            available: false,
+          },
+          // --- Clients ---
+          {
+            id: 'client-frequency',
+            name: tl('Client Frequency', 'Frequência de Clientes'),
+            description: tl('Visit frequency and retention', 'Frequência de visitas e retenção'),
+            icon: 'UserCheck',
+            category: tl('Clients', 'Clientes'),
+            columns: [
+              { key: 'clientName', label: tl('Client', 'Cliente'), type: 'text' },
+              { key: 'visitCount', label: tl('Visits', 'Visitas'), type: 'number', aggregate: 'sum' },
+              { key: 'lastVisit', label: tl('Last Visit', 'Última Visita'), type: 'date' },
+              { key: 'totalSpent', label: tl('Total Spent', 'Total Gasto'), type: 'currency', aggregate: 'sum' },
+              { key: 'avgTicket', label: tl('Avg Ticket', 'Ticket Médio'), type: 'currency' },
+            ],
+            dataSource: { kind: 'view', name: 'rep_client_frequency', defaultSort: 'visit_count', defaultSortDir: 'desc' },
+            showSummary: true,
+            available: false,
+          },
+          {
+            id: 'new-clients',
+            name: tl('New Clients', 'Clientes Novos'),
+            description: tl('New client acquisition by period', 'Aquisição de novos clientes por período'),
+            icon: 'UserPlus',
+            category: tl('Clients', 'Clientes'),
+            columns: [
+              { key: 'date', label: tl('Date', 'Data'), type: 'date' },
+              { key: 'clientName', label: tl('Client', 'Cliente'), type: 'text' },
+              { key: 'origin', label: tl('Origin', 'Origem'), type: 'text' },
+              { key: 'firstService', label: tl('First Service', 'Primeiro Serviço'), type: 'text' },
+            ],
+            dataSource: { kind: 'view', name: 'rep_new_clients', defaultSort: 'date', defaultSortDir: 'desc' },
+            available: false,
+          },
+        ],
+      }),
+      createCustomFormsPlugin({
+        scope: 'universal',
+        labels: {
+          pageTitle: tl('Custom Forms', 'Formulários'),
+          settingsLabel: tl('Forms & Documents', 'Formulários e Documentos'),
+          templates: tl('Templates', 'Modelos'),
+          documents: tl('Documents', 'Documentos'),
+          newTemplate: tl('New Template', 'Novo Modelo'),
+          addDocument: tl('Add Document', 'Novo Documento'),
+        },
       }),
     ]
   })(),
@@ -222,7 +422,6 @@ export const App = createSaasApp({
         { path: '/clients', label: tl('List', 'Lista'), icon: 'List' },
       ],
     },
-    { path: '/marketing', label: 'Marketing', icon: 'Megaphone', component: Marketing },
     {
       path: '/registry', label: tl('Registry', 'Cadastros'), icon: 'ClipboardList',
       component: createPlaceholder(tl('Registry', 'Cadastros'), tl('Manage your business records', 'Gerencie seus registros de negócios')),
@@ -238,7 +437,6 @@ export const App = createSaasApp({
         { path: '/registry/accounts', label: tl('Accounts', 'Contas'), icon: 'Building2', component: createCrudPage(bankAccountEntity) },
       ],
     },
-    { path: '/reports', label: tl('Reports', 'Relatórios'), icon: 'BarChart3', component: createPlaceholder(tl('Reports', 'Relatórios'), tl('Analytics and business intelligence', 'Análises e inteligência de negócios')) },
   ],
   billing: {
     plans: [
