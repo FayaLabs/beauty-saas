@@ -1,30 +1,35 @@
 import type { SaasTheme } from '@fayz/saas-core'
 
+/**
+ * BeautySoft theme — navy/lavender palette derived from the brand logo.
+ * Primary: deep navy (#2B2D5B) — HSL 239 36% 27%
+ * Accent: soft lavender (#B8B0CC) — HSL 260 20% 75%
+ */
 export const beautyTheme: SaasTheme = {
-  name: 'Glow Studio',
-  brand: '330 65% 50%',
+  name: 'BeautySoft',
+  brand: '260 30% 45%',
   radius: 'round',
   shadow: 'subtle',
   font: 'outfit',
   sidebar: {
-    background: '330 25% 18%',
-    foreground: '330 15% 88%',
-    border: '330 20% 24%',
-    accent: '330 30% 26%',
+    background: '240 30% 16%',
+    foreground: '260 15% 88%',
+    border: '240 25% 22%',
+    accent: '260 25% 28%',
     accentForeground: '0 0% 100%',
-    muted: '330 12% 55%',
+    muted: '260 12% 55%',
   },
   content: {
-    background: '330 15% 96.5%',
+    background: '260 12% 97%',
   },
   colors: {
     card: '0 0% 100%',
-    cardForeground: '330 30% 10%',
-    secondary: '330 20% 95%',
-    secondaryForeground: '330 30% 15%',
-    muted: '330 15% 93%',
-    mutedForeground: '330 10% 45%',
-    border: '330 15% 90%',
-    input: '330 15% 90%',
+    cardForeground: '240 30% 12%',
+    secondary: '260 18% 95%',
+    secondaryForeground: '240 30% 18%',
+    muted: '260 12% 93%',
+    mutedForeground: '260 8% 45%',
+    border: '260 12% 90%',
+    input: '260 12% 90%',
   },
 }

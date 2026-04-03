@@ -5,8 +5,12 @@ import { createCrmPlugin } from '@fayz/saas-core/plugins/crm'
 import { createAgendaPlugin, createFinancialBridge } from '@fayz/saas-core/plugins/agenda'
 import { createReportsPlugin } from '@fayz/saas-core/plugins/reports'
 import { createCustomFormsPlugin } from '@fayz/saas-core/plugins/custom_forms'
+import { createDashboardPlugin } from '@fayz/saas-core/plugins/dashboard'
+import { createTasksPlugin } from '@fayz/saas-core/plugins/tasks'
 
-import { Dashboard } from './pages/Dashboard'
+import { Logo } from './components/Logo'
+import { TodayScheduleSection } from './pages/dashboard/TodayScheduleSection'
+import { QuickActionsSection } from './pages/dashboard/QuickActionsSection'
 import { serviceEntity } from './types/service'
 import { clientEntity } from './types/client'
 import { contactEntity, staffEntity, supplierEntity, originEntity, partnershipEntity, equipmentEntity, bankAccountEntity, serviceCategoryEntity } from './types/registry'
@@ -15,10 +19,11 @@ import { Sales } from './pages/Sales'
 import { beautyTheme } from './theme'
 import { appTranslations } from './i18n'
 import { tl } from './i18n/tl'
+import React from 'react'
 
 export const App = createSaasApp({
-  name: 'Glow Studio',
-  logo: 'G',
+  name: 'BeautySoft',
+  logo: React.createElement(Logo),
   layout: 'topbar',
   supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
   supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
@@ -122,6 +127,232 @@ export const App = createSaasApp({
     const financialBridge = createFinancialBridge(financialProvider)
 
     return [
+      createDashboardPlugin({
+        navIcon: 'Home',
+        labels: {
+          pageTitle: tl('Dashboard', 'Painel'),
+          pageSubtitle: tl('Business overview', 'Visão geral do seu negócio'),
+          kpiTitle: tl('Key Metrics', 'Métricas'),
+          onboardingTitle: tl('Getting Started', 'Primeiros Passos'),
+          onboardingSubtitle: tl('Set up your salon', 'Configure seu salão'),
+          settingsTitle: tl('Dashboard', 'Painel'),
+        },
+        currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
+        metrics: [
+          // --- Active by default ---
+          {
+            id: 'appointments-today',
+            label: tl("Today's Appointments", 'Agendamentos Hoje'),
+            description: tl(
+              'Total scheduled appointments for today. Helps you plan staffing and anticipate workload.',
+              'Total de agendamentos para hoje. Ajuda a planejar equipe e antecipar demanda.',
+            ),
+            icon: 'Calendar',
+            category: 'operations',
+            format: 'number',
+            defaultVisible: true,
+            defaultOrder: 0,
+            compute: async () => ({ value: 12, previousValue: 10, trend: 'up' }),
+          },
+          {
+            id: 'revenue-week',
+            label: tl('Revenue (This Week)', 'Receita (Semana)'),
+            description: tl(
+              'Gross revenue for the current week compared to last week. Key indicator of business health.',
+              'Receita bruta da semana atual comparada com a anterior. Indicador-chave de saúde do negócio.',
+            ),
+            icon: 'DollarSign',
+            category: 'revenue',
+            format: 'currency',
+            defaultVisible: true,
+            defaultOrder: 1,
+            compute: async () => ({ value: 3240, previousValue: 2817, trend: 'up' }),
+          },
+          {
+            id: 'active-clients',
+            label: tl('Active Clients', 'Clientes Ativos'),
+            description: tl(
+              'Clients who visited in the last 90 days. Industry benchmark: 60-70% retention rate.',
+              'Clientes que visitaram nos últimos 90 dias. Benchmark: taxa de retenção de 60-70%.',
+            ),
+            icon: 'Users',
+            category: 'clients',
+            format: 'number',
+            defaultVisible: true,
+            defaultOrder: 2,
+            compute: async () => ({ value: 148, previousValue: 140, trend: 'up' }),
+          },
+          {
+            id: 'avg-rating',
+            label: tl('Avg. Rating', 'Avaliação Média'),
+            description: tl(
+              'Average client satisfaction score. Top salons maintain 4.7+ consistently.',
+              'Nota média de satisfação. Salões de destaque mantêm 4.7+ consistentemente.',
+            ),
+            icon: 'Star',
+            category: 'custom',
+            format: 'number',
+            defaultVisible: true,
+            defaultOrder: 3,
+            compute: async () => ({ value: 4.9, trend: 'neutral' }),
+          },
+          // --- Disabled by default (industry KPIs users can enable) ---
+          {
+            id: 'avg-ticket',
+            label: tl('Avg. Ticket', 'Ticket Médio'),
+            description: tl(
+              'Average revenue per appointment. Increase it by upselling products or bundling services.',
+              'Receita média por atendimento. Aumente com venda de produtos ou combos de serviços.',
+            ),
+            icon: 'Receipt',
+            category: 'revenue',
+            format: 'currency',
+            defaultVisible: false,
+            defaultOrder: 10,
+            compute: async () => ({ value: 85, previousValue: 78, trend: 'up' }),
+          },
+          {
+            id: 'occupancy-rate',
+            label: tl('Occupancy Rate', 'Taxa de Ocupação'),
+            description: tl(
+              'Percentage of available slots that are booked. Industry benchmark: 75-85% is considered healthy.',
+              'Percentual de horários disponíveis que estão reservados. Benchmark: 75-85% é saudável.',
+            ),
+            icon: 'Activity',
+            category: 'operations',
+            format: 'percent',
+            defaultVisible: false,
+            defaultOrder: 11,
+            compute: async () => ({ value: 72, previousValue: 68, trend: 'up' }),
+          },
+          {
+            id: 'no-show-rate',
+            label: tl('No-Show Rate', 'Taxa de No-Show'),
+            description: tl(
+              'Percentage of confirmed appointments where clients did not show up. Keep below 10% with reminders.',
+              'Percentual de agendamentos confirmados onde o cliente não compareceu. Mantenha abaixo de 10% com lembretes.',
+            ),
+            icon: 'UserX',
+            category: 'operations',
+            format: 'percent',
+            defaultVisible: false,
+            defaultOrder: 12,
+            compute: async () => ({ value: 5, previousValue: 7, trend: 'down' }),
+          },
+          {
+            id: 'new-clients-month',
+            label: tl('New Clients (Month)', 'Clientes Novos (Mês)'),
+            description: tl(
+              'First-time clients this month. Healthy salons acquire 10-15% new clients relative to total base monthly.',
+              'Clientes de primeira vez neste mês. Salões saudáveis adquirem 10-15% de novos clientes em relação à base total.',
+            ),
+            icon: 'UserPlus',
+            category: 'clients',
+            format: 'number',
+            defaultVisible: false,
+            defaultOrder: 13,
+            compute: async () => ({ value: 18, previousValue: 14, trend: 'up' }),
+          },
+          {
+            id: 'retention-rate',
+            label: tl('Retention Rate', 'Taxa de Retenção'),
+            description: tl(
+              'Percentage of clients who return within 90 days. Industry gold standard: 60-70%.',
+              'Percentual de clientes que retornam em 90 dias. Padrão ouro do setor: 60-70%.',
+            ),
+            icon: 'UserCheck',
+            category: 'clients',
+            format: 'percent',
+            defaultVisible: false,
+            defaultOrder: 14,
+            compute: async () => ({ value: 64, previousValue: 61, trend: 'up' }),
+          },
+          {
+            id: 'revenue-per-professional',
+            label: tl('Revenue per Professional', 'Receita por Profissional'),
+            description: tl(
+              'Average revenue generated per staff member. Use to identify top performers and coaching opportunities.',
+              'Receita média gerada por profissional. Use para identificar destaques e oportunidades de treinamento.',
+            ),
+            icon: 'TrendingUp',
+            category: 'revenue',
+            format: 'currency',
+            defaultVisible: false,
+            defaultOrder: 15,
+            compute: async () => ({ value: 1080, previousValue: 940, trend: 'up' }),
+          },
+          {
+            id: 'product-sales',
+            label: tl('Product Sales', 'Venda de Produtos'),
+            description: tl(
+              'Revenue from retail product sales. Best practice: product revenue should be 15-20% of total revenue.',
+              'Receita de venda de produtos. Boa prática: produtos devem representar 15-20% da receita total.',
+            ),
+            icon: 'ShoppingBag',
+            category: 'revenue',
+            format: 'currency',
+            defaultVisible: false,
+            defaultOrder: 16,
+            compute: async () => ({ value: 420, previousValue: 380, trend: 'up' }),
+          },
+        ],
+        sections: [
+          {
+            id: 'today-schedule',
+            title: tl("Today's Schedule", 'Agenda de Hoje'),
+            icon: 'Clock',
+            zone: 'main',
+            order: 0,
+            component: TodayScheduleSection,
+          },
+          {
+            id: 'quick-actions',
+            title: tl('Quick Actions', 'Ações Rápidas'),
+            icon: 'Zap',
+            zone: 'bottom-right',
+            order: 10,
+            component: QuickActionsSection,
+          },
+        ],
+        onboardingSteps: [
+          {
+            id: 'add-first-client',
+            title: tl('Add your first client', 'Adicione seu primeiro cliente'),
+            description: tl('Register a client to start managing your customer base', 'Cadastre um cliente para começar a gerenciar sua base'),
+            icon: 'UserPlus',
+            order: 0,
+            check: async () => false,
+            action: '/clients/new',
+          },
+          {
+            id: 'register-services',
+            title: tl('Register your services', 'Cadastre seus serviços'),
+            description: tl('Add the services your salon offers', 'Adicione os serviços que seu salão oferece'),
+            icon: 'Briefcase',
+            order: 1,
+            check: async () => false,
+            action: '/registry/services',
+          },
+          {
+            id: 'setup-schedule',
+            title: tl('Set up your schedule', 'Configure sua agenda'),
+            description: tl('Define business hours and booking rules', 'Defina horários de funcionamento e regras de agendamento'),
+            icon: 'Calendar',
+            order: 2,
+            check: async () => false,
+            action: '/settings/agenda',
+          },
+          {
+            id: 'setup-payments',
+            title: tl('Configure payments', 'Configure pagamentos'),
+            description: tl('Add accepted payment methods', 'Adicione as formas de pagamento aceitas'),
+            icon: 'CreditCard',
+            order: 3,
+            check: async () => false,
+            action: '/settings/financial',
+          },
+        ],
+      }),
       createAgendaPlugin({
         bookingKind: 'appointment',
         orderKind: 'service_order',
@@ -148,12 +379,14 @@ export const App = createSaasApp({
           maxAdvanceDays: 30,
         },
         navPosition: 2,
+        navSection: 'main',
         confirmationChannels: [
           { id: 'whatsapp', label: 'WhatsApp', icon: 'MessageCircle' },
           { id: 'phone', label: tl('Phone', 'Telefone'), icon: 'Phone' },
         ],
       }),
       createFinancialPlugin({
+        navPosition: 7,
         currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
         entityLookups: { product: productLookup, service: serviceLookup },
         contactLookup,
@@ -187,6 +420,7 @@ export const App = createSaasApp({
         },
       }),
       createInventoryPlugin({
+        navPosition: 4,
         currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
         modules: { recipes: false, batchTracking: false },
         productTypes: [
@@ -201,6 +435,7 @@ export const App = createSaasApp({
         },
       }),
       createCrmPlugin({
+        navPosition: 6,
         currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
         itemTypes: [
           { value: 'service', label: tl('Service', 'Serviço') },
@@ -400,6 +635,7 @@ export const App = createSaasApp({
       }),
       createCustomFormsPlugin({
         scope: 'universal',
+        navSection: 'settings',
         labels: {
           pageTitle: tl('Custom Forms', 'Formulários'),
           settingsLabel: tl('Forms & Documents', 'Formulários e Documentos'),
@@ -409,12 +645,20 @@ export const App = createSaasApp({
           addDocument: tl('Add Document', 'Novo Documento'),
         },
       }),
+      createTasksPlugin({
+        labels: {
+          drawerTitle: tl('Tasks', 'Tarefas'),
+          settingsTitle: tl('Tasks', 'Tarefas'),
+          quickAddPlaceholder: tl('Add a task...', 'Adicionar tarefa...'),
+        },
+      }),
     ]
   })(),
   pages: [
-    { path: '/', label: tl('Dashboard', 'Painel'), icon: 'Home', component: Dashboard, permission: { feature: 'dashboard', action: 'read' } },
+    // Dashboard plugin at position 0 (provides '/' route + nav)
+    // Agenda plugin at position 2
     {
-      path: '/clients', label: tl('Clients', 'Clientes'), icon: 'Users',
+      path: '/clients', label: tl('Clients', 'Clientes'), icon: 'Users', position: 3,
       component: createCrudPage(clientEntity, { feature: 'clients' }),
       permission: { feature: 'clients', action: 'read' },
       children: [
@@ -422,8 +666,16 @@ export const App = createSaasApp({
         { path: '/clients', label: tl('List', 'Lista'), icon: 'List' },
       ],
     },
+    // Inventory plugin at position 4
     {
-      path: '/registry', label: tl('Registry', 'Cadastros'), icon: 'ClipboardList',
+      path: '/marketing', label: 'Marketing', icon: 'Megaphone', position: 5,
+      component: createPlaceholder('Marketing', tl('Campaigns, loyalty programs, and client engagement', 'Campanhas, programas de fidelidade e engajamento de clientes')),
+      permission: { feature: 'marketing', action: 'read' },
+    },
+    // CRM (Vendas) plugin at position 6
+    // Financial plugin at position 7
+    {
+      path: '/registry', label: tl('Registry', 'Cadastros'), icon: 'ClipboardList', position: 8,
       component: createPlaceholder(tl('Registry', 'Cadastros'), tl('Manage your business records', 'Gerencie seus registros de negócios')),
       children: [
         { path: '/registry/services', label: tl('Services', 'Serviços'), icon: 'Briefcase', component: createCrudPage(serviceEntity) },
@@ -437,6 +689,8 @@ export const App = createSaasApp({
         { path: '/registry/accounts', label: tl('Accounts', 'Contas'), icon: 'Building2', component: createCrudPage(bankAccountEntity) },
       ],
     },
+    { path: '/settings', label: tl('Settings', 'Configurações'), icon: 'Settings', position: 9, component: createPlaceholder(tl('Settings', 'Configurações')) },
+    // Reports plugin at position 10
   ],
   billing: {
     plans: [
@@ -485,6 +739,6 @@ export const App = createSaasApp({
   },
   chat: {
     title: tl('Glow Assistant', 'Assistente Glow'),
-    systemPrompt: 'You are a helpful salon assistant for Glow Studio.',
+    systemPrompt: 'You are a helpful salon assistant for BeautySoft.',
   },
 })

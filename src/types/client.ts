@@ -35,7 +35,7 @@ export const clientEntity: EntityDef<BeautyClient> = {
     { key: 'phone', label: tl('Phone', 'Telefone'), type: 'phone', showInTable: true },
     { key: 'dateOfBirth', label: tl('Birth Date', 'Data de Nascimento'), type: 'date' },
     { key: 'notes', label: tl('Notes', 'Observações'), type: 'textarea', showInTable: false },
-    { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', defaultValue: true },
+    { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', showInTable: true, defaultValue: true, inlineToggle: true },
     { key: 'gender', label: tl('Gender', 'Gênero'), type: 'select', options: ['male', 'female', 'other', 'prefer_not_to_say'], group: 'personal', showInTable: false },
     { key: 'origin', label: tl('Origin', 'Origem'), type: 'text', group: 'personal', placeholder: tl('How did they find us?', 'Como nos encontrou?'), showInTable: false },
     { key: 'visits', label: tl('Visits', 'Visitas'), type: 'number', showInForm: false, showInTable: true, group: 'stats' },

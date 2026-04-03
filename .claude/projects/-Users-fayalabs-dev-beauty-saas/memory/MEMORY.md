@@ -1,0 +1,1 @@
+- [Project structure](project_structure.md) — 3 related projects: saas-core, beauty-saas, resto-saas

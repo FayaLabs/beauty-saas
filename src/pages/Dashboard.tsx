@@ -23,7 +23,7 @@ export function Dashboard() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold">Good morning, Maria!</h1>
-        <p className="text-muted-foreground mt-1">Here's what's happening at Glow Studio today.</p>
+        <p className="text-muted-foreground mt-1">Here's what's happening at BeautySoft today.</p>
       </div>
 
       {/* Stats Grid */}

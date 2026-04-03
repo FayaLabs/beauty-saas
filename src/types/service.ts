@@ -25,7 +25,7 @@ export const serviceEntity: EntityDef<BeautyService> = {
     { key: 'description', label: tl('Description', 'Descrição'), type: 'textarea', showInTable: false },
     { key: 'durationMinutes', label: tl('Duration (min)', 'Duração (min)'), type: 'number', required: true, showInTable: true },
     { key: 'price', label: tl('Price', 'Preço'), type: 'currency', required: true, showInTable: true },
-    { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', defaultValue: true },
+    { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', showInTable: true, defaultValue: true, inlineToggle: true },
   ],
   data: {
     table: 'services',
