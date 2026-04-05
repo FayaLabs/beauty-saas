@@ -27,9 +27,4 @@ export const serviceEntity: EntityDef<BeautyService> = {
     { key: 'price', label: tl('Price', 'Preço'), type: 'currency', required: true, showInTable: true },
     { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', showInTable: true, defaultValue: true, inlineToggle: true },
   ],
-  data: {
-    table: 'services',
-    schema: 'saas_core',
-    tenantScoped: true,
-  },
 }
