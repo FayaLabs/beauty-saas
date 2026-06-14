@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button } from '@fayz/saas-core/components'
-import type { DashboardSectionProps } from '@fayz/saas-core/plugins/dashboard'
+import { Button } from '@fayz-ai/ui'
+import type { DashboardSectionProps } from '@fayz-ai/plugin-dashboard'
 
 const actions = [
   { label: 'Novo Agendamento', route: '/agenda' },

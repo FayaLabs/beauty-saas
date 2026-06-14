@@ -8,6 +8,12 @@ pnpm dev
 
 App runs at `http://localhost:5180`
 
+## SDK source modes
+
+- `pnpm build` validates the active dogfood mode against the local Fayz SDK checkout.
+- `pnpm build:published-sdk` now typechecks without local Fayz SDK path aliases before bundling.
+- Current expected status: local mode is green; published mode is blocked until Beauty stops importing internal/private `@fayz-ai/*` packages directly and can consume only the public SDK surface.
+
 ## Test credentials
 
 - **Email:** teste@teste.com

@@ -1,4 +1,4 @@
-import type { SaasTheme } from '@fayz/saas-core'
+import type { SaasTheme } from '@fayz-ai/saas'
 
 /**
  * BeautySoft theme — navy/lavender palette derived from the brand logo.

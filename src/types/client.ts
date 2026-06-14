@@ -1,5 +1,5 @@
-import type { EntityDef } from '@fayz/saas-core'
-import { ClientOrdersTab, createClientOrdersProvider } from '@fayz/saas-core'
+import type { EntityDef } from '@fayz-ai/core'
+import { ClientOrdersTab, createClientOrdersProvider } from '@fayz-ai/saas'
 import { tl } from '../i18n/tl'
 
 export interface BeautyClient {
@@ -47,7 +47,7 @@ export const clientEntity: EntityDef<BeautyClient> = {
       id: 'orders',
       label: tl('Orders', 'Pedidos'),
       icon: 'ShoppingBag',
-      component: ClientOrdersTab,
+      component: ClientOrdersTab as never,
       props: {
         provider: createClientOrdersProvider(),
         currency: { code: 'BRL', locale: 'pt-BR' },

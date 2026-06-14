@@ -1,5 +1,7 @@
 # Roadmap: From Dumb-SaaS to Functional Beauty Platform
 
+Latest executive checkpoint: [`docs/roadmap/status-2026-06-14.md`](./roadmap/status-2026-06-14.md)
+
 ## Context
 
 We have:
