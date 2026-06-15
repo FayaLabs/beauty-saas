@@ -1,7 +1,7 @@
-import type { SaasAppConfig } from '@fayz-ai/saas'
+import type { FayzAppConfig } from '@fayz-ai/saas'
 import { tl } from '../i18n/tl'
 
-export const beautyBilling: NonNullable<SaasAppConfig['billing']> = {
+export const beautyBilling: NonNullable<FayzAppConfig['billing']> = {
   plans: [
     {
       id: 'starter',

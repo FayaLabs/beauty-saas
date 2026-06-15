@@ -1,4 +1,4 @@
-import { createCrudPage, type SaasAppConfig } from '@fayz-ai/saas'
+import { createCrudPage, type FayzAppConfig } from '@fayz-ai/saas'
 import { createPlaceholder } from '../pages/Placeholder'
 import { tl } from '../i18n/tl'
 import { serviceEntity } from '../types/service'
@@ -14,7 +14,7 @@ import {
   supplierEntity,
 } from '../types/registry'
 
-export const beautyPages: SaasAppConfig['pages'] = [
+export const beautyPages: FayzAppConfig['pages'] = [
   {
     path: '/clients',
     label: tl('Clients', 'Clientes'),

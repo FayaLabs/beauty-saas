@@ -1,4 +1,4 @@
-import { createArchetypeLookup, type SaasAppConfig } from '@fayz-ai/saas'
+import { createArchetypeLookup, type FayzAppConfig } from '@fayz-ai/saas'
 import { createFinancialPlugin, createSafeFinancialProvider } from '@fayz-ai/plugin-financial'
 import { createInventoryPlugin } from '@fayz-ai/plugin-inventory'
 import { createCrmPlugin } from '@fayz-ai/plugin-crm'
@@ -18,7 +18,7 @@ import { appTranslations } from '../i18n'
 import { tl } from '../i18n/tl'
 import React from 'react'
 
-export const beautyAppConfig: SaasAppConfig = {
+export const beautyAppConfig: FayzAppConfig = {
   name: 'BeautySoft',
   logo: React.createElement(Logo),
   layout: 'topbar',
@@ -41,7 +41,7 @@ export const beautyAppConfig: SaasAppConfig = {
     showOAuth: true,
     oauthProviders: ['google'],
   },
-  organization: { adapter: import.meta.env.VITE_SUPABASE_URL ? 'supabase' : 'mock', multiOrg: true },
+  org: { adapter: import.meta.env.VITE_SUPABASE_URL ? 'supabase' : 'mock', multiOrg: true },
   permissions: beautyPermissions,
   theme: beautyTheme,
   plugins: (() => {

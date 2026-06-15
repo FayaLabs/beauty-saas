@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Badge } from '@fayz-ai/ui'
 import type { DashboardSectionProps } from '@fayz-ai/plugin-dashboard'
-import { supabase } from '../../integrations/supabase/client'
+import { fayz } from '@fayz-ai/sdk'
 
 interface TodayAppointment {
   id: string
@@ -11,6 +11,16 @@ interface TodayAppointment {
   stylist: string | null
   duration: string
   status: 'confirmed' | 'pending' | 'cancelled'
+}
+
+interface BookingRow {
+  id: string
+  starts_at: string
+  client_name: string | null
+  services: Array<{ name?: string; service_name?: string } | string> | null
+  professional_name: string | null
+  total_duration_minutes: number | null
+  status: string | null
 }
 
 function formatTime(iso: string) {
@@ -36,23 +46,26 @@ export function TodayScheduleSection(_props: DashboardSectionProps) {
       const start = new Date(today.getFullYear(), today.getMonth(), today.getDate()).toISOString()
       const end = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString()
 
-      // v_bookings is a DB view, absent from the generated table types
-      const { data } = await (supabase as any)
-        .from('v_bookings')
-        .select('id, starts_at, client_name, services, professional_name, total_duration_minutes, status')
-        .gte('starts_at', start)
-        .lt('starts_at', end)
-        .not('status', 'in', '("cancelled","no_show")')
-        .order('starts_at', { ascending: true })
-        .limit(10)
+      const { rows } = await fayz.data.listRows<BookingRow>({
+        table: 'v_bookings',
+        filters: [
+          { column: 'starts_at', operator: 'gte', value: start },
+          { column: 'starts_at', operator: 'lt', value: end },
+          { column: 'status', operator: 'neq', value: 'cancelled' },
+          { column: 'status', operator: 'neq', value: 'no_show' },
+        ],
+        sortColumn: 'starts_at',
+        sortDirection: 'asc',
+        limit: 10,
+      })
 
-      if (data) {
-        setAppointments(data.map((row: any) => ({
+      if (rows) {
+        setAppointments(rows.map((row) => ({
           id: row.id,
           time: formatTime(row.starts_at),
           client: row.client_name ?? '—',
           service: Array.isArray(row.services) && row.services.length > 0
-            ? row.services.map((s: any) => s.name ?? s.service_name ?? s).join(', ')
+            ? row.services.map((service) => typeof service === 'string' ? service : service.name ?? service.service_name ?? '—').join(', ')
             : '—',
           stylist: row.professional_name,
           duration: formatDuration(row.total_duration_minutes),

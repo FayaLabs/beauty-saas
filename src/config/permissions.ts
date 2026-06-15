@@ -1,7 +1,7 @@
-import type { SaasAppConfig } from '@fayz-ai/saas'
+import type { FayzAppConfig } from '@fayz-ai/saas'
 import { tl } from '../i18n/tl'
 
-export const beautyPermissions: NonNullable<SaasAppConfig['permissions']> = {
+export const beautyPermissions: NonNullable<FayzAppConfig['permissions']> = {
   features: [
     { id: 'dashboard', label: tl('Dashboard', 'Painel'), group: tl('Core', 'Principal') },
     { id: 'appointments', label: tl('Agenda', 'Agenda'), group: tl('Operations', 'Operações') },

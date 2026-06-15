@@ -1,7 +1,7 @@
 import { createDashboardPlugin } from '@fayz-ai/plugin-dashboard'
+import { fayz } from '@fayz-ai/sdk'
 import { QuickActionsSection } from '../pages/dashboard/QuickActionsSection'
 import { TodayScheduleSection } from '../pages/dashboard/TodayScheduleSection'
-import { supabase } from '../integrations/supabase/client'
 import { tl } from '../i18n/tl'
 
 function getLocalDayRange(offsetDays = 0) {
@@ -13,15 +13,15 @@ function getLocalDayRange(offsetDays = 0) {
 
 async function countActiveBookingsForDay(offsetDays = 0): Promise<number> {
   const { start, end } = getLocalDayRange(offsetDays)
-  const { count, error } = await (supabase as any)
-    .from('v_bookings')
-    .select('id', { count: 'exact', head: true })
-    .gte('starts_at', start)
-    .lt('starts_at', end)
-    .not('status', 'in', '("cancelled","no_show")')
-
-  if (error) throw error
-  return count ?? 0
+  return fayz.data.countRows({
+    table: 'v_bookings',
+    filters: [
+      { column: 'starts_at', operator: 'gte', value: start },
+      { column: 'starts_at', operator: 'lt', value: end },
+      { column: 'status', operator: 'neq', value: 'cancelled' },
+      { column: 'status', operator: 'neq', value: 'no_show' },
+    ],
+  })
 }
 
 export const beautyDashboardPlugin = createDashboardPlugin({
