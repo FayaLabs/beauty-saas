@@ -13,7 +13,7 @@ function getLocalDayRange(offsetDays = 0) {
 
 async function countActiveBookingsForDay(offsetDays = 0): Promise<number> {
   const { start, end } = getLocalDayRange(offsetDays)
-  return fayz.data.countRows({
+  const count = await fayz.data.countRows({
     table: 'v_bookings',
     filters: [
       { column: 'starts_at', operator: 'gte', value: start },
@@ -22,6 +22,7 @@ async function countActiveBookingsForDay(offsetDays = 0): Promise<number> {
       { column: 'status', operator: 'neq', value: 'no_show' },
     ],
   })
+  return Number.isFinite(count) ? count : 0
 }
 
 export const beautyDashboardPlugin = createDashboardPlugin({
