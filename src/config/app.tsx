@@ -205,6 +205,7 @@ export const beautyAppConfig: FayzAppConfig = {
   billing: beautyBilling,
   chat: {
     title: tl('Glow Assistant', 'Assistente Glow'),
-    systemPrompt: 'You are a helpful salon assistant for BeautySoft.',
+    systemPrompt:
+      'You are the BeautySoft salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance.',
   },
 }
