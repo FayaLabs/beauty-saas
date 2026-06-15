@@ -1,4 +1,4 @@
-import type { EntityDef } from '@fayz/saas-core'
+import type { EntityDef } from '@fayz-ai/core'
 import { tl } from '../i18n/tl'
 
 export interface BeautyService {
@@ -18,7 +18,6 @@ export const serviceEntity: EntityDef<BeautyService> = {
   icon: 'Briefcase',
   layout: 'service',
   displayField: 'name',
-  data: { table: 'beauty_services', tenantScoped: true, tenantIdColumn: 'tenant_id' },
   defaultSort: 'name',
   fields: [
     { key: 'name', label: tl('Service Name', 'Nome do Serviço'), type: 'text', required: true, searchable: true, showInTable: true },

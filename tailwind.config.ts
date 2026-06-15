@@ -1,15 +1,15 @@
 import type { Config } from 'tailwindcss'
-
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { saasPreset } = require('@fayz/saas-core/config')
+import { fayzUiPreset } from '../../fayz-sdk/packages/ui/src/theme/preset'
 
 export default {
-  presets: [saasPreset as Config],
+  presets: [fayzUiPreset as Config],
   content: [
     './index.html',
     './src/**/*.{ts,tsx}',
-    '../saas-core/src/**/*.{ts,tsx}',
-    './node_modules/@fayz/saas-core/src/**/*.{ts,tsx}',
+    // Native SDK shell + UI + plugins (Tailwind must see their class names).
+    '../../fayz-sdk/packages/ui/src/**/*.{ts,tsx}',
+    '../../fayz-sdk/packages/saas/src/**/*.{ts,tsx}',
+    '../../fayz-sdk/plugins/*/src/**/*.{ts,tsx}',
   ],
   darkMode: 'class',
   plugins: [],

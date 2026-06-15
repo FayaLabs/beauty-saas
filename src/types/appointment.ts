@@ -1,4 +1,4 @@
-import type { EntityDef } from '@fayz/saas-core'
+import type { EntityDef } from '@fayz-ai/core'
 
 export interface BeautyAppointment {
   id: string
@@ -26,7 +26,7 @@ export const appointmentEntity: EntityDef<BeautyAppointment> = {
   data: {
     table: 'appointments',
     tenantScoped: true,
-    archetype: 'booking',
+    archetype: 'schedule',
     archetypeKind: 'appointment',
   },
 }

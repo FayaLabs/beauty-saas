@@ -1,12 +1,13 @@
-import type { SaasTheme } from '@fayz/saas-core'
+import type { SaasTheme } from '@fayz-ai/saas'
 
 /**
- * BeautySoft theme — navy/lavender palette derived from the brand logo.
+ * BeautySoft theme — classic admin preset with navy/lavender brand overrides.
  * Primary: deep navy (#2B2D5B) — HSL 239 36% 27%
  * Accent: soft lavender (#B8B0CC) — HSL 260 20% 75%
  */
 export const beautyTheme: SaasTheme = {
   name: 'BeautySoft',
+  preset: 'classic_admin',
   brand: '260 30% 45%',
   radius: 'round',
   shadow: 'subtle',

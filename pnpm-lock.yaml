@@ -8,22 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@fayz/saas-core':
-        specifier: link:../saas-core
-        version: link:../saas-core
-      lucide-react:
-        specifier: ^0.577.0
-        version: 0.577.0(react@18.3.1)
-      react:
-        specifier: ^18.3.0
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.0
-        version: 18.3.1(react@18.3.1)
-      react-router-dom:
-        specifier: ^6.26.0
-        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-    devDependencies:
+      '@fayz-ai/sdk':
+        specifier: ^0.1.3
+        version: 0.1.3
       '@types/react':
         specifier: ^18.3.0
         version: 18.3.28
@@ -36,9 +23,21 @@ importers:
       autoprefixer:
         specifier: ^10.4.0
         version: 10.4.27(postcss@8.5.8)
+      lucide-react:
+        specifier: ^0.577.0
+        version: 0.577.0(react@18.3.1)
       postcss:
         specifier: ^8.4.0
         version: 8.5.8
+      react:
+        specifier: ^18.3.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.0
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.26.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.19
@@ -275,6 +274,9 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [win32]
+
+  '@fayz-ai/sdk@0.1.3':
+    resolution: {integrity: sha512-CUI4IhGJ65EeI4xfq2Xd7VQzMukBDsjMsSCaWoxOushh6qGi39g+mHrrXBEgbjj+kbA3iMF3CoTayiTXr0yggw==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -1090,6 +1092,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.21.5':
     optional: true
+
+  '@fayz-ai/sdk@0.1.3': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:

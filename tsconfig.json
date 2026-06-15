@@ -14,7 +14,16 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@fayz-ai/sdk": ["../../fayz-sdk/packages/sdk/src"],
+      "@fayz-ai/sdk/*": ["../../fayz-sdk/packages/sdk/src/*"],
+      "@fayz-ai/core": ["../../fayz-sdk/packages/core/src"],
+      "@fayz-ai/auth": ["../../fayz-sdk/packages/auth/src"],
+      "@fayz-ai/ui": ["../../fayz-sdk/packages/ui/src"],
+      "@fayz-ai/ui/*": ["../../fayz-sdk/packages/ui/src/*"],
+      "@fayz-ai/saas": ["../../fayz-sdk/packages/saas/src"],
+      "@fayz-ai/shop": ["../../fayz-sdk/packages/shop/src"],
+      "@fayz-ai/plugin-*": ["../../fayz-sdk/plugins/plugin-*/src"]
     }
   },
   "include": ["src"],
