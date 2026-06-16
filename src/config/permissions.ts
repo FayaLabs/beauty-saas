@@ -1,7 +1,7 @@
-import type { FayzAppConfig } from '@fayz-ai/saas'
 import { tl } from '../i18n/tl'
+import type { BeautyPermissions } from '../types/sdk-contract'
 
-export const beautyPermissions: NonNullable<FayzAppConfig['permissions']> = {
+export const beautyPermissions: BeautyPermissions = {
   features: [
     { id: 'dashboard', label: tl('Dashboard', 'Painel'), group: tl('Core', 'Principal') },
     { id: 'appointments', label: tl('Agenda', 'Agenda'), group: tl('Operations', 'Operações') },

@@ -1,6 +1,5 @@
 import React from 'react'
-import { Button } from '@fayz-ai/ui'
-import type { DashboardSectionProps } from '@fayz-ai/plugin-dashboard'
+import type { DashboardSectionProps } from '../../types/sdk-contract'
 
 const actions = [
   { label: 'Novo Agendamento', route: '/agenda' },
@@ -13,14 +12,14 @@ export function QuickActionsSection({ onNavigate }: DashboardSectionProps) {
   return (
     <div className="grid grid-cols-2 gap-3">
       {actions.map((action) => (
-        <Button
+        <button
+          type="button"
           key={action.label}
-          variant="outline"
-          className="flex flex-col items-center gap-2 p-4 h-auto"
+          className="flex h-auto flex-col items-center gap-2 rounded-lg border border-input bg-background p-4 text-left text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
           onClick={() => onNavigate?.(action.route)}
         >
           <span className="text-sm font-medium">{action.label}</span>
-        </Button>
+        </button>
       ))}
     </div>
   )

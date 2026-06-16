@@ -1,7 +1,7 @@
-import type { FayzAppConfig } from '@fayz-ai/saas'
 import { tl } from '../i18n/tl'
+import type { BeautyBilling } from '../types/sdk-contract'
 
-export const beautyBilling: NonNullable<FayzAppConfig['billing']> = {
+export const beautyBilling: BeautyBilling = {
   plans: [
     {
       id: 'starter',

@@ -1,11 +1,11 @@
-import type { SaasTheme } from '@fayz-ai/saas'
+import type { BeautyTheme } from '../types/sdk-contract'
 
 /**
  * BeautySoft theme — classic admin preset with navy/lavender brand overrides.
  * Primary: deep navy (#2B2D5B) — HSL 239 36% 27%
  * Accent: soft lavender (#B8B0CC) — HSL 260 20% 75%
  */
-export const beautyTheme: SaasTheme = {
+export const beautyTheme: BeautyTheme = {
   name: 'BeautySoft',
   preset: 'classic_admin',
   brand: '260 30% 45%',
