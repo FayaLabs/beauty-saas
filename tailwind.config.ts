@@ -6,6 +6,11 @@ export default {
   content: [
     './index.html',
     './src/**/*.{ts,tsx}',
+    // Dogfood: scan SDK source so Tailwind generates the utility classes used by
+    // @fayz-ai/saas, ui, and plugin components (file-sync rewrites ../../fayz-sdk
+    // to the mounted /app/fayz-sdk inside the preview container).
+    '../../fayz-sdk/packages/**/src/**/*.{ts,tsx}',
+    '../../fayz-sdk/plugins/**/src/**/*.{ts,tsx}',
   ],
   theme: {
     extend: {
