@@ -110,6 +110,26 @@ function isoDaysAgo(days: number): string {
   return d.toISOString()
 }
 
+// Onboarding existence check: true when the source has ≥1 row for the active
+// tenant (RLS-scoped server-side, so no explicit tenant filter is needed). Any
+// error — Supabase unconfigured, missing source — resolves to false so the step
+// shows as "not done" rather than throwing and breaking the onboarding card.
+async function tableHasRows(
+  table: string,
+  options: { schema?: string; filters?: FayzTableFilter[] } = {},
+): Promise<boolean> {
+  try {
+    const count = await fayz.data.countRows({
+      table,
+      schema: options.schema,
+      filters: options.filters,
+    })
+    return safeNumber(count) > 0
+  } catch {
+    return false
+  }
+}
+
 export const beautyDashboardPlugin = createDashboardPlugin({
   navIcon: 'Home',
   labels: {
@@ -393,7 +413,8 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       description: tl('Register a client to start managing your customer base', 'Cadastre um cliente para começar a gerenciar sua base'),
       icon: 'UserPlus',
       order: 0,
-      check: async () => false,
+      // person(kind=customer) — exposed via the v_clients bridge view.
+      check: () => tableHasRows('v_clients'),
       action: '/clients/new',
     },
     {
@@ -402,7 +423,8 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       description: tl('Add the services your salon offers', 'Adicione os serviços que seu salão oferece'),
       icon: 'Briefcase',
       order: 1,
-      check: async () => false,
+      // service archetype lives in saas_core.services (queried directly by schema).
+      check: () => tableHasRows('services', { schema: 'saas_core' }),
       action: '/registry/services',
     },
     {
@@ -411,7 +433,8 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       description: tl('Define business hours and booking rules', 'Defina horários de funcionamento e regras de agendamento'),
       icon: 'Calendar',
       order: 2,
-      check: async () => false,
+      // ≥1 schedule row (business hours / work schedule) in saas_core.schedules.
+      check: () => tableHasRows('schedules', { schema: 'saas_core' }),
       action: '/settings/agenda',
     },
     {
@@ -420,7 +443,8 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       description: tl('Add accepted payment methods', 'Adicione as formas de pagamento aceitas'),
       icon: 'CreditCard',
       order: 3,
-      check: async () => false,
+      // plugin-financial public.payment_methods (default public schema).
+      check: () => tableHasRows('payment_methods'),
       action: '/settings/financial',
     },
   ],
