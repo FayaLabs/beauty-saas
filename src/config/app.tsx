@@ -5,6 +5,7 @@ import { createCrmPlugin } from '@fayz-ai/plugin-crm'
 import { createAgendaPlugin, createFinancialBridge } from '@fayz-ai/plugin-agenda'
 import { createCustomFormsPlugin } from '@fayz-ai/plugin-forms'
 import { createTasksPlugin } from '@fayz-ai/plugin-tasks'
+import { createMarketingPlugin } from '@fayz-ai/plugin-marketing'
 
 import { Logo } from '../components/Logo'
 import { clientEntity } from '../types/client'
@@ -180,6 +181,21 @@ export const beautyAppConfig: FayzAppConfig = {
         },
       }),
       beautyReportsPlugin,
+      createMarketingPlugin({
+        domain: 'beauty',
+        navPosition: 5,
+        currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
+        labels: {
+          pageTitle: 'Marketing',
+          pageSubtitle: tl('Acquisition & conversion performance', 'Aquisição e desempenho de conversão'),
+          overview: tl('Overview', 'Visão geral'),
+          channels: tl('Channels', 'Canais'),
+          campaigns: tl('Campaigns', 'Campanhas'),
+          funnel: tl('Funnel', 'Funil'),
+          landingPages: tl('Landing pages', 'Páginas'),
+          settings: tl('Settings', 'Configurações'),
+        },
+      }),
       createCustomFormsPlugin({
         scope: 'universal',
         navSection: 'settings',

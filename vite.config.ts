@@ -22,6 +22,7 @@ const localSdkAliases = {
   '@fayz-ai/plugin-tasks': resolve(fayzSdk, 'plugins/plugin-tasks/src'),
   '@fayz-ai/plugin-reports': resolve(fayzSdk, 'plugins/plugin-reports/src'),
   '@fayz-ai/plugin-forms': resolve(fayzSdk, 'plugins/plugin-forms/src'),
+  '@fayz-ai/plugin-marketing': resolve(fayzSdk, 'plugins/plugin-marketing/src'),
 }
 
 const sdkAliases =

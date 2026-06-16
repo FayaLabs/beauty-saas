@@ -12,7 +12,11 @@ App runs at `http://localhost:5180`
 
 - `pnpm build` validates the active dogfood mode against the local Fayz SDK checkout.
 - `pnpm build:published-sdk` now typechecks without local Fayz SDK path aliases before bundling.
-- Current expected status: local mode is green; published mode is blocked until Beauty stops importing internal/private `@fayz-ai/*` packages directly and can consume only the public SDK surface.
+- Current expected status: local mode is green.
+- Published mode is still intentionally red for two concrete reasons:
+  - Beauty still imports 20 internal/private `@fayz-ai/*` entrypoints concentrated in app shell, CRUD, and plugin factories.
+  - The installed npm package is currently `@fayz-ai/sdk@0.1.3`, which does not expose the `fayz.data.*` helper used by the dashboard proof.
+- June 15, 2026 cleanup removed the avoidable app-owned internal imports for local dashboard UI and config-only type wiring. The remaining blockers now map more directly to the real public-boundary decision.
 
 ## Test credentials
 

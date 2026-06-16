@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Badge, Button } from '@fayz-ai/ui'
-import type { DashboardSectionProps } from '@fayz-ai/plugin-dashboard'
 import { fayz } from '@fayz-ai/sdk'
+import type { DashboardSectionProps } from '../../types/sdk-contract'
 
 interface TodayAppointment {
   id: string
@@ -101,15 +100,19 @@ export function TodayScheduleSection({ onNavigate }: DashboardSectionProps) {
   const expectedRevenue = appointments.reduce((sum, apt) => sum + apt.orderTotal, 0)
 
   return (
-    <Card>
+    <section className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm">
       <div className="flex flex-col gap-3 border-b p-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-lg font-semibold">Agenda de Hoje</h2>
           <p className="text-sm text-muted-foreground">Resumo operacional para o turno atual</p>
         </div>
-        <Button variant="outline" size="sm" onClick={() => onNavigate?.('/agenda')}>
+        <button
+          type="button"
+          className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-3 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+          onClick={() => onNavigate?.('/agenda')}
+        >
           Abrir agenda
-        </Button>
+        </button>
       </div>
       {loading ? (
         <div className="p-8 text-center text-sm text-muted-foreground">Carregando...</div>
@@ -136,9 +139,13 @@ export function TodayScheduleSection({ onNavigate }: DashboardSectionProps) {
           {appointments.length === 0 ? (
             <div className="p-8 text-center">
               <p className="text-sm text-muted-foreground">Nenhum agendamento hoje.</p>
-              <Button className="mt-4" size="sm" onClick={() => onNavigate?.('/agenda')}>
+              <button
+                type="button"
+                className="mt-4 inline-flex h-9 items-center justify-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90"
+                onClick={() => onNavigate?.('/agenda')}
+              >
                 Criar agendamento
-              </Button>
+              </button>
             </div>
           ) : (
             <div className="divide-y">
@@ -157,15 +164,19 @@ export function TodayScheduleSection({ onNavigate }: DashboardSectionProps) {
                   {apt.stylist && (
                     <div className="hidden text-sm text-muted-foreground sm:block">{apt.stylist}</div>
                   )}
-                  <Badge variant={apt.status === 'confirmed' ? 'default' : 'secondary'}>
+                  <span
+                    className={apt.status === 'confirmed'
+                      ? 'inline-flex items-center rounded-full bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground'
+                      : 'inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground'}
+                  >
                     {apt.status === 'confirmed' ? 'confirmado' : apt.status === 'cancelled' ? 'cancelado' : 'pendente'}
-                  </Badge>
+                  </span>
                 </div>
               ))}
             </div>
           )}
         </>
       )}
-    </Card>
+    </section>
   )
 }
