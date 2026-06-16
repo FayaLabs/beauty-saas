@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { fayz } from '@fayz-ai/sdk'
-import type { DashboardSectionProps } from '../../types/sdk-contract'
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL as string,
+  import.meta.env.VITE_SUPABASE_ANON_KEY as string
+)
+
+interface DashboardSectionProps {
+  onNavigate?: (route: string) => void
+}
 
 interface TodayAppointment {
   id: string
@@ -56,18 +64,17 @@ export function TodayScheduleSection({ onNavigate }: DashboardSectionProps) {
         const start = new Date(today.getFullYear(), today.getMonth(), today.getDate()).toISOString()
         const end = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString()
 
-        const { rows } = await fayz.data.listRows<BookingRow>({
-          table: 'v_bookings',
-          filters: [
-            { column: 'starts_at', operator: 'gte', value: start },
-            { column: 'starts_at', operator: 'lt', value: end },
-            { column: 'status', operator: 'neq', value: 'cancelled' },
-            { column: 'status', operator: 'neq', value: 'no_show' },
-          ],
-          sortColumn: 'starts_at',
-          sortDirection: 'asc',
-          limit: 10,
-        })
+        const { data: rows, error: queryError } = await supabase
+          .from('v_bookings')
+          .select('*')
+          .gte('starts_at', start)
+          .lt('starts_at', end)
+          .neq('status', 'cancelled')
+          .neq('status', 'no_show')
+          .order('starts_at', { ascending: true })
+          .limit(10)
+
+        if (queryError) throw queryError
 
         if (!cancelled && rows) {
           setAppointments(rows.map((row) => ({
