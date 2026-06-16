@@ -1,6 +1,6 @@
 # Beauty SaaS
 
-Beauty salon management platform built on [@fayz/saas-core](https://github.com/FayaLabs/saas-core).
+Beauty salon management platform built with [@fayz-ai/sdk](https://www.npmjs.com/package/@fayz-ai/sdk).
 
 ## What it does
 
@@ -26,6 +26,6 @@ yarn dev              # runs on http://localhost:5180
 ## Stack
 
 - React + TypeScript + Vite
-- @fayz/saas-core (shared SaaS framework)
+- @fayz-ai/sdk (Fayz SaaS framework + plugins)
 - Supabase (auth, database, storage)
 - Tailwind CSS
