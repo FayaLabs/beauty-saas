@@ -1,5 +1,6 @@
 import { createCrudPage } from '@fayz-ai/saas'
 import { createPlaceholder } from '../pages/Placeholder'
+import { PublicBooking } from '../pages/PublicBooking'
 import { tl } from '../i18n/tl'
 import type { BeautyCustomPage } from '../types/sdk-contract'
 import { serviceEntity } from '../types/service'
@@ -45,6 +46,14 @@ export const beautyPages: BeautyCustomPage[] = [
       { path: '/registry/origins', label: tl('Origins', 'Origens'), icon: 'Globe', component: createCrudPage(originEntity) },
       { path: '/registry/accounts', label: tl('Accounts', 'Contas'), icon: 'Building2', component: createCrudPage(bankAccountEntity) },
     ],
+  },
+  {
+    path: '/book',
+    label: tl('Book', 'Agendar'),
+    icon: 'CalendarPlus',
+    position: 1,
+    component: PublicBooking,
+    permission: { feature: 'clients', action: 'create' },
   },
   {
     path: '/settings',
