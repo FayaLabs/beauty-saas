@@ -26,4 +26,12 @@ export const serviceEntity: EntityDef<BeautyService> = {
     { key: 'price', label: tl('Price', 'Preço'), type: 'currency', required: true, showInTable: true },
     { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', showInTable: true, defaultValue: true, inlineToggle: true },
   ],
+  // Services are their own Ring-0 archetype table (saas_core.services), not a
+  // kind of product. Direct query by table+schema (no kind filter).
+  data: {
+    table: 'services',
+    schema: 'saas_core',
+    tenantScoped: true,
+    searchColumns: ['name'],
+  },
 }

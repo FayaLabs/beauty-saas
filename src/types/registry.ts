@@ -45,6 +45,7 @@ export const staffEntity: EntityDef = {
     { key: 'email', label: 'E-mail', type: 'email', showInTable: true, searchable: true },
     { key: 'phone', label: tl('Phone', 'Telefone'), type: 'phone', showInTable: true },
     { key: 'profession', label: tl('Profession', 'Profissão'), type: 'text', showInTable: true, group: 'professional' },
+    { key: 'commissionRate', label: tl('Commission (%)', 'Comissão (%)'), type: 'number', showInTable: true, group: 'professional', defaultValue: 0 },
     { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', showInTable: true, defaultValue: true, inlineToggle: true },
   ],
   data: {
