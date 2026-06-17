@@ -77,22 +77,25 @@ export function PublicBooking() {
   const [slot, setSlot] = useState<TimeSlot | null>(null)
   const [clientForm, setClientForm] = useState<ClientForm>({ name: '', phone: '' })
 
-  // Load catalog (services + professionals) up front.
+  // Load catalog (services + professionals) up front — tenant-scoped to the
+  // booking link's salon (the public flow has no authenticated RLS context).
   useEffect(() => {
-    Promise.all([listBookableServices(), listProfessionals()])
+    if (!tenantId) return
+    Promise.all([listBookableServices(tenantId), listProfessionals(tenantId)])
       .then(([svc, pros]) => {
         setServices(svc)
         setProfessionals(pros)
       })
       .catch(() => setError(tl('Could not load booking options.', 'Não foi possível carregar as opções.')))
-  }, [])
+  }, [tenantId])
 
   // Recompute available slots whenever (professional, date, service) are set.
   useEffect(() => {
-    if (step !== 'time' || !professional || !date || !service) return
+    if (step !== 'time' || !professional || !date || !service || !tenantId) return
     setLoadingSlots(true)
     setError(null)
     getAvailableSlots({
+      tenantId,
       professionalId: professional.id,
       dateISO: date,
       durationMinutes: service.durationMinutes,
@@ -100,7 +103,7 @@ export function PublicBooking() {
       .then(setSlots)
       .catch(() => setError(tl('Could not load available times.', 'Não foi possível carregar os horários.')))
       .finally(() => setLoadingSlots(false))
-  }, [step, professional, date, service])
+  }, [step, professional, date, service, tenantId])
 
   async function handleConfirm() {
     if (!service || !professional || !slot) return

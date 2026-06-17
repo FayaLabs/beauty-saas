@@ -132,7 +132,7 @@ export function filterAvailableSlots(
 }
 
 /** Active, bookable services from the service archetype (saas_core.services). */
-export async function listBookableServices(): Promise<BookableService[]> {
+export async function listBookableServices(tenantId: string): Promise<BookableService[]> {
   const { rows } = await fayz.data.listRows<{
     id: string
     name: string
@@ -141,7 +141,10 @@ export async function listBookableServices(): Promise<BookableService[]> {
   }>({
     table: 'services',
     schema: 'saas_core',
-    filters: [{ column: 'is_active', operator: 'eq', value: true }],
+    filters: [
+      { column: 'tenant_id', operator: 'eq', value: tenantId },
+      { column: 'is_active', operator: 'eq', value: true },
+    ],
     sortColumn: 'name',
     sortDirection: 'asc',
     limit: 200,
@@ -155,10 +158,13 @@ export async function listBookableServices(): Promise<BookableService[]> {
 }
 
 /** Active professionals (person kind=staff) via the v_staff bridge view. */
-export async function listProfessionals(): Promise<BookableProfessional[]> {
+export async function listProfessionals(tenantId: string): Promise<BookableProfessional[]> {
   const { rows } = await fayz.data.listRows<{ id: string; name: string; is_active: boolean | null }>({
     table: 'v_staff',
-    filters: [{ column: 'is_active', operator: 'eq', value: true }],
+    filters: [
+      { column: 'tenant_id', operator: 'eq', value: tenantId },
+      { column: 'is_active', operator: 'eq', value: true },
+    ],
     sortColumn: 'name',
     sortDirection: 'asc',
     limit: 200,
@@ -171,6 +177,7 @@ export async function listProfessionals(): Promise<BookableProfessional[]> {
  * professional's existing (non-cancelled/no-show) bookings and the advance cutoff.
  */
 export async function getAvailableSlots(input: {
+  tenantId: string
   professionalId: string
   dateISO: string
   durationMinutes: number
@@ -181,6 +188,7 @@ export async function getAvailableSlots(input: {
   const { start, end } = localDayBounds(input.dateISO)
 
   const dayFilters: FayzTableFilter[] = [
+    { column: 'tenant_id', operator: 'eq', value: input.tenantId },
     { column: 'professional_id', operator: 'eq', value: input.professionalId },
     { column: 'starts_at', operator: 'gte', value: start },
     { column: 'starts_at', operator: 'lt', value: end },
