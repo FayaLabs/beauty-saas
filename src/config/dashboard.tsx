@@ -1,5 +1,6 @@
 import { createDashboardPlugin } from '@fayz-ai/plugin-dashboard'
-import { fayz, type FayzTableFilter } from '@fayz-ai/sdk'
+import type { FayzTableFilter } from '@fayz-ai/sdk'
+import { countRows, listRows } from '../lib/dashboard-data'
 import { QuickActionsSection } from '../pages/dashboard/QuickActionsSection'
 import { TodayScheduleSection } from '../pages/dashboard/TodayScheduleSection'
 import { tl } from '../i18n/tl'
@@ -40,7 +41,7 @@ function trendOf(value: number, previousValue: number): 'up' | 'down' | 'neutral
 
 async function countActiveBookingsForDay(offsetDays = 0): Promise<number> {
   const { start, end } = getLocalDayRange(offsetDays)
-  const count = await fayz.data.countRows({
+  const count = await countRows({
     table: 'v_bookings',
     filters: [
       { column: 'starts_at', operator: 'gte', value: start },
@@ -61,7 +62,7 @@ async function sumColumn(
   column: string,
   filters: FayzTableFilter[],
 ): Promise<number> {
-  const { rows } = await fayz.data.listRows<Record<string, unknown>>({
+  const { rows } = await listRows<Record<string, unknown>>({
     table,
     filters,
     limit: 1000,
@@ -82,7 +83,7 @@ async function revenueForWeek(offsetWeeks = 0): Promise<number> {
 
 // Active (non-cancelled/no-show) bookings across an arbitrary window.
 async function countActiveBookingsBetween(start: string, end: string): Promise<number> {
-  const count = await fayz.data.countRows({
+  const count = await countRows({
     table: 'v_bookings',
     filters: [
       { column: 'starts_at', operator: 'gte', value: start },
@@ -100,7 +101,7 @@ async function countClientsActiveSince(sinceIso: string, beforeIso?: string): Pr
     { column: 'last_visit', operator: 'gte', value: sinceIso },
   ]
   if (beforeIso) filters.push({ column: 'last_visit', operator: 'lt', value: beforeIso })
-  const count = await fayz.data.countRows({ table: 'v_clients', filters })
+  const count = await countRows({ table: 'v_clients', filters })
   return safeNumber(count)
 }
 
@@ -119,7 +120,7 @@ async function tableHasRows(
   options: { schema?: string; filters?: FayzTableFilter[] } = {},
 ): Promise<boolean> {
   try {
-    const count = await fayz.data.countRows({
+    const count = await countRows({
       table,
       schema: options.schema,
       filters: options.filters,
@@ -280,11 +281,11 @@ export const beautyDashboardPlugin = createDashboardPlugin({
             { column: 'starts_at', operator: 'lt', value: end },
           ]
           const [noShow, total] = await Promise.all([
-            fayz.data.countRows({
+            countRows({
               table: 'v_bookings',
               filters: [...window, { column: 'status', operator: 'eq', value: 'no_show' }],
             }),
-            fayz.data.countRows({ table: 'v_bookings', filters: window }),
+            countRows({ table: 'v_bookings', filters: window }),
           ])
           return safeNumber(total) > 0 ? (safeNumber(noShow) / safeNumber(total)) * 100 : 0
         }
@@ -308,7 +309,7 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       compute: async () => {
         async function newClients(offsetMonths: number): Promise<number> {
           const { start, end } = getLocalMonthRange(offsetMonths)
-          const count = await fayz.data.countRows({
+          const count = await countRows({
             table: 'v_clients',
             filters: [
               { column: 'created_at', operator: 'gte', value: start },
@@ -336,11 +337,11 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       // Retention = clients with more than one visit / total clients (percent).
       compute: async () => {
         const [returning, total] = await Promise.all([
-          fayz.data.countRows({
+          countRows({
             table: 'v_clients',
             filters: [{ column: 'visits', operator: 'gt', value: 1 }],
           }),
-          fayz.data.countRows({ table: 'v_clients' }),
+          countRows({ table: 'v_clients' }),
         ])
         const value = safeNumber(total) > 0 ? (safeNumber(returning) / safeNumber(total)) * 100 : 0
         return { value, trend: 'neutral' as const }
@@ -363,7 +364,7 @@ export const beautyDashboardPlugin = createDashboardPlugin({
         const [revNow, revPrev, staff] = await Promise.all([
           revenueForWeek(0),
           revenueForWeek(-1),
-          fayz.data.countRows({ table: 'v_staff' }),
+          countRows({ table: 'v_staff' }),
         ])
         const heads = safeNumber(staff)
         const value = heads > 0 ? revNow / heads : 0
