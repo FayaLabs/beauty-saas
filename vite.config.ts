@@ -6,7 +6,12 @@ import { resolve } from 'path'
 import { existsSync } from 'fs'
 
 const fayzSdk = resolve(__dirname, '../../fayz-sdk')
-const useLocalSdk = process.env.FAYZ_SDK_SOURCE !== 'published'
+// Use local SDK source only when it's explicitly wanted AND actually checked out
+// next to this app. In a published context (e.g. a Fayz container, where the SDK
+// is installed from npm and ../../fayz-sdk does not exist) fall back to node_modules.
+const wantLocalSdk = process.env.FAYZ_SDK_SOURCE !== 'published'
+const localSdkPresent = existsSync(resolve(fayzSdk, 'packages/core/src/index.ts'))
+const useLocalSdk = wantLocalSdk && localSdkPresent
 
 const localSdkAliases = {
   '@fayz-ai/sdk': resolve(fayzSdk, 'packages/sdk/src'),
@@ -14,6 +19,7 @@ const localSdkAliases = {
   '@fayz-ai/auth': resolve(fayzSdk, 'packages/auth/src'),
   '@fayz-ai/ui': resolve(fayzSdk, 'packages/ui/src'),
   '@fayz-ai/saas': resolve(fayzSdk, 'packages/saas/src'),
+  '@fayz-ai/db': resolve(fayzSdk, 'packages/db/src'),
   '@fayz-ai/plugin-crm': resolve(fayzSdk, 'plugins/plugin-crm/src'),
   '@fayz-ai/plugin-agenda': resolve(fayzSdk, 'plugins/plugin-agenda/src'),
   '@fayz-ai/plugin-financial': resolve(fayzSdk, 'plugins/plugin-financial/src'),
@@ -25,10 +31,7 @@ const localSdkAliases = {
   '@fayz-ai/plugin-marketing': resolve(fayzSdk, 'plugins/plugin-marketing/src'),
 }
 
-const sdkAliases =
-  useLocalSdk && existsSync(resolve(fayzSdk, 'packages/core/src/index.ts'))
-    ? localSdkAliases
-    : {}
+const sdkAliases = useLocalSdk ? localSdkAliases : {}
 
 const sdkExclude = useLocalSdk ? Object.keys(localSdkAliases) : []
 
