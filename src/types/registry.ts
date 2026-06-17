@@ -2,32 +2,6 @@ import type { EntityDef } from '@fayz-ai/core'
 import { tl } from '../i18n/tl'
 
 // ---------------------------------------------------------------------------
-// Contacts — person archetype, direct query
-// ---------------------------------------------------------------------------
-export const contactEntity: EntityDef = {
-  name: tl('Contact', 'Contato'),
-  namePlural: tl('Contacts', 'Contatos'),
-  icon: 'Contact',
-  layout: 'person',
-  displayField: 'name',
-  defaultSort: 'name',
-  fields: [
-    { key: 'name', label: tl('Name', 'Nome'), type: 'text', required: true, showInTable: true, searchable: true },
-    { key: 'email', label: 'E-mail', type: 'email', showInTable: true, searchable: true },
-    { key: 'phone', label: tl('Phone', 'Telefone'), type: 'phone', showInTable: true },
-    { key: 'notes', label: tl('Notes', 'Observações'), type: 'textarea', showInTable: false },
-    { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', showInTable: true, defaultValue: true, inlineToggle: true },
-  ],
-  data: {
-    table: 'persons',
-    schema: 'saas_core',
-    tenantScoped: true,
-    filters: { kind: 'contact' },
-    defaults: { kind: 'contact' },
-  },
-}
-
-// ---------------------------------------------------------------------------
 // Staff — person archetype + extension table
 // ---------------------------------------------------------------------------
 export const staffEntity: EntityDef = {
