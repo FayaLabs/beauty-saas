@@ -10,7 +10,6 @@
     "build": "tsc -p tsconfig.local.json && FAYZ_SDK_SOURCE=local vite build",
     "build:published-sdk": "FAYZ_SDK_SOURCE=published tsc -p tsconfig.published.json && FAYZ_SDK_SOURCE=published vite build",
     "preview": "vite preview --port 5180",
-    "migrate": "node ../../saas-core/scripts/migrate.mjs",
     "db:generate": "drizzle-kit generate",
     "db:check": "drizzle-kit check",
     "db:apply": "node scripts/db-apply.mjs"
