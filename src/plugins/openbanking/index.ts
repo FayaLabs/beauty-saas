@@ -7,14 +7,17 @@
 // Financial → Conciliação (enable the financial `reconciliation` module).
 //
 // Graduation path (PLUGIN.md): move to fayz-sdk/plugins/plugin-banking-br.
-import React from 'react'
 import type { PluginManifest } from '@fayz-ai/saas'
-import { BankIntegrationSettings } from './settings/BankIntegrationSettings'
+import { openBankingConnector } from './connectorDef'
 
 export { createOpenBankingProvider } from './data/supabase'
+export { openBankingConnector } from './connectorDef'
 export * from './schema'
 export * from './types'
 
+// Addon plugin: contributes the PlugBank connector into its host
+// (plugin-financial). It appears in Financial settings → Integrations — no
+// top-level settings tab of its own.
 export function createOpenBankingPlugin(): PluginManifest {
   return {
     id: 'openbanking',
@@ -26,14 +29,6 @@ export function createOpenBankingPlugin(): PluginManifest {
     dependencies: ['financial'],
     navigation: [],
     routes: [],
-    settings: [
-      {
-        id: 'openbanking',
-        label: 'Open Banking',
-        icon: 'Landmark',
-        component: BankIntegrationSettings as React.ComponentType<any>,
-        order: 50,
-      },
-    ],
+    connectors: [openBankingConnector],
   }
 }
