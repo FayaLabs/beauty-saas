@@ -1,5 +1,6 @@
 import { createDashboardPlugin } from '@fayz-ai/plugin-dashboard'
-import { fayz } from '@fayz-ai/sdk'
+import type { FayzTableFilter } from '@fayz-ai/sdk'
+import { countRows, listRows } from '../lib/dashboard-data'
 import { QuickActionsSection } from '../pages/dashboard/QuickActionsSection'
 import { TodayScheduleSection } from '../pages/dashboard/TodayScheduleSection'
 import { tl } from '../i18n/tl'
@@ -11,9 +12,36 @@ function getLocalDayRange(offsetDays = 0) {
   return { start: start.toISOString(), end: end.toISOString() }
 }
 
+// Monday-anchored week window. offsetWeeks=-1 → previous week.
+function getLocalWeekRange(offsetWeeks = 0) {
+  const today = new Date()
+  const dow = (today.getDay() + 6) % 7 // 0 = Monday
+  const start = new Date(today.getFullYear(), today.getMonth(), today.getDate() - dow + offsetWeeks * 7)
+  const end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 7)
+  return { start: start.toISOString(), end: end.toISOString() }
+}
+
+// Calendar-month window. offsetMonths=-1 → previous month.
+function getLocalMonthRange(offsetMonths = 0) {
+  const today = new Date()
+  const start = new Date(today.getFullYear(), today.getMonth() + offsetMonths, 1)
+  const end = new Date(today.getFullYear(), today.getMonth() + offsetMonths + 1, 1)
+  return { start: start.toISOString(), end: end.toISOString() }
+}
+
+function safeNumber(value: number): number {
+  return Number.isFinite(value) ? value : 0
+}
+
+function trendOf(value: number, previousValue: number): 'up' | 'down' | 'neutral' {
+  if (value > previousValue) return 'up'
+  if (value < previousValue) return 'down'
+  return 'neutral'
+}
+
 async function countActiveBookingsForDay(offsetDays = 0): Promise<number> {
   const { start, end } = getLocalDayRange(offsetDays)
-  const count = await fayz.data.countRows({
+  const count = await countRows({
     table: 'v_bookings',
     filters: [
       { column: 'starts_at', operator: 'gte', value: start },
@@ -22,7 +50,85 @@ async function countActiveBookingsForDay(offsetDays = 0): Promise<number> {
       { column: 'status', operator: 'neq', value: 'no_show' },
     ],
   })
-  return Number.isFinite(count) ? count : 0
+  return safeNumber(count)
+}
+
+// Sum a numeric column across rows matching the filters. fayz.data has no
+// server-side aggregate yet, so we page a bounded window and fold in JS — fine
+// for dashboard-scale windows (a week/month of bookings). B4 may replace the
+// revenue rollups with a pre-aggregated view if volume grows.
+async function sumColumn(
+  table: string,
+  column: string,
+  filters: FayzTableFilter[],
+): Promise<number> {
+  const { rows } = await listRows<Record<string, unknown>>({
+    table,
+    filters,
+    limit: 1000,
+  })
+  return rows.reduce((total, row) => total + safeNumber(Number(row[column] ?? 0)), 0)
+}
+
+// Revenue = realized order_total of non-cancelled/no-show bookings in the window.
+async function revenueForWeek(offsetWeeks = 0): Promise<number> {
+  const { start, end } = getLocalWeekRange(offsetWeeks)
+  return sumColumn('v_bookings', 'order_total', [
+    { column: 'starts_at', operator: 'gte', value: start },
+    { column: 'starts_at', operator: 'lt', value: end },
+    { column: 'status', operator: 'neq', value: 'cancelled' },
+    { column: 'status', operator: 'neq', value: 'no_show' },
+  ])
+}
+
+// Active (non-cancelled/no-show) bookings across an arbitrary window.
+async function countActiveBookingsBetween(start: string, end: string): Promise<number> {
+  const count = await countRows({
+    table: 'v_bookings',
+    filters: [
+      { column: 'starts_at', operator: 'gte', value: start },
+      { column: 'starts_at', operator: 'lt', value: end },
+      { column: 'status', operator: 'neq', value: 'cancelled' },
+      { column: 'status', operator: 'neq', value: 'no_show' },
+    ],
+  })
+  return safeNumber(count)
+}
+
+// Clients whose last_visit falls on/after the given ISO date.
+async function countClientsActiveSince(sinceIso: string, beforeIso?: string): Promise<number> {
+  const filters: FayzTableFilter[] = [
+    { column: 'last_visit', operator: 'gte', value: sinceIso },
+  ]
+  if (beforeIso) filters.push({ column: 'last_visit', operator: 'lt', value: beforeIso })
+  const count = await countRows({ table: 'v_clients', filters })
+  return safeNumber(count)
+}
+
+function isoDaysAgo(days: number): string {
+  const d = new Date()
+  d.setDate(d.getDate() - days)
+  return d.toISOString()
+}
+
+// Onboarding existence check: true when the source has ≥1 row for the active
+// tenant (RLS-scoped server-side, so no explicit tenant filter is needed). Any
+// error — Supabase unconfigured, missing source — resolves to false so the step
+// shows as "not done" rather than throwing and breaking the onboarding card.
+async function tableHasRows(
+  table: string,
+  options: { schema?: string; filters?: FayzTableFilter[] } = {},
+): Promise<boolean> {
+  try {
+    const count = await countRows({
+      table,
+      schema: options.schema,
+      filters: options.filters,
+    })
+    return safeNumber(count) > 0
+  } catch {
+    return false
+  }
 }
 
 export const beautyDashboardPlugin = createDashboardPlugin({
@@ -69,7 +175,10 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       format: 'currency',
       defaultVisible: true,
       defaultOrder: 1,
-      compute: async () => ({ value: 3240, previousValue: 2817, trend: 'up' }),
+      compute: async () => {
+        const [value, previousValue] = await Promise.all([revenueForWeek(0), revenueForWeek(-1)])
+        return { value, previousValue, trend: trendOf(value, previousValue) }
+      },
     },
     {
       id: 'active-clients',
@@ -83,7 +192,14 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       format: 'number',
       defaultVisible: true,
       defaultOrder: 2,
-      compute: async () => ({ value: 148, previousValue: 140, trend: 'up' }),
+      // Clients with a visit in the last 90 days vs. the prior 90-day window.
+      compute: async () => {
+        const [value, previousValue] = await Promise.all([
+          countClientsActiveSince(isoDaysAgo(90)),
+          countClientsActiveSince(isoDaysAgo(180), isoDaysAgo(90)),
+        ])
+        return { value, previousValue, trend: trendOf(value, previousValue) }
+      },
     },
     {
       id: 'avg-rating',
@@ -97,6 +213,8 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       format: 'number',
       defaultVisible: true,
       defaultOrder: 3,
+      // TODO(B4): no ratings/reviews source exists yet — needs a reviews table
+      // or v_client_ratings view before this can be real. Left hardcoded.
       compute: async () => ({ value: 4.9, trend: 'neutral' }),
     },
     {
@@ -111,7 +229,20 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       format: 'currency',
       defaultVisible: false,
       defaultOrder: 10,
-      compute: async () => ({ value: 85, previousValue: 78, trend: 'up' }),
+      // Avg ticket = realized revenue / active bookings, per week.
+      compute: async () => {
+        const cur = getLocalWeekRange(0)
+        const prev = getLocalWeekRange(-1)
+        const [revNow, cntNow, revPrev, cntPrev] = await Promise.all([
+          revenueForWeek(0),
+          countActiveBookingsBetween(cur.start, cur.end),
+          revenueForWeek(-1),
+          countActiveBookingsBetween(prev.start, prev.end),
+        ])
+        const value = cntNow > 0 ? revNow / cntNow : 0
+        const previousValue = cntPrev > 0 ? revPrev / cntPrev : 0
+        return { value, previousValue, trend: trendOf(value, previousValue) }
+      },
     },
     {
       id: 'occupancy-rate',
@@ -125,6 +256,8 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       format: 'percent',
       defaultVisible: false,
       defaultOrder: 11,
+      // TODO(B4): occupancy needs slot capacity (work_schedules × duration) to
+      // compute booked/available. No capacity view yet — left hardcoded.
       compute: async () => ({ value: 72, previousValue: 68, trend: 'up' }),
     },
     {
@@ -139,7 +272,26 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       format: 'percent',
       defaultVisible: false,
       defaultOrder: 12,
-      compute: async () => ({ value: 5, previousValue: 7, trend: 'down' }),
+      // No-show rate = no_show bookings / all bookings in the week (percent).
+      compute: async () => {
+        async function rate(offsetWeeks: number): Promise<number> {
+          const { start, end } = getLocalWeekRange(offsetWeeks)
+          const window: FayzTableFilter[] = [
+            { column: 'starts_at', operator: 'gte', value: start },
+            { column: 'starts_at', operator: 'lt', value: end },
+          ]
+          const [noShow, total] = await Promise.all([
+            countRows({
+              table: 'v_bookings',
+              filters: [...window, { column: 'status', operator: 'eq', value: 'no_show' }],
+            }),
+            countRows({ table: 'v_bookings', filters: window }),
+          ])
+          return safeNumber(total) > 0 ? (safeNumber(noShow) / safeNumber(total)) * 100 : 0
+        }
+        const [value, previousValue] = await Promise.all([rate(0), rate(-1)])
+        return { value, previousValue, trend: trendOf(previousValue, value) }
+      },
     },
     {
       id: 'new-clients-month',
@@ -153,7 +305,22 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       format: 'number',
       defaultVisible: false,
       defaultOrder: 13,
-      compute: async () => ({ value: 18, previousValue: 14, trend: 'up' }),
+      // First-time clients registered this calendar month vs. last month.
+      compute: async () => {
+        async function newClients(offsetMonths: number): Promise<number> {
+          const { start, end } = getLocalMonthRange(offsetMonths)
+          const count = await countRows({
+            table: 'v_clients',
+            filters: [
+              { column: 'created_at', operator: 'gte', value: start },
+              { column: 'created_at', operator: 'lt', value: end },
+            ],
+          })
+          return safeNumber(count)
+        }
+        const [value, previousValue] = await Promise.all([newClients(0), newClients(-1)])
+        return { value, previousValue, trend: trendOf(value, previousValue) }
+      },
     },
     {
       id: 'retention-rate',
@@ -167,7 +334,18 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       format: 'percent',
       defaultVisible: false,
       defaultOrder: 14,
-      compute: async () => ({ value: 64, previousValue: 61, trend: 'up' }),
+      // Retention = clients with more than one visit / total clients (percent).
+      compute: async () => {
+        const [returning, total] = await Promise.all([
+          countRows({
+            table: 'v_clients',
+            filters: [{ column: 'visits', operator: 'gt', value: 1 }],
+          }),
+          countRows({ table: 'v_clients' }),
+        ])
+        const value = safeNumber(total) > 0 ? (safeNumber(returning) / safeNumber(total)) * 100 : 0
+        return { value, trend: 'neutral' as const }
+      },
     },
     {
       id: 'revenue-per-professional',
@@ -181,7 +359,18 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       format: 'currency',
       defaultVisible: false,
       defaultOrder: 15,
-      compute: async () => ({ value: 1080, previousValue: 940, trend: 'up' }),
+      // Weekly realized revenue spread across the active professional headcount.
+      compute: async () => {
+        const [revNow, revPrev, staff] = await Promise.all([
+          revenueForWeek(0),
+          revenueForWeek(-1),
+          countRows({ table: 'v_staff' }),
+        ])
+        const heads = safeNumber(staff)
+        const value = heads > 0 ? revNow / heads : 0
+        const previousValue = heads > 0 ? revPrev / heads : 0
+        return { value, previousValue, trend: trendOf(value, previousValue) }
+      },
     },
     {
       id: 'product-sales',
@@ -195,6 +384,8 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       format: 'currency',
       defaultVisible: false,
       defaultOrder: 16,
+      // TODO(B4): retail product sales need a goods-vs-service split on order
+      // lines (or an inv_ sales rollup view). No clean source yet — hardcoded.
       compute: async () => ({ value: 420, previousValue: 380, trend: 'up' }),
     },
   ],
@@ -223,7 +414,8 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       description: tl('Register a client to start managing your customer base', 'Cadastre um cliente para começar a gerenciar sua base'),
       icon: 'UserPlus',
       order: 0,
-      check: async () => false,
+      // person(kind=customer) — exposed via the v_clients bridge view.
+      check: () => tableHasRows('v_clients'),
       action: '/clients/new',
     },
     {
@@ -232,7 +424,8 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       description: tl('Add the services your salon offers', 'Adicione os serviços que seu salão oferece'),
       icon: 'Briefcase',
       order: 1,
-      check: async () => false,
+      // service archetype lives in saas_core.services (queried directly by schema).
+      check: () => tableHasRows('services', { schema: 'saas_core' }),
       action: '/registry/services',
     },
     {
@@ -241,7 +434,8 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       description: tl('Define business hours and booking rules', 'Defina horários de funcionamento e regras de agendamento'),
       icon: 'Calendar',
       order: 2,
-      check: async () => false,
+      // ≥1 schedule row (business hours / work schedule) in saas_core.schedules.
+      check: () => tableHasRows('schedules', { schema: 'saas_core' }),
       action: '/settings/agenda',
     },
     {
@@ -250,7 +444,8 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       description: tl('Add accepted payment methods', 'Adicione as formas de pagamento aceitas'),
       icon: 'CreditCard',
       order: 3,
-      check: async () => false,
+      // plugin-financial public.payment_methods (default public schema).
+      check: () => tableHasRows('payment_methods'),
       action: '/settings/financial',
     },
   ],
