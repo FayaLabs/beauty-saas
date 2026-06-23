@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, boolean, tenantId, timestamps } from '@fayz-ai/db'
+import { pgTable, uuid, text, boolean, tenantId, timestamps } from '@fayz-ai/saas/db'
 
 // Standalone app table (no archetype match) — beauty bank accounts.
 export const bankAccounts = pgTable('bank_accounts', {

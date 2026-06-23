@@ -10,8 +10,8 @@
 // DIRECTLY via `getSupabaseClientOptional()`. These helpers do the same, so the
 // dashboard works in BOTH modes (standalone Supabase and deployed). The call
 // shape mirrors `fayz.data` so the dashboard code barely changes.
-import { getSupabaseClientOptional } from '@fayz-ai/core'
-import type { FayzTableFilter } from '@fayz-ai/sdk'
+import { getSupabaseClientOptional } from '@fayz-ai/saas'
+import type { FayzTableFilter } from '@fayz-ai/saas'
 
 // supabase-js client is untyped here; the rest of the SDK uses `as any` too.
 type Sb = any

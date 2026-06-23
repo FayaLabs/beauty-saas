@@ -6,8 +6,8 @@
 // + sync history (only meaningful once the connection is saved).
 import React, { useEffect, useState } from 'react'
 import { Download, History, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
-import { Button, DatePicker, toast } from '@fayz-ai/ui'
-import type { ConnectorDefinition } from '@fayz-ai/core'
+import { Button, DatePicker, toast } from '@fayz-ai/saas/ui'
+import type { ConnectorDefinition } from '@fayz-ai/saas'
 import { createOpenBankingProvider } from './data/supabase'
 import type { BankIntegration, BankLine, SyncLogEntry } from './types'
 

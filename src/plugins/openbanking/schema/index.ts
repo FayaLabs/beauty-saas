@@ -9,9 +9,9 @@
 // Graduation path (see PLUGIN.md): move this folder to
 // `fayz-sdk/plugins/plugin-banking-br/src/` largely unchanged.
 //
-// Builders come from @fayz-ai/db (single drizzle-orm instance). NEVER import
-// pgTable/uuid from drizzle-orm/pg-core directly.
-import { pgTable, uuid, text, integer, boolean, timestamp, date, tenantId, timestamps, createdAt } from '@fayz-ai/db'
+// Builders come from @fayz-ai/saas/db (front-door re-export of @fayz-ai/db —
+// single drizzle-orm instance). NEVER import pgTable/uuid from drizzle-orm/pg-core directly.
+import { pgTable, uuid, text, integer, boolean, timestamp, date, tenantId, timestamps, createdAt } from '@fayz-ai/saas/db'
 
 // bank_integrations — one connection per (tenant, bank account, provider).
 // Holds the provider credentials (Tecnospeed PlugBank: api_token + cnpj). Server

@@ -8,48 +8,55 @@ importers:
 
   .:
     dependencies:
-      '@fayz-ai/core':
-        specifier: ^0.2.0
-        version: 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/db':
-        specifier: ^0.1.2
-        version: 0.1.2(@types/react@18.3.28)(react@18.3.1)
       '@fayz-ai/plugin-agenda':
-        specifier: ^0.1.5
-        version: 0.1.5(@fullcalendar/resource@6.1.21(@fullcalendar/core@6.1.21))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.7
+        version: 0.1.7(@fullcalendar/resource@6.1.21(@fullcalendar/core@6.1.21))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@fayz-ai/plugin-crm':
-        specifier: ^0.1.3
-        version: 0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.2.2
+        version: 0.2.2(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@fayz-ai/plugin-dashboard':
-        specifier: ^0.1.3
-        version: 0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/plugin-financial':
         specifier: ^0.1.4
         version: 0.1.4(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/plugin-financial':
+        specifier: ^0.1.6
+        version: 0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@fayz-ai/plugin-forms':
-        specifier: ^0.1.3
-        version: 0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.4
+        version: 0.1.4(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@fayz-ai/plugin-inventory':
-        specifier: ^0.1.3
-        version: 0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.5
+        version: 0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@fayz-ai/plugin-marketing':
-        specifier: ^0.1.3
-        version: 0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.5
+        version: 0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@fayz-ai/plugin-reports':
-        specifier: ^0.1.3
-        version: 0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.5
+        version: 0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@fayz-ai/plugin-tasks':
-        specifier: ^0.1.3
-        version: 0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.5
+        version: 0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@fayz-ai/saas':
-        specifier: ^0.2.0
-        version: 0.2.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.5.0
+        version: 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@fayz-ai/sdk':
-        specifier: ^0.2.0
-        version: 0.2.0
+        specifier: ^0.5.0
+        version: 0.5.0
       '@fayz-ai/ui':
-        specifier: ^0.2.1
-        version: 0.2.1(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.5.0
+        version: 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      lucide-react:
+        specifier: ^0.577.0
+        version: 0.577.0(react@18.3.1)
+      react:
+        specifier: ^18.3.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.0
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.26.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    devDependencies:
       '@types/react':
         specifier: ^18.3.0
         version: 18.3.28
@@ -62,24 +69,12 @@ importers:
       autoprefixer:
         specifier: ^10.4.0
         version: 10.4.27(postcss@8.5.8)
-      drizzle-orm:
-        specifier: ^0.36.4
-        version: 0.36.4(@types/react@18.3.28)(react@18.3.1)
-      lucide-react:
-        specifier: ^0.577.0
-        version: 0.577.0(react@18.3.1)
+      drizzle-kit:
+        specifier: ^0.28.1
+        version: 0.28.1
       postcss:
         specifier: ^8.4.0
         version: 8.5.8
-      react:
-        specifier: ^18.3.0
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.0
-        version: 18.3.1(react@18.3.1)
-      react-router-dom:
-        specifier: ^6.26.0
-        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.19
@@ -89,10 +84,6 @@ importers:
       vite:
         specifier: ^5.4.0
         version: 5.4.21(@types/node@26.0.0)
-    devDependencies:
-      drizzle-kit:
-        specifier: ^0.28.1
-        version: 0.28.1
 
 packages:
 
@@ -634,13 +625,13 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@fayz-ai/auth@0.2.0':
-    resolution: {integrity: sha512-sGmjXOC460wm6iwCExG3dM/UZTyA7V5oBVpBuYtfd3qXR9X/kbsxqNsyfeau4J83jP6+yBgsPztkmXdYbQpvUg==}
+  '@fayz-ai/auth@0.5.0':
+    resolution: {integrity: sha512-wPXt98J/hC70lMo5OEauRXgJPYRucxeHzNlcQQ5+dgepzNyxgGkhH2SViUeiEmdOMaXmprPAnoXMKmc4UCtW7A==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/core@0.2.0':
-    resolution: {integrity: sha512-+2Tx1CSgJ5lsGyvYZgpQLXCnObe5xN4iIn4Mx+IJnJiJsifLw49poFudtwA5nv60rprFiUTWaaFGStc/+SiqqA==}
+  '@fayz-ai/core@0.5.0':
+    resolution: {integrity: sha512-+qmSWZP+jZAhPbaMe6h6v0Gw+/c/0eApYFfpBkPZb1+bYnXVMnUyH8D2SnKk92rc1LdLJm9E0tWDXLAq+6knxA==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -648,70 +639,70 @@ packages:
   '@fayz-ai/db@0.1.2':
     resolution: {integrity: sha512-wOEvNXed1lrZ8j6tPiXJJ1chyuj5jD5dLa3b9QZzMqKnb1DD9hYtgifeFn/4HAqxZ83y24fUYxJy6aNA8sZk+g==}
 
-  '@fayz-ai/plugin-agenda@0.1.5':
-    resolution: {integrity: sha512-p5tfKYlllQLnSTdmFOVoGW58FETptxtdHlJdEO1920rq8M8f2QKn6ma5de7QAvXsmm/1F+nqDr/x9//WaSkSnQ==}
+  '@fayz-ai/plugin-agenda@0.1.7':
+    resolution: {integrity: sha512-fzSt1qzx2LtDhpbanLnTP5hlUUqz0N/e1IbCW0iz3np69OIAh5jrj6zN3OF3S9iSj18ZGGOEG8HKrvAtvPnZjg==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-crm@0.1.3':
-    resolution: {integrity: sha512-cEcqkM9EbY4omxFnvnQZgCOHIkpsf/frd1Sg/aV7QmqeeWrJiotcUJkMXjt1AI2g+yf7pQFHYohiBCD8z3TiHA==}
+  '@fayz-ai/plugin-crm@0.2.2':
+    resolution: {integrity: sha512-Lt/jWp0FVYMdH38wJ/rkQ3mAODElYWR8ACu1oEdffHoI/ERHpLNN58n4GWUpUkpk5yp95rFcZrS1tXJBMEtczg==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-dashboard@0.1.3':
-    resolution: {integrity: sha512-jINZTOjds1zr/We9VpliI1zwkXPU4Cec/xnpWDopxBTRiYyr4O+3N0XThADEgwORzCBwiX2xOPg/nea42yz4Wg==}
+  '@fayz-ai/plugin-dashboard@0.1.4':
+    resolution: {integrity: sha512-qfH+oBXW0gc6ftfxn2zPnna4JMVqxLpA5Qa0AKjXzZ9sbfmIFuDd/9FLOgBh9EgpkABci2SHcBD8HeJ6Ehl3og==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-financial@0.1.4':
-    resolution: {integrity: sha512-zmMmE5ujx17W/rMPPtJYzYAy+9bgO+IeZer86rWO4ceYfSDy6Itg/kigsqG3cnoQFLWQ8GYjXLJ4UoXVlwDo+w==}
+  '@fayz-ai/plugin-financial@0.1.6':
+    resolution: {integrity: sha512-xoFOC34J519F0yUXGemBxcmnF+6At8TEP9P1O5fHXrs6IEP86mRYoYXiEvsQedeUR10NCkw2DclA0IYCm0JFkw==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-forms@0.1.3':
-    resolution: {integrity: sha512-fdTmL1RR9zo4F21wwqKcOcjtGFandqGUMUHd0GoQsT5c4s3TQuPdxN1vps3MpguBkTBZAJeDqopZW0oZOAB7jg==}
+  '@fayz-ai/plugin-forms@0.1.4':
+    resolution: {integrity: sha512-d5s6s3z/J29vzcWbbwYI64fJR6sK/Mjr/lMkTVWmETxBAQFYTM1JOfisDVuJQ5DEuiQyHrGHePomYaA6J8CNxA==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-inventory@0.1.3':
-    resolution: {integrity: sha512-gIem0WbVlxrZ/eDvJ8h/mQNNUAEJla2yXysjlVKe5cI3TEQZHRiBsSIrnhX/9wPZQ/9QOYjBk/W8+eUqbh8/kA==}
+  '@fayz-ai/plugin-inventory@0.1.5':
+    resolution: {integrity: sha512-DCaoVxH2Vd6qYK1Q0e4kSpxq3EUiJ1X5SoBKnOjC6Dw+677T+9Mjx2gQuK6uTqH2WBePvKeYHU5YHUneOPNd2w==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-marketing@0.1.3':
-    resolution: {integrity: sha512-q7RBwauEz83x2WI94nVnDkXSxBgSkcOJNoaxZE+Bfjt/kCqyzJ5BnI8HMXM10XFFBArXyaGsDsFQyUh7ZrudSg==}
+  '@fayz-ai/plugin-marketing@0.1.5':
+    resolution: {integrity: sha512-UShNRfYETtzJGkIJ0gVRleZwO35qfyeaYxPIakZRo3aZhvxSuSX/vHprL2Uwn06F37s9NyAlQJsXPLtqHOTP7g==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-reports@0.1.3':
-    resolution: {integrity: sha512-tojLG5TwZbAvrlSNTxHZ3x/C729f5OEWgKWri6IGRLIWTFY22HEjnL/vOz/uG+EsYpfljsX90JW7aYk/aSGt6Q==}
+  '@fayz-ai/plugin-reports@0.1.5':
+    resolution: {integrity: sha512-n0xHGnGX7ED5qEJuLnTq3M5s1art0i+F4SMhhPHPu+nURFBIlapjS7F8c5x5GY7uEbrWKbBUKjr2O3HNuW7ZBw==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-tasks@0.1.3':
-    resolution: {integrity: sha512-7OWrLniKRz+GtvRfqQJAgWH5gy3hyE5BQrnWIk2w74LWCod6GovLOb4OstZOlJLa/dcuENCVBQCMrfseqt0CkQ==}
+  '@fayz-ai/plugin-tasks@0.1.5':
+    resolution: {integrity: sha512-w9VHpLT2tcoydZbS20kWZDgxcHVF1J4TdTtW36MYGB5rCgBQ99/9rJU+xKRN9tH4Ptfmxih3LA58uCjME2aWDw==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/saas@0.2.0':
-    resolution: {integrity: sha512-mT5TcZtDjCO8+yGOtgLA6BecDRY76ku2tBUatwFoORB+tP4Ig8+umLhxrtyZv7QfayZiRPwfBlZISfzqkEfw4Q==}
+  '@fayz-ai/saas@0.5.0':
+    resolution: {integrity: sha512-avTTZjJ60y4RYQ2xQqDWFrX+19+YuaJzuhfrqb8xFJhF96ME08IRBVtHjkm5zkZzRegQbTi+KZVH4i80ztkJZw==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/sdk@0.2.0':
-    resolution: {integrity: sha512-6MswuxTmHWqOo8z/pUkfTLkYpKoz6XzPi/+5CUAtWBQ+49m+qVy7eAqvlHaC/GgCh/Oa1pvwwU9+1qY345J2+A==}
+  '@fayz-ai/sdk@0.5.0':
+    resolution: {integrity: sha512-pQOW4TwvoyFDTThfPq753S73i3Ot/YWOcMMgeb17KBqHWrjeVEPnE6avaxDa4ixormsLe4izCymqFa0BW1qsfg==}
 
-  '@fayz-ai/ui@0.2.1':
-    resolution: {integrity: sha512-DWrltqx3hZehLjLHWN5YkWXQSvpmBfO4e26/nJbvTXIHd0XEdeYz64vox5jhCtECul592io3OGq0BIaoUrStHA==}
+  '@fayz-ai/ui@0.5.0':
+    resolution: {integrity: sha512-dZLJwwkrwbDOSC5sqX7DwQYg/3b8VthoRkRMsGCn5DFZJeZxYcWibqbNT5XH9FVjBuw8pK9P6ko7M58WmnVCsg==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -2661,9 +2652,9 @@ snapshots:
   '@esbuild/win32-x64@0.21.5':
     optional: true
 
-  '@fayz-ai/auth@0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@fayz-ai/auth@0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@fayz-ai/core': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@supabase/supabase-js': 2.108.2
       react: 18.3.1
       zustand: 4.5.7(@types/react@18.3.28)(react@18.3.1)
@@ -2672,9 +2663,9 @@ snapshots:
       - immer
       - react-dom
 
-  '@fayz-ai/core@0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@fayz-ai/core@0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@fayz-ai/sdk': 0.2.0
+      '@fayz-ai/sdk': 0.5.0
       '@supabase/supabase-js': 2.108.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -2717,12 +2708,12 @@ snapshots:
       - sql.js
       - sqlite3
 
-  '@fayz-ai/plugin-agenda@0.1.5(@fullcalendar/resource@6.1.21(@fullcalendar/core@6.1.21))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-agenda@0.1.7(@fullcalendar/resource@6.1.21(@fullcalendar/core@6.1.21))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
     dependencies:
-      '@fayz-ai/core': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/plugin-financial': 0.1.4(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/saas': 0.2.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.2.1(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/plugin-financial': 0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@fullcalendar/core': 6.1.21
       '@fullcalendar/daygrid': 6.1.21(@fullcalendar/core@6.1.21)
       '@fullcalendar/interaction': 6.1.21(@fullcalendar/core@6.1.21)
@@ -2736,32 +2727,87 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       zustand: 4.5.7(@types/react@18.3.28)(react@18.3.1)
     transitivePeerDependencies:
+      - '@aws-sdk/client-rds-data'
+      - '@cloudflare/workers-types'
+      - '@electric-sql/pglite'
       - '@fullcalendar/resource'
+      - '@libsql/client'
+      - '@libsql/client-wasm'
+      - '@neondatabase/serverless'
+      - '@op-engineering/op-sqlite'
+      - '@opentelemetry/api'
+      - '@planetscale/database'
+      - '@prisma/client'
+      - '@tidbcloud/serverless'
+      - '@types/better-sqlite3'
+      - '@types/pg'
       - '@types/react'
       - '@types/react-dom'
+      - '@types/sql.js'
+      - '@vercel/postgres'
+      - '@xata.io/client'
+      - better-sqlite3
+      - bun-types
+      - expo-sqlite
       - immer
+      - knex
+      - kysely
+      - mysql2
+      - pg
+      - postgres
+      - prisma
+      - sql.js
+      - sqlite3
       - tailwindcss
 
-  '@fayz-ai/plugin-crm@0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-crm@0.2.2(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
     dependencies:
-      '@fayz-ai/core': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/saas': 0.2.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.2.1(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/db': 0.1.2(@types/react@18.3.28)(react@18.3.1)
+      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@tanstack/react-table': 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       zustand: 4.5.7(@types/react@18.3.28)(react@18.3.1)
     transitivePeerDependencies:
+      - '@aws-sdk/client-rds-data'
+      - '@cloudflare/workers-types'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@libsql/client-wasm'
+      - '@neondatabase/serverless'
+      - '@op-engineering/op-sqlite'
+      - '@opentelemetry/api'
+      - '@planetscale/database'
+      - '@prisma/client'
+      - '@tidbcloud/serverless'
+      - '@types/better-sqlite3'
+      - '@types/pg'
       - '@types/react'
       - '@types/react-dom'
+      - '@types/sql.js'
+      - '@vercel/postgres'
+      - '@xata.io/client'
+      - better-sqlite3
+      - bun-types
+      - expo-sqlite
       - immer
+      - knex
+      - kysely
+      - mysql2
+      - pg
+      - postgres
+      - prisma
+      - sql.js
+      - sqlite3
       - tailwindcss
 
-  '@fayz-ai/plugin-dashboard@0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-dashboard@0.1.4(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
     dependencies:
-      '@fayz-ai/core': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/ui': 0.2.1(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -2772,30 +2818,57 @@ snapshots:
       - immer
       - tailwindcss
 
-  '@fayz-ai/plugin-financial@0.1.4(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-financial@0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
     dependencies:
-      '@fayz-ai/core': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/saas': 0.2.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.2.1(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@tanstack/react-table': 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       zustand: 4.5.7(@types/react@18.3.28)(react@18.3.1)
     transitivePeerDependencies:
+      - '@aws-sdk/client-rds-data'
+      - '@cloudflare/workers-types'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@libsql/client-wasm'
+      - '@neondatabase/serverless'
+      - '@op-engineering/op-sqlite'
+      - '@opentelemetry/api'
+      - '@planetscale/database'
+      - '@prisma/client'
+      - '@tidbcloud/serverless'
+      - '@types/better-sqlite3'
+      - '@types/pg'
       - '@types/react'
       - '@types/react-dom'
+      - '@types/sql.js'
+      - '@vercel/postgres'
+      - '@xata.io/client'
+      - better-sqlite3
+      - bun-types
+      - expo-sqlite
       - immer
+      - knex
+      - kysely
+      - mysql2
+      - pg
+      - postgres
+      - prisma
+      - sql.js
+      - sqlite3
       - tailwindcss
 
-  '@fayz-ai/plugin-forms@0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-forms@0.1.4(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
     dependencies:
       '@dnd-kit/core': 6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@dnd-kit/modifiers': 9.0.0(@dnd-kit/core@6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@dnd-kit/sortable': 10.0.0(@dnd-kit/core@6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@dnd-kit/utilities': 3.2.2(react@18.3.1)
-      '@fayz-ai/core': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/ui': 0.2.1(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -2806,74 +2879,184 @@ snapshots:
       - immer
       - tailwindcss
 
-  '@fayz-ai/plugin-inventory@0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-inventory@0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
     dependencies:
-      '@fayz-ai/core': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/saas': 0.2.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.2.1(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@tanstack/react-table': 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       zustand: 4.5.7(@types/react@18.3.28)(react@18.3.1)
     transitivePeerDependencies:
+      - '@aws-sdk/client-rds-data'
+      - '@cloudflare/workers-types'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@libsql/client-wasm'
+      - '@neondatabase/serverless'
+      - '@op-engineering/op-sqlite'
+      - '@opentelemetry/api'
+      - '@planetscale/database'
+      - '@prisma/client'
+      - '@tidbcloud/serverless'
+      - '@types/better-sqlite3'
+      - '@types/pg'
       - '@types/react'
       - '@types/react-dom'
+      - '@types/sql.js'
+      - '@vercel/postgres'
+      - '@xata.io/client'
+      - better-sqlite3
+      - bun-types
+      - expo-sqlite
       - immer
+      - knex
+      - kysely
+      - mysql2
+      - pg
+      - postgres
+      - prisma
+      - sql.js
+      - sqlite3
       - tailwindcss
 
-  '@fayz-ai/plugin-marketing@0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-marketing@0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
     dependencies:
-      '@fayz-ai/core': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/saas': 0.2.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.2.1(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@tanstack/react-table': 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       zustand: 4.5.7(@types/react@18.3.28)(react@18.3.1)
     transitivePeerDependencies:
+      - '@aws-sdk/client-rds-data'
+      - '@cloudflare/workers-types'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@libsql/client-wasm'
+      - '@neondatabase/serverless'
+      - '@op-engineering/op-sqlite'
+      - '@opentelemetry/api'
+      - '@planetscale/database'
+      - '@prisma/client'
+      - '@tidbcloud/serverless'
+      - '@types/better-sqlite3'
+      - '@types/pg'
       - '@types/react'
       - '@types/react-dom'
+      - '@types/sql.js'
+      - '@vercel/postgres'
+      - '@xata.io/client'
+      - better-sqlite3
+      - bun-types
+      - expo-sqlite
       - immer
+      - knex
+      - kysely
+      - mysql2
+      - pg
+      - postgres
+      - prisma
+      - sql.js
+      - sqlite3
       - tailwindcss
 
-  '@fayz-ai/plugin-reports@0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-reports@0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
     dependencies:
-      '@fayz-ai/core': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/saas': 0.2.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.2.1(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@tanstack/react-table': 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       zustand: 4.5.7(@types/react@18.3.28)(react@18.3.1)
     transitivePeerDependencies:
+      - '@aws-sdk/client-rds-data'
+      - '@cloudflare/workers-types'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@libsql/client-wasm'
+      - '@neondatabase/serverless'
+      - '@op-engineering/op-sqlite'
+      - '@opentelemetry/api'
+      - '@planetscale/database'
+      - '@prisma/client'
+      - '@tidbcloud/serverless'
+      - '@types/better-sqlite3'
+      - '@types/pg'
       - '@types/react'
       - '@types/react-dom'
+      - '@types/sql.js'
+      - '@vercel/postgres'
+      - '@xata.io/client'
+      - better-sqlite3
+      - bun-types
+      - expo-sqlite
       - immer
+      - knex
+      - kysely
+      - mysql2
+      - pg
+      - postgres
+      - prisma
+      - sql.js
+      - sqlite3
       - tailwindcss
 
-  '@fayz-ai/plugin-tasks@0.1.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-tasks@0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
     dependencies:
-      '@fayz-ai/core': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/saas': 0.2.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.2.1(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       zustand: 4.5.7(@types/react@18.3.28)(react@18.3.1)
     transitivePeerDependencies:
+      - '@aws-sdk/client-rds-data'
+      - '@cloudflare/workers-types'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@libsql/client-wasm'
+      - '@neondatabase/serverless'
+      - '@op-engineering/op-sqlite'
+      - '@opentelemetry/api'
+      - '@planetscale/database'
+      - '@prisma/client'
+      - '@tidbcloud/serverless'
+      - '@types/better-sqlite3'
+      - '@types/pg'
       - '@types/react'
       - '@types/react-dom'
+      - '@types/sql.js'
+      - '@vercel/postgres'
+      - '@xata.io/client'
+      - better-sqlite3
+      - bun-types
+      - expo-sqlite
       - immer
+      - knex
+      - kysely
+      - mysql2
+      - pg
+      - postgres
+      - prisma
+      - sql.js
+      - sqlite3
       - tailwindcss
 
-  '@fayz-ai/saas@0.2.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/saas@0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
     dependencies:
-      '@fayz-ai/auth': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/core': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/ui': 0.2.1(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/auth': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/db': 0.1.2(@types/react@18.3.28)(react@18.3.1)
+      '@fayz-ai/sdk': 0.5.0
+      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@radix-ui/react-dialog': 1.1.17(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@supabase/supabase-js': 2.108.2
       '@tanstack/react-table': 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2883,20 +3066,47 @@ snapshots:
       stripe: 16.12.0
       zustand: 4.5.7(@types/react@18.3.28)(react@18.3.1)
     transitivePeerDependencies:
+      - '@aws-sdk/client-rds-data'
+      - '@cloudflare/workers-types'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@libsql/client-wasm'
+      - '@neondatabase/serverless'
+      - '@op-engineering/op-sqlite'
+      - '@opentelemetry/api'
+      - '@planetscale/database'
+      - '@prisma/client'
+      - '@tidbcloud/serverless'
+      - '@types/better-sqlite3'
+      - '@types/pg'
       - '@types/react'
       - '@types/react-dom'
+      - '@types/sql.js'
+      - '@vercel/postgres'
+      - '@xata.io/client'
+      - better-sqlite3
+      - bun-types
+      - expo-sqlite
       - immer
+      - knex
+      - kysely
+      - mysql2
+      - pg
+      - postgres
+      - prisma
       - react-dom
+      - sql.js
+      - sqlite3
       - tailwindcss
 
-  '@fayz-ai/sdk@0.2.0': {}
+  '@fayz-ai/sdk@0.5.0': {}
 
-  '@fayz-ai/ui@0.2.1(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/ui@0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
     dependencies:
       '@dnd-kit/core': 6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@dnd-kit/sortable': 10.0.0(@dnd-kit/core@6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/auth': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/core': 0.2.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/auth': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-avatar': 1.2.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dialog': 1.1.17(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dropdown-menu': 2.1.18(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

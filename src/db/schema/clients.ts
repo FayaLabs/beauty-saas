@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, integer, numeric, date, tenantId, timestamps, persons } from '@fayz-ai/db'
+import { pgTable, uuid, text, integer, numeric, date, tenantId, timestamps, persons } from '@fayz-ai/saas/db'
 
 // Ring-2 archetype extension: beauty clients (person kind=client).
 // Mirrors the live table; this Drizzle definition is the migration baseline.

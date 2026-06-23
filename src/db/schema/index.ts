@@ -8,7 +8,7 @@
 // provisioned via their companion SQL through `pnpm db:apply`, not here.)
 
 // Ring 0 — spine references (baseline snapshot; never re-created live)
-export { tenants, persons, orders, bookings } from '@fayz-ai/db'
+export { tenants, persons, orders, bookings } from '@fayz-ai/saas/db'
 
 // Ring 2 / standalone — beauty-owned tables
 export { clients } from './clients'

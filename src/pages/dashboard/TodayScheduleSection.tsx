@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { fayz } from '@fayz-ai/sdk'
+import { fayz } from '@fayz-ai/saas'
 import type { DashboardSectionProps } from '../../types/sdk-contract'
 
 interface TodayAppointment {

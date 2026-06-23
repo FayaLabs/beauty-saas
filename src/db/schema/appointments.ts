@@ -1,4 +1,4 @@
-import { pgTable, uuid, tenantId, timestamps, bookings } from '@fayz-ai/db'
+import { pgTable, uuid, tenantId, timestamps, bookings } from '@fayz-ai/saas/db'
 
 // Ring-2 archetype extension: beauty appointments (booking archetype).
 export const appointments = pgTable('appointments', {

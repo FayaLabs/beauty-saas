@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, numeric, tenantId, timestamps, persons } from '@fayz-ai/db'
+import { pgTable, uuid, text, numeric, tenantId, timestamps, persons } from '@fayz-ai/saas/db'
 
 // Ring-2 archetype extension: beauty staff (person kind=staff).
 // commission_rate was added later this sprint (staff_commission_rate migration).

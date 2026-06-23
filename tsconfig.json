@@ -22,6 +22,7 @@
       "@fayz-ai/ui": ["../../fayz-sdk/packages/ui/src"],
       "@fayz-ai/ui/*": ["../../fayz-sdk/packages/ui/src/*"],
       "@fayz-ai/saas": ["../../fayz-sdk/packages/saas/src"],
+      "@fayz-ai/saas/*": ["../../fayz-sdk/packages/saas/src/*"],
       "@fayz-ai/shop": ["../../fayz-sdk/packages/shop/src"],
       "@fayz-ai/db": ["../../fayz-sdk/packages/db/src"],
       "@fayz-ai/plugin-crm/*": ["../../fayz-sdk/plugins/plugin-crm/src/*"],

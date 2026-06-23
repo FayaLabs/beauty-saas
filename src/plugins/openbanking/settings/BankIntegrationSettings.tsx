@@ -6,7 +6,7 @@
 // the SDK financial ledger and are matched in Financial → Reconciliation.
 import React, { useEffect, useMemo, useState } from 'react'
 import { Landmark, Plug, Download, CheckCircle2, AlertCircle, Loader2, History } from 'lucide-react'
-import { Button, DatePicker, toast } from '@fayz-ai/ui'
+import { Button, DatePicker, toast } from '@fayz-ai/saas/ui'
 import { createOpenBankingProvider } from '../data/supabase'
 import type { BankIntegration, BankLine, SyncLogEntry } from '../types'
 

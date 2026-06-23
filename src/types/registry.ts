@@ -1,4 +1,4 @@
-import type { EntityDef } from '@fayz-ai/core'
+import type { EntityDef } from '@fayz-ai/saas'
 import { tl } from '../i18n/tl'
 
 // ---------------------------------------------------------------------------

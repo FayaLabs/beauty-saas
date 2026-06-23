@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { setCurrentLocale } from '@fayz-ai/core'
+import { setCurrentLocale } from '@fayz-ai/saas'
 import { App } from './App'
 import './styles.css'
 

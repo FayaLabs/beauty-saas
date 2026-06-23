@@ -6,7 +6,7 @@
 // connection row, invokes the function, and reads the sync log.
 //
 // On graduation this file moves to the SDK banking plugin largely unchanged.
-import { getSupabaseClientOptional, getActiveTenantId } from '@fayz-ai/core'
+import { getSupabaseClientOptional, getActiveTenantId } from '@fayz-ai/saas'
 import type {
   BankIntegration, SaveIntegrationInput, SyncLogEntry,
   TestConnectionResult, FetchStatementResult, ImportResult, BankLine,
