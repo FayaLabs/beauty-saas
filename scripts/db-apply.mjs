@@ -11,7 +11,7 @@
 //
 // Usage: SUPABASE_PAT=sbp_... node scripts/db-apply.mjs [--plugins-only]
 import { readdirSync, readFileSync, existsSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { basename, resolve } from 'node:path'
 
 const REF = process.env.SUPABASE_REF || 'gphxclpkbtbucoqclbco'
 const PAT = process.env.SUPABASE_PAT
@@ -55,8 +55,23 @@ if (!pluginsOnly) {
 for (const p of ENABLED_PLUGINS) {
   console.log(`▸ ${p} (companion SQL)`)
   for (const f of sqlFiles(resolve(SDK, 'plugins', p, 'src', 'migrations'))) {
-    await run(readFileSync(f, 'utf8'), `${p}/${f.split('/').pop()}`)
+    // Fresh financial databases need this compatibility column before the
+    // split-payment migration. Older app migration chains created it separately.
+    if (p === 'plugin-financial' && basename(f) === '008_split_payment_movements.sql') {
+      await run(
+        `ALTER TABLE public.financial_movements
+         ADD COLUMN IF NOT EXISTS payment_method_type_id uuid
+         REFERENCES public.payment_method_types(id);`,
+        'beauty/financial-movement-type-compat',
+      )
+    }
+    await run(readFileSync(f, 'utf8'), `${p}/${basename(f)}`)
   }
+}
+
+console.log('â–¸ TecnoSpeed Windows bridge (Open Finance)')
+for (const f of sqlFiles(resolve(CWD, 'local-services', 'tecnospeed-bridge', 'supabase', 'migrations'))) {
+  await run(readFileSync(f, 'utf8'), `tecnospeed-bridge/${f.split('/').pop()}`)
 }
 
 await run("NOTIFY pgrst, 'reload schema';", 'reload PostgREST schema cache')

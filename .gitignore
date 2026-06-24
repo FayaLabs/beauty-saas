@@ -5,3 +5,7 @@ dist/
 .DS_Store
 *.png
 .playwright-mcp/
+
+# Local-only development assets. The bridge will become its own repository.
+local-services/tecnospeed-bridge/
+local-context/
