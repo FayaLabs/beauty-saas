@@ -1,0 +1,37 @@
+{
+  "manifestVersion": 2,
+  "id": "beauty-saas",
+  "name": "BeautySoft",
+  "backend": { "provider": "supabase" },
+  "locale": { "default": "pt-BR", "supported": ["pt-BR", "en"] },
+  "entities": [
+    { "id": "clients", "label": "Clients" },
+    { "id": "appointments", "label": "Appointments" },
+    { "id": "services", "label": "Services" },
+    { "id": "staff", "label": "Staff" },
+    { "id": "products", "label": "Products" },
+    { "id": "invoices", "label": "Invoices" }
+  ],
+  "surfaces": {
+    "admin": {
+      "scaffold": "admin",
+      "options": {
+        "layout": "topbar",
+        "requireAuth": true,
+        "title": "BeautySoft",
+        "description": "Salon management — scheduling, clients, inventory, financial and marketing for beauty professionals."
+      },
+      "plugins": [
+        { "id": "dashboard", "enabled": true, "config": { "label": "Dashboard" } },
+        { "id": "agenda", "enabled": true, "config": { "label": "Agenda", "description": "Scheduling and appointments." } },
+        { "id": "crm", "enabled": true, "config": { "label": "Clients", "description": "Clients and relationships." } },
+        { "id": "inventory", "enabled": true, "config": { "label": "Inventory", "description": "Products and stock." } },
+        { "id": "financial", "enabled": true, "config": { "label": "Financial", "description": "Payments and invoices." } },
+        { "id": "marketing", "enabled": true, "config": { "label": "Marketing", "description": "Campaigns and channels." } },
+        { "id": "forms", "enabled": true, "config": { "label": "Forms", "description": "Custom forms and documents." } },
+        { "id": "tasks", "enabled": true, "config": { "label": "Tasks" } },
+        { "id": "reports", "enabled": true, "config": { "label": "Reports" } }
+      ]
+    }
+  }
+}
