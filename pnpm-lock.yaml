@@ -9,41 +9,41 @@ importers:
   .:
     dependencies:
       '@fayz-ai/plugin-agenda':
-        specifier: ^0.1.7
-        version: 0.1.7(@fullcalendar/resource@6.1.21(@fullcalendar/core@6.1.21))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.8
+        version: 0.1.8(@fullcalendar/resource@6.1.21(@fullcalendar/core@6.1.21))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@fayz-ai/plugin-crm':
-        specifier: ^0.2.2
-        version: 0.2.2(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.2.3
+        version: 0.2.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@fayz-ai/plugin-dashboard':
-        specifier: ^0.1.4
-        version: 0.1.4(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.5
+        version: 0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@fayz-ai/plugin-financial':
-        specifier: ^0.1.6
-        version: 0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.7
+        version: 0.1.7(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@fayz-ai/plugin-forms':
-        specifier: ^0.1.4
-        version: 0.1.4(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.5
+        version: 0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@fayz-ai/plugin-inventory':
-        specifier: ^0.1.5
-        version: 0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.6
+        version: 0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@fayz-ai/plugin-marketing':
-        specifier: ^0.1.5
-        version: 0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.6
+        version: 0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@fayz-ai/plugin-reports':
-        specifier: ^0.1.5
-        version: 0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.6
+        version: 0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@fayz-ai/plugin-tasks':
-        specifier: ^0.1.5
-        version: 0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.1.6
+        version: 0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@fayz-ai/saas':
-        specifier: ^0.5.0
-        version: 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.6.0
+        version: 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@fayz-ai/sdk':
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^0.6.0
+        version: 0.6.0(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(vite@5.4.21(@types/node@26.0.0))
       '@fayz-ai/ui':
-        specifier: ^0.5.0
-        version: 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+        specifier: ^0.6.0
+        version: 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       lucide-react:
         specifier: ^0.577.0
         version: 0.577.0(react@18.3.1)
@@ -625,13 +625,13 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@fayz-ai/auth@0.5.0':
-    resolution: {integrity: sha512-wPXt98J/hC70lMo5OEauRXgJPYRucxeHzNlcQQ5+dgepzNyxgGkhH2SViUeiEmdOMaXmprPAnoXMKmc4UCtW7A==}
+  '@fayz-ai/auth@0.6.0':
+    resolution: {integrity: sha512-ZNsSg1v01P0dATt8EtyuSS3Ofu+UkWeQ9aXrl/GpcRgD2C5tVn1Kex9sQAPVcGnzy2mxLTqRefs6EjeVxdHL8w==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/core@0.5.0':
-    resolution: {integrity: sha512-+qmSWZP+jZAhPbaMe6h6v0Gw+/c/0eApYFfpBkPZb1+bYnXVMnUyH8D2SnKk92rc1LdLJm9E0tWDXLAq+6knxA==}
+  '@fayz-ai/core@0.6.0':
+    resolution: {integrity: sha512-3I/ahkMsdJ02XtEqo+yJMSLSv28Tz+R046PdU7lWBFwNSLZeSmdXVmP655ZGTwqT+dSSpC+wd7nVpL3xaw90Yw==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -639,70 +639,78 @@ packages:
   '@fayz-ai/db@0.1.2':
     resolution: {integrity: sha512-wOEvNXed1lrZ8j6tPiXJJ1chyuj5jD5dLa3b9QZzMqKnb1DD9hYtgifeFn/4HAqxZ83y24fUYxJy6aNA8sZk+g==}
 
-  '@fayz-ai/plugin-agenda@0.1.7':
-    resolution: {integrity: sha512-fzSt1qzx2LtDhpbanLnTP5hlUUqz0N/e1IbCW0iz3np69OIAh5jrj6zN3OF3S9iSj18ZGGOEG8HKrvAtvPnZjg==}
+  '@fayz-ai/plugin-agenda@0.1.8':
+    resolution: {integrity: sha512-LPzucPELbfVB75AxpqQmz/xxF7xttwZ/eVknVPYGWjUdUjE2oHCHgA5nQzug+YngB01+MAu3y2m0RU6qkRsERg==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-crm@0.2.2':
-    resolution: {integrity: sha512-Lt/jWp0FVYMdH38wJ/rkQ3mAODElYWR8ACu1oEdffHoI/ERHpLNN58n4GWUpUkpk5yp95rFcZrS1tXJBMEtczg==}
+  '@fayz-ai/plugin-crm@0.2.3':
+    resolution: {integrity: sha512-h/snA6A4xBloTHa2Hnos6bklKK+0qlan//kkqfdFyV//6Iv833etObptw36BjNFf5+EG81j7r93YSRa5JMb9JQ==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-dashboard@0.1.4':
-    resolution: {integrity: sha512-qfH+oBXW0gc6ftfxn2zPnna4JMVqxLpA5Qa0AKjXzZ9sbfmIFuDd/9FLOgBh9EgpkABci2SHcBD8HeJ6Ehl3og==}
+  '@fayz-ai/plugin-dashboard@0.1.5':
+    resolution: {integrity: sha512-6ixHiXNC4qfLa3eFGJkhIQpKHQDTfoDXM91/7q6AZL6gNvqYVHdMkT3k8nMTB6eCRVdL6BgZ1R+x/AtVyQoP9A==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-financial@0.1.6':
-    resolution: {integrity: sha512-xoFOC34J519F0yUXGemBxcmnF+6At8TEP9P1O5fHXrs6IEP86mRYoYXiEvsQedeUR10NCkw2DclA0IYCm0JFkw==}
+  '@fayz-ai/plugin-financial@0.1.7':
+    resolution: {integrity: sha512-J0eG1HZVIZs/y3sZWlm7VUzEmdKonjxabcdrIDaQWEnZfS1GAbPxAcArBTJ6AfzB9EM1PsmzJfgiczRM454QOw==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-forms@0.1.4':
-    resolution: {integrity: sha512-d5s6s3z/J29vzcWbbwYI64fJR6sK/Mjr/lMkTVWmETxBAQFYTM1JOfisDVuJQ5DEuiQyHrGHePomYaA6J8CNxA==}
+  '@fayz-ai/plugin-forms@0.1.5':
+    resolution: {integrity: sha512-26gJQL8P2mgQJmFTe+qWqjK2UPW2cJeQFa8VVzFOvzkgArCw8Jvt5bNnqadF1Kdhb3qF2r/XeanfgBm9+59pRQ==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-inventory@0.1.5':
-    resolution: {integrity: sha512-DCaoVxH2Vd6qYK1Q0e4kSpxq3EUiJ1X5SoBKnOjC6Dw+677T+9Mjx2gQuK6uTqH2WBePvKeYHU5YHUneOPNd2w==}
+  '@fayz-ai/plugin-inventory@0.1.6':
+    resolution: {integrity: sha512-yIweFT/WwNo1BNWUon5mJX6wwzGfXybON2s/P/4Vand2EJ5CsdKLwiNvi6+EP1pMJxvN9abgG+E3cqx6k7pOIQ==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-marketing@0.1.5':
-    resolution: {integrity: sha512-UShNRfYETtzJGkIJ0gVRleZwO35qfyeaYxPIakZRo3aZhvxSuSX/vHprL2Uwn06F37s9NyAlQJsXPLtqHOTP7g==}
+  '@fayz-ai/plugin-marketing@0.1.6':
+    resolution: {integrity: sha512-dZ2mDyLLd+ov04qwh6VropNmviNItnKDpraoJFyHEAol1Uu8YVDw/YBiFm8K7JhAI9+Ce2WB88rQ48AOOSC7FA==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-reports@0.1.5':
-    resolution: {integrity: sha512-n0xHGnGX7ED5qEJuLnTq3M5s1art0i+F4SMhhPHPu+nURFBIlapjS7F8c5x5GY7uEbrWKbBUKjr2O3HNuW7ZBw==}
+  '@fayz-ai/plugin-reports@0.1.6':
+    resolution: {integrity: sha512-jPBzofcyEnCI6xWS3QAJOSp4rF/g5/i7DzoSkk+5mtmm0jRt+FHEfaXzjnd9hi/mOhYydSbDki+9gDxazo5/Og==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/plugin-tasks@0.1.5':
-    resolution: {integrity: sha512-w9VHpLT2tcoydZbS20kWZDgxcHVF1J4TdTtW36MYGB5rCgBQ99/9rJU+xKRN9tH4Ptfmxih3LA58uCjME2aWDw==}
+  '@fayz-ai/plugin-tasks@0.1.6':
+    resolution: {integrity: sha512-KnbUMvab+YAnkR3udyHnCEOie+Nc1dXtKYQODacwJpkouA6p9siOdZUv60OmcGxkU+VmVXmPBTBsTI/bWDzAVQ==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/saas@0.5.0':
-    resolution: {integrity: sha512-avTTZjJ60y4RYQ2xQqDWFrX+19+YuaJzuhfrqb8xFJhF96ME08IRBVtHjkm5zkZzRegQbTi+KZVH4i80ztkJZw==}
+  '@fayz-ai/saas@0.6.0':
+    resolution: {integrity: sha512-TfGm7MztIpcGKztre4XxoOhuvpQY0wnVneMhWNafksK7PEq3XQBUnWewTThJyzZzkmB37M3HbB54w2wwIPKd6Q==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/sdk@0.5.0':
-    resolution: {integrity: sha512-pQOW4TwvoyFDTThfPq753S73i3Ot/YWOcMMgeb17KBqHWrjeVEPnE6avaxDa4ixormsLe4izCymqFa0BW1qsfg==}
+  '@fayz-ai/sdk@0.6.0':
+    resolution: {integrity: sha512-eirpLWAt981uXdrMabhNBi74w/Ck+bSeDBQl4Ua9+0oa1dXZ1U0qIAh+ajV4/JGu887gBZRDEUA2ZfE3lHGXUg==}
+    peerDependencies:
+      '@vitejs/plugin-react': ^4.0.0
+      vite: ^5.0.0 || ^6.0.0
+    peerDependenciesMeta:
+      '@vitejs/plugin-react':
+        optional: true
+      vite:
+        optional: true
 
-  '@fayz-ai/ui@0.5.0':
-    resolution: {integrity: sha512-dZLJwwkrwbDOSC5sqX7DwQYg/3b8VthoRkRMsGCn5DFZJeZxYcWibqbNT5XH9FVjBuw8pK9P6ko7M58WmnVCsg==}
+  '@fayz-ai/ui@0.6.0':
+    resolution: {integrity: sha512-IQZzMtYf0I+ixVnYyiI5DzmT4xwaUd0xmPBd5vhQq15q9oOH8/qa1qTFSlSZYR3kwF88+IQs7WTVYHOpezQQQw==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -1799,6 +1807,10 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
+  hasown@2.0.4:
+    resolution: {integrity: sha512-T2UbfbBEF32wiepXIsMlTW9+dDYC6wMh/t/vYA4tuOMKqWz/n3vr1NFSxQiyP+zk2mXsoMA/i/7qV6LKut1t1A==}
+    engines: {node: '>= 0.4'}
+
   iceberg-js@0.8.1:
     resolution: {integrity: sha512-1dhVQZXhcHje7798IVM+xoo/1ZdVfzOMIc8/rgVSijRK38EDqOJoGula9N/8ZI5RD8QTxNQtK/Gozpr+qUqRRA==}
     engines: {node: '>=20.0.0'}
@@ -2652,27 +2664,31 @@ snapshots:
   '@esbuild/win32-x64@0.21.5':
     optional: true
 
-  '@fayz-ai/auth@0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@fayz-ai/auth@0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))':
     dependencies:
-      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/core': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
       '@supabase/supabase-js': 2.108.2
       react: 18.3.1
       zustand: 4.5.7(@types/react@18.3.28)(react@18.3.1)
     transitivePeerDependencies:
       - '@types/react'
+      - '@vitejs/plugin-react'
       - immer
       - react-dom
+      - vite
 
-  '@fayz-ai/core@0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@fayz-ai/core@0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))':
     dependencies:
-      '@fayz-ai/sdk': 0.5.0
+      '@fayz-ai/sdk': 0.6.0(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(vite@5.4.21(@types/node@26.0.0))
       '@supabase/supabase-js': 2.108.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       zustand: 4.5.7(@types/react@18.3.28)(react@18.3.1)
     transitivePeerDependencies:
       - '@types/react'
+      - '@vitejs/plugin-react'
       - immer
+      - vite
 
   '@fayz-ai/db@0.1.2(@types/react@18.3.28)(react@18.3.1)':
     dependencies:
@@ -2708,12 +2724,12 @@ snapshots:
       - sql.js
       - sqlite3
 
-  '@fayz-ai/plugin-agenda@0.1.7(@fullcalendar/resource@6.1.21(@fullcalendar/core@6.1.21))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-agenda@0.1.8(@fullcalendar/resource@6.1.21(@fullcalendar/core@6.1.21))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))':
     dependencies:
-      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/plugin-financial': 0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/plugin-financial': 0.1.7(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/saas': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/ui': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@fullcalendar/core': 6.1.21
       '@fullcalendar/daygrid': 6.1.21(@fullcalendar/core@6.1.21)
       '@fullcalendar/interaction': 6.1.21(@fullcalendar/core@6.1.21)
@@ -2745,6 +2761,7 @@ snapshots:
       - '@types/react-dom'
       - '@types/sql.js'
       - '@vercel/postgres'
+      - '@vitejs/plugin-react'
       - '@xata.io/client'
       - better-sqlite3
       - bun-types
@@ -2759,13 +2776,14 @@ snapshots:
       - sql.js
       - sqlite3
       - tailwindcss
+      - vite
 
-  '@fayz-ai/plugin-crm@0.2.2(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-crm@0.2.3(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))':
     dependencies:
-      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/core': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
       '@fayz-ai/db': 0.1.2(@types/react@18.3.28)(react@18.3.1)
-      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/saas': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/ui': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@tanstack/react-table': 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
@@ -2789,6 +2807,7 @@ snapshots:
       - '@types/react-dom'
       - '@types/sql.js'
       - '@vercel/postgres'
+      - '@vitejs/plugin-react'
       - '@xata.io/client'
       - better-sqlite3
       - bun-types
@@ -2803,11 +2822,12 @@ snapshots:
       - sql.js
       - sqlite3
       - tailwindcss
+      - vite
 
-  '@fayz-ai/plugin-dashboard@0.1.4(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-dashboard@0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))':
     dependencies:
-      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/ui': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -2815,14 +2835,16 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
+      - '@vitejs/plugin-react'
       - immer
       - tailwindcss
+      - vite
 
-  '@fayz-ai/plugin-financial@0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-financial@0.1.7(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))':
     dependencies:
-      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/saas': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/ui': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@tanstack/react-table': 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
@@ -2846,6 +2868,7 @@ snapshots:
       - '@types/react-dom'
       - '@types/sql.js'
       - '@vercel/postgres'
+      - '@vitejs/plugin-react'
       - '@xata.io/client'
       - better-sqlite3
       - bun-types
@@ -2860,15 +2883,16 @@ snapshots:
       - sql.js
       - sqlite3
       - tailwindcss
+      - vite
 
-  '@fayz-ai/plugin-forms@0.1.4(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-forms@0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))':
     dependencies:
       '@dnd-kit/core': 6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@dnd-kit/modifiers': 9.0.0(@dnd-kit/core@6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@dnd-kit/sortable': 10.0.0(@dnd-kit/core@6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@dnd-kit/utilities': 3.2.2(react@18.3.1)
-      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/ui': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -2876,14 +2900,16 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
+      - '@vitejs/plugin-react'
       - immer
       - tailwindcss
+      - vite
 
-  '@fayz-ai/plugin-inventory@0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-inventory@0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))':
     dependencies:
-      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/saas': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/ui': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@tanstack/react-table': 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
@@ -2907,6 +2933,7 @@ snapshots:
       - '@types/react-dom'
       - '@types/sql.js'
       - '@vercel/postgres'
+      - '@vitejs/plugin-react'
       - '@xata.io/client'
       - better-sqlite3
       - bun-types
@@ -2921,12 +2948,13 @@ snapshots:
       - sql.js
       - sqlite3
       - tailwindcss
+      - vite
 
-  '@fayz-ai/plugin-marketing@0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-marketing@0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))':
     dependencies:
-      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/saas': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/ui': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@tanstack/react-table': 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
@@ -2950,6 +2978,7 @@ snapshots:
       - '@types/react-dom'
       - '@types/sql.js'
       - '@vercel/postgres'
+      - '@vitejs/plugin-react'
       - '@xata.io/client'
       - better-sqlite3
       - bun-types
@@ -2964,12 +2993,13 @@ snapshots:
       - sql.js
       - sqlite3
       - tailwindcss
+      - vite
 
-  '@fayz-ai/plugin-reports@0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-reports@0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))':
     dependencies:
-      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/saas': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/ui': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@tanstack/react-table': 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
@@ -2993,6 +3023,7 @@ snapshots:
       - '@types/react-dom'
       - '@types/sql.js'
       - '@vercel/postgres'
+      - '@vitejs/plugin-react'
       - '@xata.io/client'
       - better-sqlite3
       - bun-types
@@ -3007,12 +3038,13 @@ snapshots:
       - sql.js
       - sqlite3
       - tailwindcss
+      - vite
 
-  '@fayz-ai/plugin-tasks@0.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/plugin-tasks@0.1.6(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))':
     dependencies:
-      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/saas': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
-      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/core': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/saas': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/ui': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       lucide-react: 0.400.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -3035,6 +3067,7 @@ snapshots:
       - '@types/react-dom'
       - '@types/sql.js'
       - '@vercel/postgres'
+      - '@vitejs/plugin-react'
       - '@xata.io/client'
       - better-sqlite3
       - bun-types
@@ -3049,14 +3082,15 @@ snapshots:
       - sql.js
       - sqlite3
       - tailwindcss
+      - vite
 
-  '@fayz-ai/saas@0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/saas@0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))':
     dependencies:
-      '@fayz-ai/auth': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/auth': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/core': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
       '@fayz-ai/db': 0.1.2(@types/react@18.3.28)(react@18.3.1)
-      '@fayz-ai/sdk': 0.5.0
-      '@fayz-ai/ui': 0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
+      '@fayz-ai/sdk': 0.6.0(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/ui': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))
       '@radix-ui/react-dialog': 1.1.17(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@supabase/supabase-js': 2.108.2
       '@tanstack/react-table': 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3083,6 +3117,7 @@ snapshots:
       - '@types/react-dom'
       - '@types/sql.js'
       - '@vercel/postgres'
+      - '@vitejs/plugin-react'
       - '@xata.io/client'
       - better-sqlite3
       - bun-types
@@ -3098,15 +3133,19 @@ snapshots:
       - sql.js
       - sqlite3
       - tailwindcss
+      - vite
 
-  '@fayz-ai/sdk@0.5.0': {}
+  '@fayz-ai/sdk@0.6.0(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(vite@5.4.21(@types/node@26.0.0))':
+    optionalDependencies:
+      '@vitejs/plugin-react': 4.7.0(vite@5.4.21(@types/node@26.0.0))
+      vite: 5.4.21(@types/node@26.0.0)
 
-  '@fayz-ai/ui@0.5.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
+  '@fayz-ai/ui@0.6.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)(vite@5.4.21(@types/node@26.0.0))':
     dependencies:
       '@dnd-kit/core': 6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@dnd-kit/sortable': 10.0.0(@dnd-kit/core@6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/auth': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@fayz-ai/core': 0.5.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fayz-ai/auth': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
+      '@fayz-ai/core': 0.6.0(@types/react@18.3.28)(@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@26.0.0)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.21(@types/node@26.0.0))
       '@radix-ui/react-avatar': 1.2.0(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dialog': 1.1.17(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dropdown-menu': 2.1.18(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3131,7 +3170,9 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
+      - '@vitejs/plugin-react'
       - immer
+      - vite
 
   '@floating-ui/core@1.7.5':
     dependencies:
@@ -4126,7 +4167,7 @@ snapshots:
       get-proto: 1.0.1
       gopd: 1.2.0
       has-symbols: 1.1.0
-      hasown: 2.0.2
+      hasown: 2.0.4
       math-intrinsics: 1.1.0
 
   get-nonce@1.0.1: {}
@@ -4153,6 +4194,10 @@ snapshots:
   has-symbols@1.1.0: {}
 
   hasown@2.0.2:
+    dependencies:
+      function-bind: 1.1.2
+
+  hasown@2.0.4:
     dependencies:
       function-bind: 1.1.2
 
