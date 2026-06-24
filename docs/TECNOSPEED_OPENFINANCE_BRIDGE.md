@@ -1,25 +1,48 @@
 # Integração BeautySaaS + TecnoSpeed Open Finance via bridge
 
-Documento técnico para revisão do responsável pelo projeto BeautySaaS/Fayz.
+Documento técnico para revisão do responsável pelo projeto BeautySaaS/Fayz e
+para continuidade por outra IA/agente.
 
-## Objetivo
+## Resumo executivo
 
-Integrar o plugin financeiro do BeautySaaS ao worker TecnoSpeed legado sem criar
-um segundo consumidor direto da TecnoSpeed.
+O BeautySaaS passa a integrar Open Finance/TecnoSpeed sem chamar a TecnoSpeed
+diretamente e sem expor credenciais sensíveis no navegador.
 
-O navegador fala apenas com o bridge do BeautySaaS. O bridge roda no servidor
-Windows e fala com:
+O fluxo implementado é:
 
-1. Supabase do BeautySaaS, para persistência oficial do novo sistema.
-2. API interna do worker legado, para jobs e leituras internas.
-3. API Open Finance pública do worker legado, para criar/atualizar/sincronizar
-   contas usando JSON e `Authorization: Bearer`.
-4. MySQL legado, opcionalmente, usando usuário somente `SELECT`, para reaproveitar
-   extratos já persistidos sem acionar a TecnoSpeed.
+```text
+BeautySaaS frontend
+  -> tecnospeed-bridge
+  -> worker TecnoSpeed legado
+  -> MySQL/fila/TecnoSpeed existentes
+  -> Supabase BeautySaaS
+  -> plugin-financial
+```
 
-O bridge não deve chamar TecnoSpeed diretamente quando estiver em modo legado.
+O worker legado continua sendo a única peça autorizada a falar com a TecnoSpeed.
+O bridge existe para adaptar autenticação, tenant, UX do BeautySaaS, leitura de
+dados existentes e persistência no Supabase.
 
-## Arquitetura final
+## Objetivos
+
+- Conectar o BeautySaaS ao worker TecnoSpeed já existente.
+- Manter o Supabase como banco oficial do novo sistema.
+- Evitar chamadas diretas do frontend para o worker.
+- Evitar chamadas diretas do bridge para a TecnoSpeed em modo legado.
+- Reaproveitar transações já salvas pelo worker.
+- Importar transações normalizadas para o financeiro do BeautySaaS.
+- Preservar tenant/RLS e deduplicação.
+- Dar ao usuário uma UX clara para cadastro de pagador/conta e busca por período.
+
+## Fora de escopo nesta etapa
+
+- Substituir o worker legado.
+- Criar novo cron TecnoSpeed.
+- Revogar/desativar contas diretamente na TecnoSpeed pelo BeautySaaS.
+- Usar Supabase Edge Function para sincronizar com TecnoSpeed.
+- Expor token do worker, service role ou credenciais TecnoSpeed no navegador.
+
+## Arquitetura
 
 ```mermaid
 flowchart LR
@@ -40,34 +63,100 @@ flowchart LR
   WorkerInternal --> Tecno
 ```
 
+## Responsabilidades por componente
+
+### Frontend BeautySaaS
+
+- Lê `VITE_TECNOSPEED_BRIDGE_URL`.
+- Obtém JWT Supabase e tenant ativo.
+- Chama somente o bridge.
+- Exibe formulário de CPF/CNPJ, pagador, endereço e conta.
+- Exibe link de autorização Open Finance.
+- Exige período explícito antes de sincronizar.
+- Mostra estados de fila e mensagens de erro sanitizadas.
+- Importa somente linhas selecionadas pelo usuário.
+
+### Bridge
+
+- Valida JWT Supabase e tenant.
+- Guarda tokens server-side.
+- Fala com o worker usando `Authorization: Bearer`.
+- Lê transações existentes via API interna ou MySQL read-only.
+- Solicita jobs manuais ao worker.
+- Normaliza datas e valores.
+- Deduplica transações.
+- Salva dados no Supabase.
+
+### Worker legado
+
+- Continua responsável por TecnoSpeed.
+- Cria/atualiza pagador e conta.
+- Gera link de autorização Open Finance.
+- Executa sincronizações respeitando fila, retry e travas da TecnoSpeed/banco.
+- Mantém MySQL e rotina existente.
+
 ## Regras de segurança
 
-- `LEGACY_OPENFINANCE_API_TOKEN`, `LEGACY_WORKER_TOKEN` e
-  `SUPABASE_SERVICE_ROLE_KEY` ficam somente no `.env` do bridge.
-- Nenhuma credencial server-side é `VITE_*`.
-- O frontend não conhece URL/token do worker legado.
-- Chamada backend-to-backend não usa `apiKey` na query string.
-- O bridge valida JWT Supabase e `x-tenant-id`.
-- Em produção, `BRIDGE_AUTH_MODE=development` é proibido.
-- Em modo `STATEMENT_SOURCE=legacy_worker`, `TECNOSPEED_DIRECT_SYNC=false` é
-  obrigatório.
+- O navegador nunca recebe:
+  - `LEGACY_OPENFINANCE_API_TOKEN`;
+  - `LEGACY_WORKER_TOKEN`;
+  - `SUPABASE_SERVICE_ROLE_KEY`;
+  - `TECNOSPEED_CNPJSH`;
+  - `TECNOSPEED_TOKENSH`.
+- O frontend não chama o worker diretamente.
+- O bridge não usa `apiKey` em query string para chamadas backend-to-backend.
+- Em modo legado:
 
-## Variáveis de ambiente relevantes
+```env
+STATEMENT_SOURCE=legacy_worker
+TECNOSPEED_DIRECT_SYNC=false
+TECNOSPEED_MOCK=false
+```
 
-No bridge:
+- `BRIDGE_AUTH_MODE=development` não deve ser usado em produção.
+- O usuário MySQL do bridge, se usado, deve ser exclusivo e somente `SELECT`.
+
+## Configuração de ambiente
+
+### BeautySaaS frontend
+
+Local direto no bridge:
+
+```env
+VITE_TECNOSPEED_BRIDGE_URL=http://127.0.0.1:3001
+VITE_SUPABASE_URL=https://...
+VITE_SUPABASE_ANON_KEY=...
+```
+
+Bridge publicado por IIS/reverse proxy:
+
+```env
+VITE_TECNOSPEED_BRIDGE_URL=http://20.206.206.215/beauty-bridge
+VITE_SUPABASE_URL=https://...
+VITE_SUPABASE_ANON_KEY=...
+```
+
+Após alterar `.env.local`, reiniciar o Vite.
+
+### Bridge
+
+Exemplo de `.env` para modo legado real:
 
 ```env
 NODE_ENV=production
 BRIDGE_HOST=127.0.0.1
 BRIDGE_PORT=3001
 BRIDGE_ALLOWED_ORIGINS=http://localhost:5180
+BRIDGE_WORKER_ID=beauty-bridge-1
+BRIDGE_WORKER_POLL_MS=5000
+BRIDGE_EMBED_WORKER=false
+
 BRIDGE_STORAGE=supabase
 BRIDGE_AUTH_MODE=supabase
-BRIDGE_EMBED_WORKER=false
 
 STATEMENT_SOURCE=legacy_worker
 TECNOSPEED_DIRECT_SYNC=false
-TECNOSPEED_MOCK=true
+TECNOSPEED_MOCK=false
 
 LEGACY_WORKER_URL=http://127.0.0.1:3030
 LEGACY_WORKER_TOKEN=...
@@ -80,36 +169,46 @@ LEGACY_OPENFINANCE_API_TIMEOUT_MS=30000
 LEGACY_READ_SOURCE=mysql
 LEGACY_MYSQL_HOST=127.0.0.1
 LEGACY_MYSQL_PORT=3306
-LEGACY_MYSQL_DATABASE=...
+LEGACY_MYSQL_DATABASE=plugbank
 LEGACY_MYSQL_USER=beauty_bridge_reader
 LEGACY_MYSQL_PASSWORD=...
 LEGACY_MYSQL_CONNECTION_LIMIT=3
+LEGACY_MYSQL_SSL=false
 
 SUPABASE_URL=https://...
 SUPABASE_ANON_KEY=...
 SUPABASE_SERVICE_ROLE_KEY=...
+
+TECNOSPEED_WEBHOOK_TOKEN=...
 ```
 
-No BeautySaaS frontend:
+### Observação sobre mock
+
+`TECNOSPEED_MOCK=true` só serve para smoke test isolado. Para testar com worker
+real, conta real ou homologação/produção:
 
 ```env
-VITE_TECNOSPEED_BRIDGE_URL=http://127.0.0.1:3001
-VITE_SUPABASE_URL=https://...
-VITE_SUPABASE_ANON_KEY=...
+TECNOSPEED_MOCK=false
 ```
 
-## Contratos chamados pelo bridge
+As credenciais TecnoSpeed devem continuar somente no worker legado.
 
-### API Open Finance pública do worker
+## Contratos com o worker
 
-Usada pelo bridge para ações. Sempre com:
+### Autenticação
 
-```text
+Chamadas bridge -> worker devem usar:
+
+```http
 Authorization: Bearer <LEGACY_OPENFINANCE_API_TOKEN>
 Content-Type: application/json
 ```
 
-Endpoints:
+Não usar `apiKey` na URL.
+
+### API Open Finance pública do worker
+
+Endpoints de ação:
 
 ```text
 POST   /openfinance/create-account
@@ -117,23 +216,30 @@ POST   /openfinance/sync
 PUT    /openfinance/account/:accountHash
 DELETE /openfinance/account/:accountHash
 PUT    /openfinance/account/:accountHash/openfinance/revoke
-GET    /openfinance/account-status
-GET    /openfinance/transactions
-GET    /openfinance/sync-status
-GET    /openfinance/sync-metrics
 ```
 
-Exemplo `POST /openfinance/create-account`:
+Endpoints de leitura:
+
+```text
+GET /openfinance/account-status
+GET /openfinance/transactions
+GET /openfinance/sync-status
+GET /openfinance/sync-metrics
+```
+
+Exemplo de criação/vinculação de conta:
 
 ```json
 {
   "name": "Cliente Teste",
   "cpfCnpj": "00000000000",
+  "email": "cliente@example.com",
   "neighborhood": "Centro",
   "addressNumber": "123",
   "zipcode": "00000000",
   "state": "RJ",
   "city": "Rio de Janeiro",
+  "address": "Rua Teste",
   "bankCode": "341",
   "agency": "0001",
   "accountNumber": "123456",
@@ -142,14 +248,16 @@ Exemplo `POST /openfinance/create-account`:
 }
 ```
 
-Se o worker retornar `409 payer_name_mismatch`, o bridge preserva o status/código
-e o frontend pede confirmação. Somente após confirmação o frontend reenvia com:
+Se o worker retornar `409 payer_name_mismatch`, o frontend exibe confirmação e
+só reenvia com:
 
 ```json
-{ "confirmPayerUpdate": true }
+{
+  "confirmPayerUpdate": true
+}
 ```
 
-Exemplo `POST /openfinance/sync`:
+Exemplo de sync manual:
 
 ```json
 {
@@ -164,7 +272,7 @@ Exemplo `POST /openfinance/sync`:
 
 ### API interna do worker
 
-Mantida para leituras/job tracking interno:
+Mantida para health, lookup e job tracking:
 
 ```text
 GET  /internal/health
@@ -175,174 +283,355 @@ POST /internal/sync-jobs
 GET  /internal/sync-jobs/:jobId
 ```
 
-## Fluxo de conta
+## Fluxo de cadastro/vinculação de conta
 
-1. Usuário informa CPF/CNPJ no conector financeiro.
-2. Front chama o bridge para salvar/testar integração.
-3. Usuário abre formulário de conta.
-4. Front envia ao bridge dados do pagador/endereço/conta.
-5. Bridge tenta encontrar conta existente no reader legado, quando disponível.
-6. Se encontrar, salva vínculo no Supabase e não chama criação no worker.
-7. Se não encontrar, bridge chama `POST /openfinance/create-account` no worker.
-8. Worker cria ou reutiliza pagador/conta e retorna `accountHash`,
-   `openfinanceLink` e `statusOpenfinance`.
-9. Bridge normaliza e salva a conta no Supabase.
-10. Front mostra link de autorização Open Finance quando existir.
+1. Usuário informa CPF/CNPJ.
+2. Front chama o bridge.
+3. Bridge tenta localizar pagador/conta já existente.
+4. Se encontrar conta compatível, vincula no Supabase sem recriar no worker.
+5. Se não encontrar, chama `POST /openfinance/create-account`.
+6. Worker retorna `accountHash`, status e link Open Finance.
+7. Bridge salva a conta no Supabase.
+8. Front exibe a conta e link de autorização.
+
+Proteções:
+
+- Não recriar conta com mesmo pagador/dados bancários.
+- `accountHash` não é considerado globalmente único; deve ser escopado por
+  pagador/tenant/integração.
+- Divergência de nome exige confirmação explícita.
 
 ## Fluxo de sincronização/extrato
 
-1. Usuário seleciona conta e período.
-2. Front exibe aviso de janela Open Finance e pede confirmação explícita do
-   período antes de qualquer sincronização.
-3. Front chama `POST /api/v1/tecnospeed/statements/preview` no bridge.
-4. Bridge consulta transações já salvas via reader legado.
-5. Se `coverage.complete=true`, grava/atualiza transações no Supabase e retorna
-   linhas imediatamente.
-6. Se cobertura estiver incompleta, bridge chama `POST /openfinance/sync` com
-   `priority="manual"` e `suspendAutoSyncUntilCompleted=true`.
-7. Se o worker retornar `already_synced`, o bridge consulta transações
-   imediatamente.
-8. Se retornar `queued` ou `running`, o front acompanha via
-   `/api/v1/tecnospeed/sync-jobs/:jobId`.
-9. Se retornar `retry_wait`, o front mostra mensagem e respeita
-   `nextAllowedAt`/`nextSyncAllowedAt`.
-10. Quando concluir, o bridge importa as transações normalizadas para o Supabase.
+1. Usuário seleciona conta.
+2. Usuário escolhe `from` e `to`.
+3. Front exibe aviso sobre janela Open Finance.
+4. Front pede confirmação antes de buscar.
+5. Bridge consulta dados já salvos.
+6. Se houver cobertura, retorna/importa imediatamente.
+7. Se não houver cobertura, bridge chama `POST /openfinance/sync`.
+8. Se `already_synced`, consulta transações imediatamente.
+9. Se `queued`/`running`, frontend acompanha o job.
+10. Se `retry_wait`, frontend mostra horário permitido.
+11. Quando concluir, bridge importa transações normalizadas para Supabase.
 
-## Janela Open Finance e ampliação de período
+## Janela Open Finance e busca longa
 
-Existe um risco operacional relevante: se o usuário solicita um período curto
-agora e depois decide ampliar para um ano, a conta pode estar dentro da janela
-de espera do banco/TecnoSpeed/worker. Por isso o frontend deve sempre deixar
-claro que o período escolhido deve ser o período completo desejado.
+O frontend deve enfatizar que o usuário precisa escolher o período completo
+desejado antes da sincronização. Se buscar um mês agora e depois quiser um ano,
+pode ser necessário aguardar a próxima janela permitida pelo banco/worker.
 
-O ajuste feito no frontend:
+O bridge envia ao worker:
 
-- nunca sincroniza sem `from` e `to`;
-- mostra aviso fixo antes do botão de sincronização;
-- pede confirmação para qualquer busca;
-- reforça a confirmação para períodos acima de 90 dias;
-- mostra `retry_wait` com data/hora quando o worker retorna
-  `nextAllowedAt` ou `nextSyncAllowedAt`.
-
-### Contrato recomendado para o worker
-
-O bridge não consegue sozinho tirar uma conta da rotina do cron legado. Se o
-worker atualiza a mesma conta automaticamente, ele pode consumir a janela de 6h
-antes da busca manual longa ser executada.
-
-Para produção, o bridge envia uma fila/prioridade de sincronização manual com
-pausa temporária da rotina automática da conta:
-
-```text
-POST /openfinance/sync
+```json
 {
-  "accountHash": "abc123",
-  "dateStart": "2025-06-01",
-  "dateEnd": "2026-06-01",
-  "statementType": "BANK",
   "priority": "manual",
   "suspendAutoSyncUntilCompleted": true
 }
 ```
 
-Comportamento esperado:
+Comportamento esperado no worker:
 
-1. Worker recebe pedido manual longo.
-2. Worker marca a conta como `manual_sync_pending`.
-3. Cron automático ignora temporariamente essa conta.
-4. Worker aguarda `nextAllowedAt`, se necessário.
-5. Quando a janela abre, executa a busca manual solicitada.
-6. Após sucesso/falha terminal, worker reativa a rotina automática.
+1. Marcar a conta como tendo sync manual pendente.
+2. Pausar temporariamente o cron automático daquela conta.
+3. Respeitar `nextAllowedAt`, se existir.
+4. Executar a busca manual quando permitido.
+5. Reativar a rotina automática após sucesso/falha terminal.
 
-Sem esse suporte no worker, o bridge consegue apenas:
+## Persistência e deduplicação
 
-- exibir avisos;
-- respeitar `retry_wait`;
-- evitar jobs duplicados no BeautySaaS;
-- pedir novamente o período ao worker quando o usuário solicitar.
+Transações importadas devem preservar:
 
-## Deduplicação e escopo
+- `tenant_id`;
+- `integration_id`;
+- `payer_cpf_cnpj`;
+- `account_hash`;
+- `statement_type`;
+- `external_source`;
+- `external_id`;
+- período consultado;
+- data normalizada.
 
-- Transações usam `externalId` estável vindo do worker/MySQL.
-- O reader MySQL prioriza `transactionId`, depois `fitid`, depois fingerprint.
-- Persistência do BeautySaaS fica escopada por:
-  - `tenant_id`;
-  - `integration_id`;
-  - `account_hash`;
-  - `external_source`;
-  - `external_id`;
-  - `statement_type`.
-- Datas são normalizadas para `YYYY-MM-DD` antes de gravar no Supabase.
-- O bridge não deve transformar datas em texto local, como `Thu Jun 18`.
+Regra de `externalId`:
 
-## Arquivos principais alterados
-
-Bridge:
-
-- `local-services/tecnospeed-bridge/src/clients/legacy-openfinance-api.js`
-- `local-services/tecnospeed-bridge/src/config.js`
-- `local-services/tecnospeed-bridge/src/runtime.js`
-- `local-services/tecnospeed-bridge/src/services/legacy-openfinance.js`
-- `local-services/tecnospeed-bridge/.env.example`
-- `local-services/tecnospeed-bridge/README.md`
-- testes em `local-services/tecnospeed-bridge/test/`
-
-Frontend Open Banking:
-
-- `src/plugins/openbanking/connectorDef.tsx`
-- `src/plugins/openbanking/data/supabase.ts`
-- `src/plugins/openbanking/types.ts`
-
-## Testes executados
-
-```powershell
-cd C:\Users\pedro\beauty-saas\beauty-saas\local-services\tecnospeed-bridge
-npm.cmd test
+```text
+transactionId -> fitid -> fingerprint
 ```
 
-Resultado local: 26 testes passando.
+Datas devem ser gravadas como:
+
+```text
+YYYY-MM-DD
+```
+
+Nunca gravar texto local como:
+
+```text
+Thu Jun 18
+```
+
+## Arquivos alterados no BeautySaaS
+
+Principais arquivos do PR BeautySaaS:
+
+```text
+docs/TECNOSPEED_OPENFINANCE_BRIDGE.md
+scripts/db-apply.mjs
+src/plugins/openbanking/PLUGIN.md
+src/plugins/openbanking/connectorDef.tsx
+src/plugins/openbanking/data/supabase.ts
+src/plugins/openbanking/index.ts
+src/plugins/openbanking/types.ts
+```
+
+Arquivos removidos/substituídos pelo fluxo via bridge:
+
+```text
+src/plugins/openbanking/migrations/001_openbanking.sql
+src/plugins/openbanking/schema/index.ts
+src/plugins/openbanking/settings/BankIntegrationSettings.tsx
+supabase/functions/plugbank-sync/index.ts
+```
+
+## Bridge standalone
+
+O bridge foi desenvolvido inicialmente dentro de:
+
+```text
+local-services/tecnospeed-bridge
+```
+
+E depois separado para repositório próprio para instalação no servidor Windows.
+
+Arquivos principais do bridge:
+
+```text
+src/clients/legacy-openfinance-api.js
+src/clients/legacy-worker.js
+src/clients/legacy-mysql.js
+src/clients/supabase.js
+src/config.js
+src/runtime.js
+src/services/legacy-openfinance.js
+src/repositories/supabase.js
+supabase/migrations/001_tecnospeed_bridge.sql
+supabase/migrations/002_legacy_worker_source.sql
+```
+
+Responsabilidades críticas:
+
+- nunca chamar TecnoSpeed direto em modo legado;
+- usar Bearer header com worker;
+- não usar `apiKey` em query;
+- preservar tenant;
+- deduplicar transações;
+- normalizar datas;
+- respeitar `retry_wait`;
+- não criar jobs duplicados para mesmo período/conta.
+
+## PR complementar no Fayz SDK
+
+Existe um PR separado no `fayz-sdk` para melhorias do financeiro.
+
+Escopo esperado:
+
+- melhorias dos widgets do resumo financeiro;
+- visão semanal, mensal e total;
+- cálculo de fluxo com movimentos realizados (`payment`);
+- ajustes no provider Supabase do plugin financeiro;
+- textos em `pt-BR` e `en`;
+- preparação para filtro por conta no resumo financeiro.
+
+Arquivos esperados no SDK:
+
+```text
+packages/saas/src/shell/components/plugins/ConnectorsHub.tsx
+packages/saas/src/shell/lib/i18n.ts
+plugins/plugin-financial/src/data/supabase.ts
+plugins/plugin-financial/src/locales/en.ts
+plugins/plugin-financial/src/locales/pt-BR.ts
+plugins/plugin-financial/src/store.ts
+plugins/plugin-financial/src/views/dashboardWidgets.tsx
+```
+
+Esse PR deve ficar separado para não misturar SDK/framework com a integração
+específica do BeautySaaS.
+
+## Testes e validações executadas
+
+### BeautySaaS
 
 ```powershell
 cd C:\Users\pedro\beauty-saas\beauty-saas
-npx.cmd tsc -p tsconfig.local.json
+npx.cmd tsc -p tsconfig.published.json --noEmit
+npx.cmd tsc -p tsconfig.local.json --noEmit
+$env:FAYZ_SDK_SOURCE='published'; npx.cmd vite build
 $env:FAYZ_SDK_SOURCE='local'; npx.cmd vite build
 ```
 
-Resultado local: TypeScript e build Vite passando. O Vite emite apenas avisos de
-chunk grande/import dinâmico já existentes no SDK.
+Resultado: passaram. O Vite pode emitir avisos de chunk grande/import dinâmico,
+mas não falha o build.
+
+### Bridge
+
+No repositório standalone do bridge:
+
+```powershell
+npm ci
+npm test
+npm run test:mysql
+```
+
+Resultado observado no servidor:
+
+```json
+{
+  "health": true,
+  "readOnly": true,
+  "payerFound": true,
+  "coverageComplete": false,
+  "transactionCount": 20
+}
+```
+
+`coverageComplete=false` não é erro; significa apenas que não havia um protocolo
+SUCCESS cobrindo todo o período testado.
+
+### Fayz SDK
+
+O build raiz pode falhar no Windows/Corepack por Turbo:
+
+```text
+Unable to find package manager binary: cannot find binary path
+```
+
+Validação usada para os pacotes afetados:
+
+```powershell
+cd C:\Users\pedro\fayz-sdk
+corepack pnpm --filter @fayz-ai/db --filter @fayz-ai/core --filter @fayz-ai/ui --filter @fayz-ai/sdk --filter @fayz-ai/saas --filter @fayz-ai/plugin-financial build
+```
+
+Resultado: passou.
+
+## Troubleshooting
+
+### `Worker Open Finance respondeu HTTP 401`
+
+O frontend chegou no bridge, mas o bridge falhou ao autenticar no worker.
+
+Verificar:
+
+```env
+LEGACY_OPENFINANCE_API_TOKEN=...
+```
+
+Esse token deve ser igual ao token aceito pelo worker para:
+
+```http
+Authorization: Bearer <token>
+```
+
+Após alterar `.env`:
+
+```powershell
+pm2 restart beauty-tecnospeed-bridge --update-env
+```
+
+### `localhost` ou `127.0.0.1` não funciona do PC
+
+`127.0.0.1` aponta para a máquina atual. Do PC do usuário para o servidor, usar a
+URL publicada pelo IIS/reverse proxy:
+
+```env
+VITE_TECNOSPEED_BRIDGE_URL=http://20.206.206.215/beauty-bridge
+```
+
+Teste:
+
+```powershell
+Invoke-RestMethod http://20.206.206.215/beauty-bridge/health
+```
+
+### Conta aparece, mas extrato não importa
+
+Checar:
+
+- status Open Finance da conta;
+- token do worker;
+- `retry_wait`;
+- período escolhido;
+- logs do bridge;
+- logs do worker;
+- se `LEGACY_READ_SOURCE=mysql` está conectando com usuário read-only.
+
+### Erro de data no Supabase
+
+Erro típico:
+
+```text
+invalid input syntax for type date: "Thu Jun 18"
+```
+
+Corrigir no adapter/bridge para enviar sempre `YYYY-MM-DD`.
 
 ## Pendências para produção/IIS/Supabase
 
-- Definir se o bridge ficará acessível por IIS/HTTPS ou somente local no Windows.
-- Se BeautySaaS rodar fora do servidor Windows, expor o bridge por rota privada.
-- Configurar `LEGACY_OPENFINANCE_API_URL` com `http://127.0.0.1:3020` quando bridge
-  e worker estiverem na mesma máquina; usar URL privada/IIS quando não estiverem.
-- Aplicar migrations do bridge no Supabase antes de rodar com `BRIDGE_STORAGE=supabase`.
-- Criar usuário MySQL somente `SELECT`, caso `LEGACY_READ_SOURCE=mysql`.
-- Validar contrato real do worker para formatos exatos de resposta em:
+- Confirmar URL pública do bridge.
+- Configurar IIS para encaminhar `/beauty-bridge/*` para `127.0.0.1:3001`.
+- Configurar `BRIDGE_ALLOWED_ORIGINS` com o host real do frontend.
+- Confirmar token Bearer entre bridge e worker.
+- Aplicar migrations do bridge no Supabase.
+- Criar usuário MySQL somente `SELECT`, se `LEGACY_READ_SOURCE=mysql`.
+- Confirmar contrato final do worker para:
   - `create-account`;
   - `sync`;
   - `sync-status`;
-  - `account-status`.
+  - `account-status`;
+  - `transactions`.
 
-## Orientação para IA/revisor que continuar
+## Checklist de revisão
 
-1. Não mova token do worker para o frontend.
-2. Não reative `TECNOSPEED_DIRECT_SYNC` no bridge em modo legado.
-3. Não substitua o worker por chamadas diretas TecnoSpeed.
-4. Se alterar contrato do worker, ajuste primeiro
-   `local-services/tecnospeed-bridge/src/clients/legacy-openfinance-api.js`.
-5. Se alterar persistência/dedup, revise
-   `local-services/tecnospeed-bridge/src/repositories/supabase.js` e as migrations.
-6. Se alterar UX de cadastro, mantenha o tratamento explícito de
-   `payer_name_mismatch`.
-7. Rode sempre:
+### BeautySaaS
 
-```powershell
-cd C:\Users\pedro\beauty-saas\beauty-saas\local-services\tecnospeed-bridge
-npm.cmd test
-cd C:\Users\pedro\beauty-saas\beauty-saas
-npx.cmd tsc -p tsconfig.local.json
-```
+- [ ] Front chama somente o bridge.
+- [ ] Nenhum token sensível é exposto no frontend.
+- [ ] Fluxo exige período explícito.
+- [ ] `payer_name_mismatch` exige confirmação.
+- [ ] `retry_wait` é exibido sem polling agressivo.
+- [ ] `already_synced` consulta/importa imediatamente.
+- [ ] Edge Function `plugbank-sync` não é usada.
+- [ ] Documentação está atualizada.
 
-Depois valide build Vite com acesso ao SDK local.
+### Bridge
+
+- [ ] Usa Bearer header para worker.
+- [ ] Não usa `apiKey` na query.
+- [ ] Não chama TecnoSpeed direto em modo legado.
+- [ ] Normaliza datas para `YYYY-MM-DD`.
+- [ ] Deduplica transações por fonte externa.
+- [ ] Respeita tenant e RLS.
+- [ ] Testes passam.
+
+### Fayz SDK
+
+- [ ] Widgets financeiros não quebram apps existentes.
+- [ ] Fluxos semanal/mensal/total estão corretos.
+- [ ] Fluxo usa pagamentos realizados.
+- [ ] i18n cobre `pt-BR` e `en`.
+- [ ] Build filtrado dos pacotes afetados passa.
+- [ ] BeautySaaS compila com `FAYZ_SDK_SOURCE=local`.
+
+## Orientação para IA/agente que continuar
+
+1. Não mova tokens para `VITE_*`.
+2. Não reative `TECNOSPEED_DIRECT_SYNC` no bridge legado.
+3. Não substitua o worker por chamadas diretas à TecnoSpeed.
+4. Se mudar contrato do worker, atualizar primeiro o client do bridge.
+5. Se mudar deduplicação, revisar repository Supabase e migrations.
+6. Se mudar UX de cadastro, manter confirmação de `payer_name_mismatch`.
+7. Se mudar financeiro no SDK, validar BeautySaaS com `FAYZ_SDK_SOURCE=local`.
+8. Manter PRs separados:
+   - BeautySaaS/Open Finance bridge;
+   - Fayz SDK/financeiro;
+   - bridge standalone, se houver mudanças no serviço.
