@@ -1,4 +1,4 @@
-import React, { Component, type ErrorInfo, type ReactNode, useEffect, useState } from 'react'
+﻿import React, { Component, type ErrorInfo, type ReactNode, useEffect, useState } from 'react'
 import {
   AlertCircle, Ban, CheckCircle2, Download, ExternalLink, History,
   Landmark, Loader2, Plus, RefreshCw, Trash2,
@@ -10,6 +10,7 @@ import type { BankIntegration, BankLine, OpenFinanceAccount, SyncJobState, SyncL
 
 const provider = createOpenBankingProvider()
 const inputClass = 'w-full mt-1 rounded-input border border-input bg-card px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring'
+const syncStorageKey = 'tecnospeed-openfinance-sync-job'
 
 function brl(value: number): string {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
@@ -33,6 +34,33 @@ function accountValue(account: OpenFinanceAccount, camel: keyof OpenFinanceAccou
   return String(account[camel] ?? account[snake] ?? '')
 }
 
+function normalizeOpenFinanceStatus(status?: string): { label: string; tone: 'success' | 'warning' | 'muted' } {
+  const value = String(status ?? '').toUpperCase().normalize('NFD').replace(/\p{Diacritic}/gu, '')
+  if (['ATIVO', 'ACTIVE', 'AUTHORIZED', 'AUTORIZADO'].includes(value)) return { label: 'Ativo', tone: 'success' }
+  if (value.includes('PENDENTE') || value.includes('PENDING') || value.includes('ACTIVATION') || value.includes('ATIVACAO')) return { label: 'Autorize', tone: 'warning' }
+  if (value.includes('REVOG') || value.includes('CANCEL')) return { label: 'Revogado', tone: 'muted' }
+  if (value.includes('ERRO') || value.includes('FAIL')) return { label: 'AtenÃ§Ã£o', tone: 'warning' }
+  return { label: status ? status.replace(/_/g, ' ').toLowerCase().replace(/^\w/, (c) => c.toUpperCase()) : 'Aguardando', tone: 'muted' }
+}
+
+function saveSyncJob(job: SyncJobState | null) {
+  try {
+    if (!job || ['completed', 'failed'].includes(job.status)) localStorage.removeItem(syncStorageKey)
+    else localStorage.setItem(syncStorageKey, JSON.stringify(job))
+  } catch {
+    // best effort only
+  }
+}
+
+function loadStoredSyncJob(): SyncJobState | null {
+  try {
+    const raw = localStorage.getItem(syncStorageKey)
+    return raw ? JSON.parse(raw) : null
+  } catch {
+    return null
+  }
+}
+
 class OpenBankingPanelBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
   state: { error: Error | null } = { error: null }
 
@@ -41,14 +69,14 @@ class OpenBankingPanelBoundary extends Component<{ children: ReactNode }, { erro
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error('[Open Finance] Falha ao renderizar integração', error, info)
+    console.error('[Open Finance] Falha ao renderizar integraÃ§Ã£o', error, info)
   }
 
   render() {
     if (this.state.error) {
       return (
         <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm">
-          <p className="font-medium text-destructive">Não foi possível exibir os detalhes do Open Finance.</p>
+          <p className="font-medium text-destructive">NÃ£o foi possÃ­vel exibir os detalhes do Open Finance.</p>
           <p className="mt-1 text-xs text-muted-foreground">{this.state.error.message}</p>
           <Button variant="outline" size="sm" className="mt-3" onClick={() => this.setState({ error: null })}>
             Tentar novamente
@@ -107,16 +135,19 @@ function OpenBankingExtraPanel() {
     setLoadingLog(true)
     void provider.getSyncLog(found.id)
       .then(setLog)
-      .catch((error: any) => toast.error(error?.message ?? 'Falha ao carregar histórico TecnoSpeed'))
+      .catch((error: any) => toast.error(error?.message ?? 'Falha ao carregar histÃ³rico TecnoSpeed'))
       .finally(() => setLoadingLog(false))
   }
 
   useEffect(() => {
     void load()
+    setSyncJob(loadStoredSyncJob())
     const reload = () => { void load() }
     window.addEventListener('tecnospeed:integration-changed', reload)
     return () => window.removeEventListener('tecnospeed:integration-changed', reload)
   }, [])
+
+  useEffect(() => { saveSyncJob(syncJob) }, [syncJob])
 
   useEffect(() => {
     const jobId = syncJob?.id ?? syncJob?.jobId
@@ -129,17 +160,24 @@ function OpenBankingExtraPanel() {
       try {
         const next = await provider.getSyncJob(jobId)
         if (cancelled) return
-        setSyncJob({ ...next, id: next.id ?? jobId })
+        const jobContext = syncJob as SyncJobState & { accountHash?: string; from?: string; to?: string }
+        setSyncJob({ ...next, id: next.id ?? jobId, accountHash: jobContext.accountHash, from: jobContext.from, to: jobContext.to } as SyncJobState)
         if (next.status === 'completed') {
-          const result = await provider.fetchStatement({ integrationId: integration.id, accountHash: selectedAccountHash, from, to })
+          const result = await provider.fetchStatement({
+            integrationId: integration.id,
+            accountHash: jobContext.accountHash ?? selectedAccountHash,
+            from: jobContext.from ?? from,
+            to: jobContext.to ?? to,
+          })
           if (cancelled) return
           setLines(result.lines)
           setSelected(new Set(result.lines.map((line) => line.externalId)))
-          toast.success('Sincronização concluída pelo worker')
+          saveSyncJob(null)
+          toast.success('Extrato pronto para conferência')
         }
-        if (next.status === 'failed') toast.error(next.lastError ?? next.last_error ?? 'Sincronização falhou no worker')
+        if (next.status === 'failed') toast.error(next.lastError ?? next.last_error ?? 'Não foi possível buscar o extrato')
       } catch (error: any) {
-        if (!cancelled) toast.error(error?.message ?? 'Falha ao acompanhar sincronização')
+        if (!cancelled) toast.error(error?.message ?? 'Falha ao acompanhar sincronizaÃ§Ã£o')
       }
     }, delay)
     return () => { cancelled = true; window.clearTimeout(timer) }
@@ -188,13 +226,13 @@ function OpenBankingExtraPanel() {
   async function handleCreateAccount() {
     const missingLegacyPayer = legacyMode && (!accountForm.name || !accountForm.neighborhood || !accountForm.addressNumber || !accountForm.zipcode || !accountForm.state || !accountForm.city)
     if ((!legacyMode && !accountForm.name) || missingLegacyPayer || !accountForm.bankCode || !accountForm.agency || !accountForm.accountNumber || (legacyMode && !accountForm.accountNumberDigit)) {
-      toast.error(legacyMode ? 'Preencha dados do pagador, endereço, banco, agência, conta e dígito' : 'Preencha nome, banco, agência e conta')
+      toast.error(legacyMode ? 'Preencha dados do pagador, endereÃ§o, banco, agÃªncia, conta e dÃ­gito' : 'Preencha nome, banco, agÃªncia e conta')
       return
     }
     setSavingAccount(true)
     try {
       const created = await createAccount(false)
-      toast.success(legacyMode ? 'Conta cadastrada/vinculada pelo worker. Conclua o consentimento Open Finance se houver link.' : 'Conta criada. Conclua o consentimento Open Finance no link exibido.')
+      toast.success(legacyMode ? 'Conta cadastrada. Clique em Autorizar para concluir o consentimento Open Finance.' : 'Conta criada. Conclua o consentimento Open Finance no link exibido.')
       setShowAccountForm(false)
       await load()
       setSelectedAccountHash(created.accountHash)
@@ -203,21 +241,21 @@ function OpenBankingExtraPanel() {
         const details = error?.details?.details ?? error?.details ?? {}
         const currentName = details.currentName ?? details.current_name ?? 'nome atual'
         const receivedName = details.receivedName ?? details.received_name ?? accountForm.name
-        const confirmed = window.confirm(`O worker já possui esse pagador com nome diferente.\n\nAtual: ${currentName}\nNovo: ${receivedName}\n\nDeseja atualizar o nome do pagador e continuar?`)
+        const confirmed = window.confirm(`Já existe um pagador com nome diferente.\n\nAtual: ${currentName}\nNovo: ${receivedName}\n\nDeseja atualizar o nome do pagador e continuar?`)
         if (confirmed) {
           try {
             const created = await createAccount(true)
-            toast.success('Pagador atualizado e conta cadastrada/vinculada pelo worker.')
+            toast.success('Pagador atualizado e conta cadastrada.')
             setShowAccountForm(false)
             await load()
             setSelectedAccountHash(created.accountHash)
             return
           } catch (retryError: any) {
-            toast.error(retryError?.message ?? 'Erro ao confirmar atualização do pagador')
+            toast.error(retryError?.message ?? 'Erro ao confirmar atualizaÃ§Ã£o do pagador')
             return
           }
         }
-        toast.error('Cadastro cancelado para não sobrescrever o pagador sem confirmação')
+        toast.error('Cadastro cancelado para nÃ£o sobrescrever o pagador sem confirmaÃ§Ã£o')
       } else {
         toast.error(error?.message ?? 'Erro ao criar conta')
       }
@@ -228,8 +266,8 @@ function OpenBankingExtraPanel() {
 
   async function handleAccountAction(accountHash: string, action: 'refresh' | 'revoke' | 'delete') {
     if (action === 'delete' && !window.confirm(legacyMode
-      ? 'Tem certeza que deseja remover esta conta do BeautySaaS? Isso não revoga o consentimento nem altera a conta no worker/TecnoSpeed.'
-      : 'Excluir esta conta da TecnoSpeed? Esta ação pode ser bloqueada se houver pagamentos conciliados.')) return
+      ? 'Tem certeza que deseja remover esta conta do BeautySaaS? Isso não revoga o consentimento nem altera a conta na TecnoSpeed.'
+      : 'Excluir esta conta da TecnoSpeed? Esta aÃ§Ã£o pode ser bloqueada se houver pagamentos conciliados.')) return
     if (action === 'revoke' && !window.confirm('Revogar o consentimento Open Finance desta conta?')) return
     setAccountAction(`${action}:${accountHash}`)
     try {
@@ -237,10 +275,10 @@ function OpenBankingExtraPanel() {
       if (action === 'revoke') await provider.revokeAccount(accountHash)
       if (action === 'delete') await provider.deleteAccount(accountHash)
       if (action === 'delete' && selectedAccountHash === accountHash) setSelectedAccountHash('')
-      toast.success(action === 'refresh' ? 'Status atualizado' : action === 'revoke' ? 'Consentimento revogado' : legacyMode ? 'Conta removida do BeautySaaS' : 'Conta excluída')
+      toast.success(action === 'refresh' ? 'Status atualizado' : action === 'revoke' ? 'Consentimento revogado' : legacyMode ? 'Conta removida do BeautySaaS' : 'Conta excluÃ­da')
       await load()
     } catch (error: any) {
-      toast.error(error?.message ?? 'Falha na operação da conta')
+      toast.error(error?.message ?? 'Falha na operaÃ§Ã£o da conta')
     } finally {
       setAccountAction('')
     }
@@ -249,11 +287,11 @@ function OpenBankingExtraPanel() {
   async function handleFetch() {
     if (!integration) return
     if (!selectedAccountHash) { toast.error('Cadastre e selecione uma conta'); return }
-    if (from > to) { toast.error('A data inicial não pode ser posterior à data final'); return }
+    if (from > to) { toast.error('A data inicial nÃ£o pode ser posterior Ã  data final'); return }
     const periodDays = daysBetween(from, to)
     const confirmation = periodDays > 90
-      ? `Você está solicitando um extrato de ${periodDays} dias.\n\nConfirme se esse é o período completo que deseja sincronizar agora. Depois de uma sincronização, o banco/worker pode exigir uma janela de espera antes de permitir uma nova busca ampliada para a mesma conta.`
-      : `Confirme o período do extrato: ${from} até ${to}.\n\nSe depois você quiser ampliar esse período, pode ser necessário aguardar a próxima janela permitida pelo banco/worker.`
+      ? `VocÃª estÃ¡ solicitando um extrato de ${periodDays} dias.\n\nConfirme se esse Ã© o perÃ­odo completo que deseja sincronizar agora. Depois de uma sincronizaÃ§Ã£o, o banco pode exigir uma janela de espera antes de permitir uma nova busca ampliada para a mesma conta.`
+      : `Confirme o perÃ­odo do extrato: ${from} atÃ© ${to}.\n\nSe depois vocÃª quiser ampliar esse perÃ­odo, pode ser necessÃ¡rio aguardar a prÃ³xima janela permitida pelo banco.`
     if (!window.confirm(confirmation)) return
     setFetching(true)
     try {
@@ -261,11 +299,11 @@ function OpenBankingExtraPanel() {
       setLines(result.lines)
       setSelected(new Set(result.lines.map((line) => line.externalId)))
       if (result.sync?.jobId || result.sync?.id) {
-        setSyncJob({ ...result.sync, id: result.sync.id ?? result.sync.jobId })
+        setSyncJob({ ...result.sync, id: result.sync.id ?? result.sync.jobId, accountHash: selectedAccountHash, from, to } as SyncJobState)
         const retryAt = result.sync.retryAfter ?? result.sync.retry_after
         toast.success(result.sync.status === 'retry_wait'
-          ? `Sincronização aguardando a janela permitida${retryAt ? ` até ${formatDateBr(retryAt)}` : ''}`
-          : 'Sincronização solicitada ao worker')
+          ? `Busca aguardando a janela permitida${retryAt ? ` atÃ© ${formatDateBr(retryAt)}` : ''}`
+          : 'Busca do extrato iniciada. Pode demorar um pouco.')
       } else {
         setSyncJob(result.sync ?? null)
       }
@@ -283,7 +321,7 @@ function OpenBankingExtraPanel() {
     setImporting(true)
     try {
       const result = await provider.importTransactions({ integrationId: integration.id, from, to, lines: toImport })
-      toast.success(`${result.imported} importadas${result.duplicates ? ` · ${result.duplicates} duplicadas` : ''}`)
+      toast.success(`${result.imported} importadas${result.duplicates ? ` Â· ${result.duplicates} duplicadas` : ''}`)
       setLines([])
       setSelected(new Set())
       setLog(await provider.getSyncLog(integration.id))
@@ -300,10 +338,10 @@ function OpenBankingExtraPanel() {
 
   const syncRetryAt = syncJob?.retryAfter ?? syncJob?.retry_after
   const syncStatusMessage = syncJob?.status === 'retry_wait'
-    ? `Aguardando a próxima janela permitida pelo worker${syncRetryAt ? `: ${formatDateBr(syncRetryAt)}` : '.'}`
+    ? `Aguardando a próxima janela permitida pelo banco${syncRetryAt ? `: ${formatDateBr(syncRetryAt)}` : '.'}`
     : syncJob?.status === 'failed'
-      ? (syncJob.lastError ?? syncJob.last_error ?? 'Sincronização falhou.')
-      : 'O worker está processando o extrato em segundo plano.'
+      ? (syncJob.lastError ?? syncJob.last_error ?? 'Não foi possível buscar o extrato.')
+      : 'Buscando extrato. Pode demorar um pouco; se você atualizar a página, a busca continua em segundo plano.'
 
   return (
     <div className="space-y-5 border-t pt-4">
@@ -319,16 +357,16 @@ function OpenBankingExtraPanel() {
             {legacyMode && (
               <div className="grid gap-3 sm:grid-cols-3">
                 {field('zipcode', 'CEP', '00000000')}{field('state', 'UF', 'RJ')}{field('city', 'Cidade', 'Rio de Janeiro')}
-                {field('neighborhood', 'Bairro', 'Centro')}{field('addressNumber', 'Número', '123')}{field('street', 'Logradouro')}
+                {field('neighborhood', 'Bairro', 'Centro')}{field('addressNumber', 'NÃºmero', '123')}{field('street', 'Logradouro')}
                 {field('addressComplement', 'Complemento')}
               </div>
             )}
             <div className="grid gap-3 sm:grid-cols-3">
-              {field('bankCode', 'Código do banco', '341')}{field('agency', 'Agência')}{field('accountNumber', 'Conta')}
-              {field('accountNumberDigit', 'Dígito da conta')}{field('accountDac', 'DAC')}
+              {field('bankCode', 'CÃ³digo do banco', '341')}{field('agency', 'AgÃªncia')}{field('accountNumber', 'Conta')}
+              {field('accountNumberDigit', 'DÃ­gito da conta')}{field('accountDac', 'DAC')}
             </div>
             <Button size="sm" onClick={handleCreateAccount} disabled={savingAccount}>
-              {savingAccount ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Plus className="h-3.5 w-3.5" />} {legacyMode ? 'Cadastrar/vincular conta no worker' : 'Criar conta e gerar consentimento'}
+              {savingAccount ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Plus className="h-3.5 w-3.5" />} {legacyMode ? 'Cadastrar/vincular conta' : 'Criar conta e gerar consentimento'}
             </Button>
           </div>
         )}
@@ -342,19 +380,23 @@ function OpenBankingExtraPanel() {
 
         {accounts.map((account) => {
           const status = accountValue(account, 'statusOpenfinance', 'status_openfinance') || 'PENDENTE'
+          const statusView = normalizeOpenFinanceStatus(status)
           const consent = accountValue(account, 'openfinanceLink', 'openfinance_link')
           const masked = accountValue(account, 'accountNumberMasked', 'account_number_masked')
           const summary = [
-            account.bankCode ? `Banco ${account.bankCode}` : 'Banco não informado',
+            account.bankCode ? `Banco ${account.bankCode}` : 'Banco nÃ£o informado',
             account.agency ? `Ag. ${account.agency}` : null,
             masked || account.accountHash.slice(0, 10),
-          ].filter(Boolean).join(' · ')
+          ].filter(Boolean).join(' Â· ')
           const busy = accountAction.endsWith(account.accountHash)
           return (
             <label key={account.accountHash} className="flex flex-wrap items-center gap-3 rounded-lg border px-3 py-3 cursor-pointer">
               <input type="radio" name="openfinance-account" checked={selectedAccountHash === account.accountHash} onChange={() => setSelectedAccountHash(account.accountHash)} />
-              <div className="min-w-0 flex-1"><p className="text-sm font-medium">{summary}</p><p className="text-xs text-muted-foreground">Open Finance: {status}</p></div>
-              {consent && <a href={consent} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-primary hover:underline">Autorizar <ExternalLink className="h-3 w-3" /></a>}
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium">{summary}</p>
+                <p className={`text-xs ${statusView.tone === 'success' ? 'text-success' : statusView.tone === 'warning' ? 'text-warning' : 'text-muted-foreground'}`}>Open Finance: {statusView.label}</p>
+              </div>
+              {consent && <a href={consent} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-full bg-success px-3 py-1.5 text-xs font-semibold text-success-foreground shadow-sm hover:opacity-90">Autorizar conta <ExternalLink className="h-3 w-3" /></a>}
               <Button variant="ghost" size="sm" disabled={busy} onClick={(event) => { event.preventDefault(); void handleAccountAction(account.accountHash, 'refresh') }}><RefreshCw className="h-3.5 w-3.5" /></Button>
               {!legacyMode && <Button variant="ghost" size="sm" disabled={busy} onClick={(event) => { event.preventDefault(); void handleAccountAction(account.accountHash, 'revoke') }}><Ban className="h-3.5 w-3.5" /></Button>}
               <Button variant="ghost" size="sm" disabled={busy} onClick={(event) => { event.preventDefault(); void handleAccountAction(account.accountHash, 'delete') }}><Trash2 className="h-3.5 w-3.5 text-destructive" /></Button>
@@ -368,14 +410,14 @@ function OpenBankingExtraPanel() {
         <div className="flex items-start gap-2 rounded-lg border border-warning/30 bg-warning/5 px-3 py-2 text-xs text-muted-foreground">
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
           <span>
-            Escolha o período completo que deseja consultar antes de sincronizar. A consulta Open Finance pode respeitar uma janela de espera; se buscar um período curto agora e depois ampliar para um ano, talvez seja necessário aguardar a próxima liberação do banco/worker.
+            Escolha o perÃ­odo completo que deseja consultar antes de sincronizar. A consulta Open Finance pode respeitar uma janela de espera; se buscar um perÃ­odo curto agora e depois ampliar para um ano, talvez seja necessÃ¡rio aguardar a prÃ³xima liberaÃ§Ã£o do banco.
           </span>
         </div>
         <div className="flex flex-wrap items-end gap-3">
           <div><span className="text-xs font-medium text-muted-foreground">De</span><DatePicker value={from} onChange={setFrom} className="mt-1" /></div>
-          <div><span className="text-xs font-medium text-muted-foreground">Até</span><DatePicker value={to} onChange={setTo} className="mt-1" /></div>
+          <div><span className="text-xs font-medium text-muted-foreground">AtÃ©</span><DatePicker value={to} onChange={setTo} className="mt-1" /></div>
           <Button variant="outline" size="sm" onClick={handleFetch} disabled={fetching || !selectedAccountHash}>
-            {fetching ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />} Sincronizar período selecionado
+            {fetching ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />} Sincronizar perÃ­odo selecionado
           </Button>
         </div>
 
@@ -400,8 +442,8 @@ function OpenBankingExtraPanel() {
       </section>
 
       {(loadingLog || log.length > 0) && <section className="space-y-2 border-t pt-4">
-        <div className="flex items-center gap-2"><History className="h-4 w-4 text-muted-foreground" /><h4 className="text-sm font-semibold">Histórico</h4></div>
-        <div className="rounded-md border divide-y text-sm">{log.map((row) => <div key={row.id} className="flex items-center gap-3 px-3 py-2"><span className="text-muted-foreground text-xs">{new Date(row.createdAt).toLocaleString('pt-BR')}</span><span className="text-xs text-muted-foreground">{row.periodFrom} → {row.periodTo}</span><span className="ml-auto text-xs">{row.transactionsImported}/{row.transactionsFetched} importadas{row.duplicates ? ` · ${row.duplicates} dup` : ''}</span>{row.status === 'success' ? <CheckCircle2 className="h-3.5 w-3.5 text-success" /> : <AlertCircle className="h-3.5 w-3.5 text-warning" />}</div>)}</div>
+        <div className="flex items-center gap-2"><History className="h-4 w-4 text-muted-foreground" /><h4 className="text-sm font-semibold">HistÃ³rico</h4></div>
+        <div className="rounded-md border divide-y text-sm">{log.map((row) => <div key={row.id} className="flex items-center gap-3 px-3 py-2"><span className="text-muted-foreground text-xs">{new Date(row.createdAt).toLocaleString('pt-BR')}</span><span className="text-xs text-muted-foreground">{row.periodFrom} â†’ {row.periodTo}</span><span className="ml-auto text-xs">{row.transactionsImported}/{row.transactionsFetched} importadas{row.duplicates ? ` Â· ${row.duplicates} dup` : ''}</span>{row.status === 'success' ? <CheckCircle2 className="h-3.5 w-3.5 text-success" /> : <AlertCircle className="h-3.5 w-3.5 text-warning" />}</div>)}</div>
       </section>}
     </div>
   )
@@ -410,7 +452,7 @@ function OpenBankingExtraPanel() {
 export const openBankingConnector: ConnectorDefinition = {
   id: 'tecnospeed-openfinance',
   hostPluginId: 'financial',
-  name: 'Open Finance · TecnoSpeed',
+  name: 'Open Finance Â· TecnoSpeed',
   description: 'Conecte contas, importe extratos e concilie no Financeiro.',
   icon: 'Landmark',
   authKind: 'api-key',
