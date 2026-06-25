@@ -11,6 +11,7 @@ import type { BankIntegration, BankLine, OpenFinanceAccount, SyncJobState, SyncL
 const provider = createOpenBankingProvider()
 const inputClass = 'w-full mt-1 rounded-input border border-input bg-card px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring'
 const syncStorageKey = 'tecnospeed-openfinance-sync-job'
+const accountsStorageKey = 'tecnospeed-openfinance-accounts'
 
 function brl(value: number): string {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
@@ -58,6 +59,23 @@ function loadStoredSyncJob(): SyncJobState | null {
     return raw ? JSON.parse(raw) : null
   } catch {
     return null
+  }
+}
+
+function saveCachedAccounts(accounts: OpenFinanceAccount[]) {
+  try {
+    localStorage.setItem(accountsStorageKey, JSON.stringify(accounts))
+  } catch {
+    // best effort only
+  }
+}
+
+function loadCachedAccounts(): OpenFinanceAccount[] {
+  try {
+    const raw = localStorage.getItem(accountsStorageKey)
+    return raw ? JSON.parse(raw) : []
+  } catch {
+    return []
   }
 }
 
@@ -119,13 +137,21 @@ function OpenBankingExtraPanel() {
       setAccounts([])
       setSelectedAccountHash('')
       setLog([])
+      saveCachedAccounts([])
       return
+    }
+
+    const cachedAccounts = loadCachedAccounts()
+    if (cachedAccounts.length > 0) {
+      setAccounts(cachedAccounts)
+      setSelectedAccountHash((current) => cachedAccounts.some((account) => account.accountHash === current) ? current : cachedAccounts[0]?.accountHash || '')
     }
 
     setLoadingAccounts(true)
     try {
       const nextAccounts = await provider.listAccounts()
       setAccounts(nextAccounts)
+      saveCachedAccounts(nextAccounts)
       setSelectedAccountHash((current) => nextAccounts.some((account) => account.accountHash === current) ? current : nextAccounts[0]?.accountHash || '')
       setShowAccountForm(nextAccounts.length === 0)
     } finally {
