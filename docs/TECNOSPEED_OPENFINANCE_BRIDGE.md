@@ -416,6 +416,7 @@ src/services/legacy-openfinance.js
 src/repositories/supabase.js
 supabase/migrations/001_tecnospeed_bridge.sql
 supabase/migrations/002_legacy_worker_source.sql
+supabase/migrations/003_openfinance_financial_account_link.sql
 ```
 
 Responsabilidades críticas:
@@ -428,6 +429,41 @@ Responsabilidades críticas:
 - normalizar datas;
 - respeitar `retry_wait`;
 - não criar jobs duplicados para mesmo período/conta.
+
+### Vínculo definitivo com o Financeiro por conta
+
+O resumo financeiro do Fayz SDK filtra por `public.bank_accounts.id`. Por isso,
+não basta salvar a conta Open Finance em `public.tecnospeed_accounts`; cada conta
+Open Finance também precisa existir como uma conta financeira.
+
+Fluxo definitivo:
+
+```text
+tecnospeed_accounts.account_hash
+  -> bank_accounts.external_id
+  -> bank_accounts.id
+  -> financial_movements.bank_account_id
+```
+
+Regras implementadas no bridge:
+
+- ao salvar uma conta TecnoSpeed, o bridge cria ou atualiza uma linha em
+  `public.bank_accounts`;
+- o vínculo usa `tenant_id`, `external_source = 'tecnospeed_openfinance'` e
+  `external_id = accountHash`;
+- ao importar extratos, o bridge resolve `bank_account_id` pelo `accountHash`;
+- os movimentos importados preservam `metadata.accountHash`;
+- a migration `003_openfinance_financial_account_link.sql` adiciona colunas
+  faltantes em bancos parcialmente provisionados, cria o índice único e executa
+  backfill para contas/movimentos antigos.
+
+Com isso, qualquer tenant com mais de uma conta conectada consegue usar o filtro
+do Financeiro:
+
+- Todas as contas;
+- Conta 1;
+- Conta 2;
+- demais contas vinculadas.
 
 ## PR complementar no Fayz SDK
 
@@ -515,6 +551,55 @@ corepack pnpm --filter @fayz-ai/db --filter @fayz-ai/core --filter @fayz-ai/ui -
 Resultado: passou.
 
 ## Troubleshooting
+
+### Erros de export do Fayz SDK/UI no Vite ou Tailwind
+
+Durante a revisão local, o BeautySaaS depende de exports adicionados/ajustados no
+Fayz SDK:
+
+- `@fayz-ai/sdk/vite`;
+- `@fayz-ai/ui/tailwind`;
+- demais pacotes locais do shell/plugin financeiro quando `FAYZ_SDK_SOURCE=local`.
+
+Se aparecer:
+
+```text
+Missing "./vite" specifier in "@fayz-ai/sdk"
+Cannot find module "@fayz-ai/ui/tailwind"
+Failed to resolve import "zustand" from ".../fayz-sdk/..."
+```
+
+isso indica desalinhamento de ambiente/dependências, não falha do bridge nem da
+TecnoSpeed. O BeautySaaS está apontando para uma versão antiga/incompleta do SDK
+ou para `node_modules` sem as dependências do SDK local.
+
+Como corrigir para revisão:
+
+1. Atualizar o `fayz-sdk` para a branch/versão que contém os exports novos.
+2. Rodar a instalação/build do SDK antes do BeautySaaS.
+3. Reinstalar dependências do BeautySaaS após a atualização do SDK.
+4. Quando testar via SDK local, garantir que os pacotes usados pelo app estejam
+   resolvendo para a mesma cópia do `fayz-sdk`.
+
+Esses pontos também estão comentados em:
+
+- `vite.config.ts`, no import de `@fayz-ai/sdk/vite`;
+- `tailwind.config.ts`, no import de `@fayz-ai/ui/tailwind`.
+
+### Texto com caracteres quebrados (`Ã`, `Â`, `â†’`)
+
+Se a interface mostrar textos como `perÃ­odo`, `HistÃ³rico`, `Â·` ou `â†’`, algum
+arquivo foi salvo/lido com encoding incorreto. O padrão esperado é UTF-8.
+
+Para evitar regressão:
+
+- salvar arquivos `.ts`, `.tsx` e `.md` sempre como UTF-8;
+- evitar regravar arquivos com comandos PowerShell antigos sem `-Encoding utf8`;
+- antes de revisar, procurar mojibake com:
+
+```powershell
+rg -n "Ã|Â|â|Ã§|Ã£|Ã©|Ã¡|Ã³|Ã­|Ãº" src docs
+```
 
 ### `Worker Open Finance respondeu HTTP 401`
 

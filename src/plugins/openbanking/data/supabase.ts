@@ -61,7 +61,7 @@ export interface OpenBankingProvider {
   saveIntegration(input: SaveIntegrationInput): Promise<BankIntegration>
   testConnection(input: { payerCpfCnpj: string; environment?: string }): Promise<TestConnectionResult>
   fetchStatement(input: { integrationId: string; accountHash?: string; from: string; to: string }): Promise<FetchStatementResult>
-  importTransactions(input: { integrationId: string; bankAccountId?: string; from: string; to: string; lines: BankLine[] }): Promise<ImportResult>
+  importTransactions(input: { integrationId: string; accountHash?: string; bankAccountId?: string; from: string; to: string; lines: BankLine[] }): Promise<ImportResult>
   getSyncLog(integrationId: string): Promise<SyncLogEntry[]>
   listAccounts(): Promise<OpenFinanceAccount[]>
   createAccount(input: CreateOpenFinanceAccountInput): Promise<OpenFinanceAccount>
