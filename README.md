@@ -18,9 +18,9 @@ Complete management system for salons, spas, barbershops, and beauty studios:
 ## Setup
 
 ```bash
-yarn install
+pnpm install
 cp .env.example .env  # add your Supabase credentials
-yarn dev              # runs on http://localhost:5180
+pnpm dev              # runs on http://localhost:5180
 ```
 
 ## Stack

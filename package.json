@@ -25,7 +25,7 @@
     "@fayz-ai/plugin-reports": "^0.1.6",
     "@fayz-ai/plugin-tasks": "^0.1.6",
     "@fayz-ai/saas": "^0.6.0",
-    "@fayz-ai/sdk": "^0.6.3",
+    "@fayz-ai/sdk": "^0.6.5",
     "@fayz-ai/ui": "^0.6.0",
     "lucide-react": "^0.400.0",
     "react": "^18.3.0",

@@ -39,8 +39,8 @@ importers:
         specifier: ^0.6.0
         version: 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@fayz-ai/sdk':
-        specifier: ^0.6.3
-        version: 0.6.3
+        specifier: ^0.6.5
+        version: 0.6.5
       '@fayz-ai/ui':
         specifier: ^0.6.0
         version: 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
@@ -701,8 +701,8 @@ packages:
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
 
-  '@fayz-ai/sdk@0.6.3':
-    resolution: {integrity: sha512-cOMiggnpbsK90L/lO6JN6MkQj2Nhyhv/bZzAmlMrYa9o1VpcMEhv8nAeIjTGQ7N/sGOEjQ2aISvAw+tU/DBNiw==}
+  '@fayz-ai/sdk@0.6.5':
+    resolution: {integrity: sha512-rWaW6FsM0wCL6gG66JTQ4/W1BR97tiXIVzBkwTi7aAU1MEEgL2fac+sFwdmLRmAR8X/MSCipxhx/EukFWuzojQ==}
 
   '@fayz-ai/ui@0.6.0':
     resolution: {integrity: sha512-IQZzMtYf0I+ixVnYyiI5DzmT4xwaUd0xmPBd5vhQq15q9oOH8/qa1qTFSlSZYR3kwF88+IQs7WTVYHOpezQQQw==}
@@ -2664,7 +2664,7 @@ snapshots:
 
   '@fayz-ai/core@0.6.0(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@fayz-ai/sdk': 0.6.3
+      '@fayz-ai/sdk': 0.6.5
       '@supabase/supabase-js': 2.108.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -3054,7 +3054,7 @@ snapshots:
       '@fayz-ai/auth': 0.6.0(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@fayz-ai/core': 0.6.0(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@fayz-ai/db': 0.1.2(@types/react@18.3.31)(react@18.3.1)
-      '@fayz-ai/sdk': 0.6.3
+      '@fayz-ai/sdk': 0.6.5
       '@fayz-ai/ui': 0.6.0(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)
       '@radix-ui/react-dialog': 1.1.17(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@supabase/supabase-js': 2.108.2
@@ -3098,7 +3098,7 @@ snapshots:
       - sqlite3
       - tailwindcss
 
-  '@fayz-ai/sdk@0.6.3': {}
+  '@fayz-ai/sdk@0.6.5': {}
 
   '@fayz-ai/ui@0.6.0(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.19)':
     dependencies:
