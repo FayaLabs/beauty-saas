@@ -315,6 +315,24 @@ Proteções:
 10. Se `retry_wait`, frontend mostra horário permitido.
 11. Quando concluir, bridge importa transações normalizadas para Supabase.
 
+### Continuidade visual após recarregar a página
+
+O envio ao backend não é cancelado quando o usuário recarrega ou fecha a tela.
+Para deixar esse comportamento explícito, o frontend persiste temporariamente o
+contexto da busca (`accountHash`, período, status, job e próxima tentativa) no
+`localStorage` e restaura o aviso ao montar o painel novamente.
+
+Regras de segurança e expiração:
+
+- as chaves locais são separadas por tenant ativo;
+- o cache não contém token do worker nem credenciais TecnoSpeed;
+- avisos ainda sem `jobId` expiram após 30 minutos;
+- jobs ativos expiram após sete dias para evitar estados antigos permanentes;
+- ao concluir, o estado temporário é removido;
+- o polling usa o `jobId` persistido e respeita `retry_wait`.
+- falhas transitórias ao consultar o job não cancelam o acompanhamento: o front
+  informa a oscilação e tenta novamente após 15 segundos, sem criar outro job.
+
 ## Janela Open Finance e busca longa
 
 O frontend deve enfatizar que o usuário precisa escolher o período completo

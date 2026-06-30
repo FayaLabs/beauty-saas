@@ -4,6 +4,7 @@ import {
   Landmark, Loader2, Plus, RefreshCw, Trash2,
 } from 'lucide-react'
 import { Button, DatePicker, toast } from '@fayz-ai/saas/ui'
+import { getActiveTenantId } from '@fayz-ai/saas'
 import type { ConnectorDefinition } from '@fayz-ai/saas'
 import { createOpenBankingProvider } from './data/supabase'
 import type { BankIntegration, BankLine, OpenFinanceAccount, SyncJobState, SyncLogEntry } from './types'
@@ -11,7 +12,33 @@ import type { BankIntegration, BankLine, OpenFinanceAccount, SyncJobState, SyncL
 const provider = createOpenBankingProvider()
 const inputClass = 'w-full mt-1 rounded-input border border-input bg-card px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring'
 const syncStorageKey = 'tecnospeed-openfinance-sync-job'
+const syncNoticeStorageKey = 'tecnospeed-openfinance-sync-notice'
 const accountsStorageKey = 'tecnospeed-openfinance-accounts'
+const activeSyncMaxAgeMs = 7 * 24 * 60 * 60 * 1000
+const submittingNoticeMaxAgeMs = 30 * 60 * 1000
+
+type SyncNotice = {
+  accountHash: string
+  from: string
+  to: string
+  status: 'submitting' | SyncJobState['status']
+  jobId?: string
+  retryAfter?: string
+  lastError?: string
+  updatedAt: string
+}
+
+type StoredSyncJob = SyncJobState & { storedAt?: string }
+
+function tenantStorageKey(base: string): string {
+  return `${base}:${getActiveTenantId() || 'no-tenant'}`
+}
+
+function isRecent(isoDate: string | undefined, maxAgeMs: number): boolean {
+  if (!isoDate) return false
+  const timestamp = new Date(isoDate).getTime()
+  return Number.isFinite(timestamp) && Date.now() - timestamp <= maxAgeMs
+}
 
 function brl(value: number): string {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
@@ -45,18 +72,26 @@ function normalizeOpenFinanceStatus(status?: string): { label: string; tone: 'su
 }
 
 function saveSyncJob(job: SyncJobState | null) {
+  const key = tenantStorageKey(syncStorageKey)
   try {
-    if (!job || ['completed', 'failed'].includes(job.status)) localStorage.removeItem(syncStorageKey)
-    else localStorage.setItem(syncStorageKey, JSON.stringify(job))
+    if (!job || ['completed', 'failed'].includes(job.status)) localStorage.removeItem(key)
+    else localStorage.setItem(key, JSON.stringify({ ...job, storedAt: new Date().toISOString() }))
   } catch {
     // best effort only
   }
 }
 
 function loadStoredSyncJob(): SyncJobState | null {
+  const key = tenantStorageKey(syncStorageKey)
   try {
-    const raw = localStorage.getItem(syncStorageKey)
-    return raw ? JSON.parse(raw) : null
+    const raw = localStorage.getItem(key)
+    if (!raw) return null
+    const stored = JSON.parse(raw) as StoredSyncJob
+    if (!stored?.status || !isRecent(stored.storedAt, activeSyncMaxAgeMs)) {
+      localStorage.removeItem(key)
+      return null
+    }
+    return stored
   } catch {
     return null
   }
@@ -64,7 +99,7 @@ function loadStoredSyncJob(): SyncJobState | null {
 
 function saveCachedAccounts(accounts: OpenFinanceAccount[]) {
   try {
-    localStorage.setItem(accountsStorageKey, JSON.stringify(accounts))
+    localStorage.setItem(tenantStorageKey(accountsStorageKey), JSON.stringify(accounts))
   } catch {
     // best effort only
   }
@@ -72,10 +107,37 @@ function saveCachedAccounts(accounts: OpenFinanceAccount[]) {
 
 function loadCachedAccounts(): OpenFinanceAccount[] {
   try {
-    const raw = localStorage.getItem(accountsStorageKey)
+    const raw = localStorage.getItem(tenantStorageKey(accountsStorageKey))
     return raw ? JSON.parse(raw) : []
   } catch {
     return []
+  }
+}
+
+function saveSyncNotice(notice: SyncNotice | null) {
+  const key = tenantStorageKey(syncNoticeStorageKey)
+  try {
+    if (!notice || notice.status === 'completed') localStorage.removeItem(key)
+    else localStorage.setItem(key, JSON.stringify(notice))
+  } catch {
+    // best effort only
+  }
+}
+
+function loadStoredSyncNotice(): SyncNotice | null {
+  const key = tenantStorageKey(syncNoticeStorageKey)
+  try {
+    const raw = localStorage.getItem(key)
+    if (!raw) return null
+    const notice = JSON.parse(raw) as SyncNotice
+    const maxAge = notice?.status === 'submitting' ? submittingNoticeMaxAgeMs : activeSyncMaxAgeMs
+    if (!notice?.accountHash || !notice?.from || !notice?.to || !notice?.status || !isRecent(notice.updatedAt, maxAge)) {
+      localStorage.removeItem(key)
+      return null
+    }
+    return notice
+  } catch {
+    return null
   }
 }
 
@@ -126,6 +188,8 @@ function OpenBankingExtraPanel() {
   const [accountAction, setAccountAction] = useState('')
   const [log, setLog] = useState<SyncLogEntry[]>([])
   const [syncJob, setSyncJob] = useState<SyncJobState | null>(null)
+  const [syncNotice, setSyncNotice] = useState<SyncNotice | null>(null)
+  const [pollRetryNonce, setPollRetryNonce] = useState(0)
   const [loadingAccounts, setLoadingAccounts] = useState(false)
   const [loadingLog, setLoadingLog] = useState(false)
 
@@ -167,13 +231,17 @@ function OpenBankingExtraPanel() {
 
   useEffect(() => {
     void load()
-    setSyncJob(loadStoredSyncJob())
+    const storedJob = loadStoredSyncJob()
+    const storedNotice = loadStoredSyncNotice()
+    setSyncJob(storedJob)
+    setSyncNotice(storedNotice)
     const reload = () => { void load() }
     window.addEventListener('tecnospeed:integration-changed', reload)
     return () => window.removeEventListener('tecnospeed:integration-changed', reload)
   }, [])
 
   useEffect(() => { saveSyncJob(syncJob) }, [syncJob])
+  useEffect(() => { saveSyncNotice(syncNotice) }, [syncNotice])
 
   useEffect(() => {
     const jobId = syncJob?.id ?? syncJob?.jobId
@@ -182,12 +250,24 @@ function OpenBankingExtraPanel() {
     const retryAt = syncJob.retryAfter ?? syncJob.retry_after
     const retryDelay = retryAt ? Math.max(3000, new Date(retryAt).getTime() - Date.now()) : 60000
     const delay = syncJob.status === 'retry_wait' ? retryDelay : 3000
+    let retryTimer: number | undefined
     const timer = window.setTimeout(async () => {
       try {
         const next = await provider.getSyncJob(jobId)
         if (cancelled) return
         const jobContext = syncJob as SyncJobState & { accountHash?: string; from?: string; to?: string }
-        setSyncJob({ ...next, id: next.id ?? jobId, accountHash: jobContext.accountHash, from: jobContext.from, to: jobContext.to } as SyncJobState)
+        const nextJob = { ...next, id: next.id ?? jobId, accountHash: jobContext.accountHash, from: jobContext.from, to: jobContext.to } as SyncJobState
+        setSyncJob(nextJob)
+        setSyncNotice({
+          accountHash: jobContext.accountHash ?? selectedAccountHash,
+          from: jobContext.from ?? from,
+          to: jobContext.to ?? to,
+          status: next.status,
+          jobId,
+          retryAfter: next.retryAfter ?? next.retry_after,
+          lastError: next.lastError ?? next.last_error,
+          updatedAt: new Date().toISOString(),
+        })
         if (next.status === 'completed') {
           const result = await provider.fetchStatement({
             integrationId: integration.id,
@@ -199,15 +279,33 @@ function OpenBankingExtraPanel() {
           setLines(result.lines)
           setSelected(new Set(result.lines.map((line) => line.externalId)))
           saveSyncJob(null)
+          setSyncNotice(null)
           toast.success('Extrato pronto para conferência')
         }
         if (next.status === 'failed') toast.error(next.lastError ?? next.last_error ?? 'Não foi possível buscar o extrato')
       } catch (error: any) {
-        if (!cancelled) toast.error(error?.message ?? 'Falha ao acompanhar sincronização')
+        if (!cancelled) {
+          const jobContext = syncJob as SyncJobState & { accountHash?: string; from?: string; to?: string }
+          setSyncNotice((current) => ({
+            accountHash: current?.accountHash ?? jobContext.accountHash ?? selectedAccountHash,
+            from: current?.from ?? jobContext.from ?? from,
+            to: current?.to ?? jobContext.to ?? to,
+            status: current?.status ?? syncJob.status,
+            jobId,
+            retryAfter: current?.retryAfter,
+            lastError: error?.message ?? 'Falha temporária ao acompanhar sincronização',
+            updatedAt: new Date().toISOString(),
+          }))
+          retryTimer = window.setTimeout(() => setPollRetryNonce((value) => value + 1), 15000)
+        }
       }
     }, delay)
-    return () => { cancelled = true; window.clearTimeout(timer) }
-  }, [syncJob, integration?.id, selectedAccountHash, from, to])
+    return () => {
+      cancelled = true
+      window.clearTimeout(timer)
+      if (retryTimer) window.clearTimeout(retryTimer)
+    }
+  }, [syncJob, integration?.id, selectedAccountHash, from, to, pollRetryNonce])
 
   if (!loaded || !integration) return null
   const legacyMode = integration.statementSource === 'legacy_worker'
@@ -320,20 +418,45 @@ function OpenBankingExtraPanel() {
       : `Confirme o período do extrato: ${from} até ${to}.\n\nSe depois você quiser ampliar esse período, pode ser necessário aguardar a próxima janela permitida pelo banco.`
     if (!window.confirm(confirmation)) return
     setFetching(true)
+    const pendingNotice: SyncNotice = {
+      accountHash: selectedAccountHash,
+      from,
+      to,
+      status: 'submitting',
+      updatedAt: new Date().toISOString(),
+    }
+    setSyncNotice(pendingNotice)
     try {
       const result = await provider.fetchStatement({ integrationId: integration.id, accountHash: selectedAccountHash, from, to })
       setLines(result.lines)
       setSelected(new Set(result.lines.map((line) => line.externalId)))
       if (result.sync?.jobId || result.sync?.id) {
-        setSyncJob({ ...result.sync, id: result.sync.id ?? result.sync.jobId, accountHash: selectedAccountHash, from, to } as SyncJobState)
+        const nextJob = { ...result.sync, id: result.sync.id ?? result.sync.jobId, accountHash: selectedAccountHash, from, to } as SyncJobState
+        setSyncJob(nextJob)
+        setSyncNotice({
+          accountHash: selectedAccountHash,
+          from,
+          to,
+          status: result.sync.status,
+          jobId: result.sync.id ?? result.sync.jobId,
+          retryAfter: result.sync.retryAfter ?? result.sync.retry_after,
+          lastError: result.sync.lastError ?? result.sync.last_error,
+          updatedAt: new Date().toISOString(),
+        })
         const retryAt = result.sync.retryAfter ?? result.sync.retry_after
         toast.success(result.sync.status === 'retry_wait'
           ? `Busca aguardando a janela permitida${retryAt ? ` até ${formatDateBr(retryAt)}` : ''}`
           : 'Busca do extrato iniciada. Pode demorar um pouco.')
       } else {
         setSyncJob(result.sync ?? null)
+        if (result.sync?.status === 'failed') {
+          setSyncNotice({ ...pendingNotice, status: 'failed', lastError: result.sync.lastError ?? result.sync.last_error, updatedAt: new Date().toISOString() })
+        } else {
+          setSyncNotice(null)
+        }
       }
     } catch (error: any) {
+      setSyncNotice({ ...pendingNotice, status: 'failed', lastError: error?.message ?? 'Erro ao buscar extrato', updatedAt: new Date().toISOString() })
       toast.error(error?.message ?? 'Erro ao buscar extrato')
     } finally {
       setFetching(false)
@@ -363,11 +486,18 @@ function OpenBankingExtraPanel() {
   }
 
   const syncRetryAt = syncJob?.retryAfter ?? syncJob?.retry_after
-  const syncStatusMessage = syncJob?.status === 'retry_wait'
-    ? `Aguardando a próxima janela permitida pelo banco${syncRetryAt ? `: ${formatDateBr(syncRetryAt)}` : '.'}`
-    : syncJob?.status === 'failed'
-      ? (syncJob.lastError ?? syncJob.last_error ?? 'Não foi possível buscar o extrato.')
-      : 'Buscando extrato. Pode demorar um pouco; se você atualizar a página, a busca continua em segundo plano.'
+  const visibleSyncStatus = syncNotice?.status ?? syncJob?.status
+  const visibleRetryAt = syncNotice?.retryAfter ?? syncRetryAt
+  const visibleLastError = syncNotice?.lastError ?? syncJob?.lastError ?? syncJob?.last_error
+  const syncStatusMessage = visibleSyncStatus === 'retry_wait'
+    ? `Aguardando a próxima janela permitida pelo banco${visibleRetryAt ? `: ${formatDateBr(visibleRetryAt)}` : '.'}`
+    : visibleSyncStatus === 'failed'
+      ? (visibleLastError ?? 'Não foi possível buscar o extrato.')
+      : visibleSyncStatus === 'submitting'
+        ? 'Solicitação de busca enviada. Se você atualizar a página, o processamento continua em segundo plano.'
+        : visibleLastError
+          ? 'A conexão para acompanhar a busca oscilou. Uma nova tentativa será feita automaticamente; o processamento continua em segundo plano.'
+          : 'Buscando extrato. Pode demorar um pouco; se você atualizar a página, a busca continua em segundo plano.'
 
   return (
     <div className="space-y-5 border-t pt-4">
@@ -447,9 +577,9 @@ function OpenBankingExtraPanel() {
           </Button>
         </div>
 
-        {syncJob && syncJob.status !== 'completed' && (
+        {visibleSyncStatus && visibleSyncStatus !== 'completed' && (
           <div className="flex items-center gap-2 rounded-lg border bg-muted/20 px-3 py-2 text-xs text-muted-foreground">
-            {syncJob.status === 'failed' ? <AlertCircle className="h-4 w-4 text-destructive" /> : <Loader2 className="h-4 w-4 animate-spin" />}
+            {visibleSyncStatus === 'failed' ? <AlertCircle className="h-4 w-4 text-destructive" /> : <Loader2 className="h-4 w-4 animate-spin" />}
             <span>{syncStatusMessage}</span>
           </div>
         )}
