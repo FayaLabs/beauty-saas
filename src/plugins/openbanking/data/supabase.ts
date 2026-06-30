@@ -1,133 +1,158 @@
-// Open Banking plugin (app-local) — Supabase data provider.
-//
-// Thin control-plane client. The heavy lifting (calling the Tecnospeed PlugBank
-// API, normalizing lines, importing into financial_movements with idempotency)
-// runs in the `plugbank-sync` Edge Function. This provider reads/writes the
-// connection row, invokes the function, and reads the sync log.
-//
-// On graduation this file moves to the SDK banking plugin largely unchanged.
+// Open Banking plugin — authenticated client for the Windows bridge.
+// TecnoSpeed credentials, worker tokens and service_role never enter the browser.
+// The bridge validates Supabase JWT + tenant, talks to the legacy Windows worker,
+// and writes normalized movements into the financial ledger.
 import { getSupabaseClientOptional, getActiveTenantId } from '@fayz-ai/saas'
 import type {
   BankIntegration, SaveIntegrationInput, SyncLogEntry,
   TestConnectionResult, FetchStatementResult, ImportResult, BankLine,
+  OpenFinanceAccount, CreateOpenFinanceAccountInput,
+  SyncJobState,
 } from '../types'
 
-const FUNCTION = 'plugbank-sync'
+const BRIDGE_URL = String(import.meta.env.VITE_TECNOSPEED_BRIDGE_URL ?? 'http://127.0.0.1:3001').replace(/\/$/, '')
 
-function sb() {
-  const supabase = getSupabaseClientOptional() as any
-  if (!supabase) throw new Error('Supabase not initialized')
-  return supabase
-}
-
-function rowToIntegration(r: any): BankIntegration {
+function normalizeAccount(row: any): OpenFinanceAccount {
   return {
-    id: r.id,
-    provider: r.provider,
-    bankAccountId: r.bank_account_id ?? undefined,
-    apiToken: r.api_token ?? undefined,
-    cnpj: r.cnpj ?? undefined,
-    environment: r.environment ?? 'production',
-    active: r.active ?? true,
-    lastSyncAt: r.last_sync_at ?? undefined,
+    ...row,
+    id: row.id,
+    accountHash: String(row.accountHash ?? row.account_hash ?? ''),
+    bankCode: row.bankCode ?? row.bank_code ?? undefined,
+    agency: row.agency ?? undefined,
+    accountNumberMasked: row.accountNumberMasked ?? row.account_number_masked ?? undefined,
+    statusOpenfinance: row.statusOpenfinance ?? row.status_openfinance ?? undefined,
+    openfinanceLink: row.openfinanceLink ?? row.openfinance_link ?? undefined,
+    active: row.active ?? undefined,
   }
 }
 
+async function bridge<T>(path: string, init?: RequestInit): Promise<T> {
+  const supabase = getSupabaseClientOptional() as any
+  const { data } = supabase ? await supabase.auth.getSession() : { data: null }
+  const tenantId = getActiveTenantId()
+  const response = await fetch(`${BRIDGE_URL}/api/v1/tecnospeed${path}`, {
+    ...init,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(data?.session?.access_token ? { Authorization: `Bearer ${data.session.access_token}` } : {}),
+      ...(tenantId ? { 'x-tenant-id': tenantId } : {}),
+      ...(init?.headers ?? {}),
+    },
+  })
+  const payload = await response.json().catch(() => ({}))
+  if (!response.ok) {
+    const error = new Error(payload?.message ?? `Bridge TecnoSpeed respondeu HTTP ${response.status}`) as Error & {
+      status?: number
+      code?: string
+      details?: unknown
+      payload?: unknown
+    }
+    error.status = response.status
+    error.code = payload?.error ?? payload?.code
+    error.details = payload?.details
+    error.payload = payload
+    throw error
+  }
+  return payload as T
+}
+
 export interface OpenBankingProvider {
-  getIntegration(bankAccountId?: string): Promise<BankIntegration | null>
+  getIntegration(): Promise<BankIntegration | null>
   saveIntegration(input: SaveIntegrationInput): Promise<BankIntegration>
-  testConnection(input: { apiToken: string; cnpj: string; environment?: string }): Promise<TestConnectionResult>
-  fetchStatement(input: { integrationId: string; from: string; to: string }): Promise<FetchStatementResult>
-  importTransactions(input: { integrationId: string; bankAccountId?: string; from: string; to: string; lines: BankLine[] }): Promise<ImportResult>
+  testConnection(input: { payerCpfCnpj: string; environment?: string }): Promise<TestConnectionResult>
+  fetchStatement(input: { integrationId: string; accountHash?: string; from: string; to: string }): Promise<FetchStatementResult>
+  importTransactions(input: { integrationId: string; accountHash?: string; bankAccountId?: string; from: string; to: string; lines: BankLine[] }): Promise<ImportResult>
   getSyncLog(integrationId: string): Promise<SyncLogEntry[]>
+  listAccounts(): Promise<OpenFinanceAccount[]>
+  createAccount(input: CreateOpenFinanceAccountInput): Promise<OpenFinanceAccount>
+  refreshAccount(accountHash: string): Promise<OpenFinanceAccount>
+  revokeAccount(accountHash: string): Promise<void>
+  deleteAccount(accountHash: string): Promise<void>
+  getSyncJob(jobId: string): Promise<SyncJobState>
 }
 
 export function createOpenBankingProvider(): OpenBankingProvider {
   return {
-    async getIntegration(bankAccountId) {
-      const supabase = sb()
-      let qb = supabase.from('bank_integrations').select('*').eq('provider', 'plugbank')
-      qb = bankAccountId ? qb.eq('bank_account_id', bankAccountId) : qb.is('bank_account_id', null)
-      const { data } = await qb.limit(1).maybeSingle()
-      return data ? rowToIntegration(data) : null
+    async getIntegration() {
+      const result = await bridge<{ integration: BankIntegration | null }>('/integration')
+      return result.integration
     },
 
     async saveIntegration(input) {
-      const supabase = sb()
-      const tenantId = getActiveTenantId()
-      const row = {
-        tenant_id: tenantId,
-        provider: 'plugbank',
-        bank_account_id: input.bankAccountId ?? null,
-        api_token: input.apiToken,
-        cnpj: input.cnpj,
-        environment: input.environment ?? 'production',
-        active: true,
-        updated_at: new Date().toISOString(),
-      }
-      // Upsert on the unique (tenant_id, bank_account_id, provider) key.
-      const { data, error } = await supabase
-        .from('bank_integrations')
-        .upsert(input.id ? { id: input.id, ...row } : row, { onConflict: 'tenant_id,bank_account_id,provider' })
-        .select()
-        .single()
-      if (error) throw error
-      return rowToIntegration(data)
+      const result = await bridge<{ integration: BankIntegration }>('/integration', {
+        method: 'PUT', body: JSON.stringify(input),
+      })
+      window.dispatchEvent(new CustomEvent('tecnospeed:integration-changed'))
+      return result.integration
     },
 
     async testConnection(input) {
-      const supabase = sb()
-      const { data, error } = await supabase.functions.invoke(FUNCTION, {
-        body: { action: 'test_connection', apiToken: input.apiToken, cnpj: input.cnpj, environment: input.environment ?? 'production' },
-      })
-      if (error) return { ok: false, message: error.message }
-      return data as TestConnectionResult
+      try {
+        return await bridge<TestConnectionResult>('/test', { method: 'POST', body: JSON.stringify(input) })
+      } catch (error: any) {
+        return { ok: false, message: error?.message ?? 'Falha ao validar a bridge TecnoSpeed' }
+      }
     },
 
     async fetchStatement(input) {
-      const supabase = sb()
-      const { data, error } = await supabase.functions.invoke(FUNCTION, {
-        body: { action: 'fetch_statement', integrationId: input.integrationId, from: input.from, to: input.to },
-      })
-      if (error) throw new Error(error.message)
-      return data as FetchStatementResult
+      return bridge<FetchStatementResult>('/statements/preview', { method: 'POST', body: JSON.stringify(input) })
     },
 
     async importTransactions(input) {
-      const supabase = sb()
-      const { data, error } = await supabase.functions.invoke(FUNCTION, {
-        body: {
-          action: 'import_transactions',
-          integrationId: input.integrationId,
-          bankAccountId: input.bankAccountId,
-          from: input.from,
-          to: input.to,
-          lines: input.lines,
-        },
-      })
-      if (error) throw new Error(error.message)
-      return data as ImportResult
+      return bridge<ImportResult>('/statements/import', { method: 'POST', body: JSON.stringify(input) })
     },
 
     async getSyncLog(integrationId) {
-      const supabase = sb()
-      const { data } = await supabase
-        .from('bank_integration_sync_log')
-        .select('*')
-        .eq('bank_integration_id', integrationId)
-        .order('created_at', { ascending: false })
-        .limit(20)
-      return (data ?? []).map((r: any) => ({
-        id: r.id,
-        periodFrom: r.period_from ?? undefined,
-        periodTo: r.period_to ?? undefined,
-        transactionsFetched: r.transactions_fetched ?? 0,
-        transactionsImported: r.transactions_imported ?? 0,
-        duplicates: r.duplicates ?? 0,
-        status: r.status,
-        errorMessage: r.error_message ?? undefined,
-        createdAt: r.created_at,
+      const result = await bridge<{ logs: any[] }>(`/sync-logs?integrationId=${encodeURIComponent(integrationId)}`)
+      return (result.logs ?? []).map((row: any) => ({
+        id: row.id,
+        periodFrom: row.periodFrom ?? undefined,
+        periodTo: row.periodTo ?? undefined,
+        transactionsFetched: row.fetched ?? 0,
+        transactionsImported: row.imported ?? 0,
+        duplicates: row.duplicates ?? 0,
+        status: row.status,
+        errorMessage: row.errorMessage ?? undefined,
+        createdAt: row.createdAt,
       }))
+    },
+
+    async listAccounts() {
+      const result = await bridge<{ accounts: any[] }>('/accounts')
+      return (result.accounts ?? []).map(normalizeAccount).filter((account) => account.accountHash)
+    },
+
+    async createAccount(input) {
+      const integration = await this.getIntegration()
+      if (!integration) throw new Error('Configure a integração antes de adicionar uma conta')
+      if (integration.statementSource !== 'legacy_worker') {
+        await bridge('/payers', {
+          method: 'POST',
+          body: JSON.stringify({
+            payerCpfCnpj: integration.payerCpfCnpj,
+            payload: { ...input.payer, statementActived: true },
+          }),
+        })
+      }
+      const created = await bridge<any>('/accounts', { method: 'POST', body: JSON.stringify({ payer: input.payer, account: input.account }) })
+      return normalizeAccount(created)
+    },
+
+    refreshAccount(accountHash) {
+      return bridge<any>(`/accounts/${encodeURIComponent(accountHash)}`).then(normalizeAccount)
+    },
+
+    async revokeAccount(accountHash) {
+      await bridge(`/accounts/${encodeURIComponent(accountHash)}/revoke`, { method: 'POST' })
+    },
+
+    async deleteAccount(accountHash) {
+      await bridge('/accounts', { method: 'DELETE', body: JSON.stringify({ accountHashes: [accountHash] }) })
+    },
+
+    async getSyncJob(jobId) {
+      const result = await bridge<{ job: SyncJobState }>(`/sync-jobs/${encodeURIComponent(jobId)}`)
+      return result.job
     },
   }
 }

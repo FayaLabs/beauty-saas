@@ -12,7 +12,6 @@ import { openBankingConnector } from './connectorDef'
 
 export { createOpenBankingProvider } from './data/supabase'
 export { openBankingConnector } from './connectorDef'
-export * from './schema'
 export * from './types'
 
 // Addon plugin: contributes the PlugBank connector into its host
