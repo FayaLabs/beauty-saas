@@ -1,0 +1,42 @@
+import React, { useEffect, useState } from 'react'
+import { AlertCircle, CheckCircle2, History, RefreshCw } from 'lucide-react'
+import { Button, toast } from '@fayz-ai/saas/ui'
+import type { ConnectorDefinition } from '@fayz-ai/saas'
+import { createGoogleCalendarProvider } from './data/supabase'
+import type { CalendarSyncLogEntry } from './types'
+
+const provider = createGoogleCalendarProvider()
+
+function GoogleCalendarPanel() {
+  const [connected, setConnected] = useState(false)
+  const [calendarId, setCalendarId] = useState('primary')
+  const [syncing, setSyncing] = useState(false)
+  const [log, setLog] = useState<CalendarSyncLogEntry[]>([])
+  useEffect(() => { void provider.getIntegration().then((value) => {
+    setConnected(Boolean(value?.connected)); if (value) setCalendarId(value.calendarId)
+    if (value?.connected) void provider.getSyncLog().then(setLog)
+  }).catch((error) => toast.error(error.message)) }, [])
+  if (!connected) return null
+  return <div className="space-y-4 border-t pt-4">
+    <div className="flex flex-wrap items-end gap-3">
+      <label className="block min-w-[220px] flex-1"><span className="text-xs font-medium text-muted-foreground">ID do calendário</span>
+        <input className="mt-1 w-full rounded-input border border-input bg-card px-3 py-2 text-sm" value={calendarId} onChange={(e) => setCalendarId(e.target.value)} placeholder="primary" />
+      </label>
+      <Button variant="outline" size="sm" onClick={() => void provider.setCalendar(calendarId).then(() => toast.success('Calendário salvo')).catch((e) => toast.error(e.message))}>Salvar</Button>
+      <Button variant="outline" size="sm" disabled={syncing} onClick={() => { setSyncing(true); void provider.syncNow().then((r) => { toast.success(`${r.written} agendamento(s) atualizado(s)`); return provider.getSyncLog() }).then(setLog).catch((e) => toast.error(e.message)).finally(() => setSyncing(false)) }}>
+        <RefreshCw className={`h-3.5 w-3.5 ${syncing ? 'animate-spin' : ''}`} /> Sincronizar agora
+      </Button>
+    </div>
+    {log.length > 0 && <div className="space-y-2"><div className="flex items-center gap-2"><History className="h-4 w-4" /><h4 className="text-sm font-semibold">Histórico</h4></div>
+      <div className="divide-y rounded-md border text-sm">{log.map((item) => <div key={item.id} className="flex items-center gap-3 px-3 py-2"><span className="text-xs text-muted-foreground">{new Date(item.createdAt).toLocaleString('pt-BR')}</span><span>{item.direction}</span><span className="ml-auto text-xs">{item.written}/{item.fetched}</span>{item.status === 'success' ? <CheckCircle2 className="h-3.5 w-3.5 text-success" /> : <AlertCircle className="h-3.5 w-3.5 text-warning" />}</div>)}</div>
+    </div>}
+  </div>
+}
+
+export const googleCalendarConnector: ConnectorDefinition = {
+  id: 'google-calendar', hostPluginId: 'agenda', name: 'Google Calendar',
+  description: 'Sincronização bidirecional entre a agenda e o Google Calendar.', icon: 'Calendar', authKind: 'oauth',
+  async getStatus() { return { connected: Boolean((await provider.getIntegration())?.connected) } },
+  startOAuth: (redirectTo) => provider.getConnectUrl(redirectTo),
+  disconnect: () => provider.disconnect(), ExtraPanel: GoogleCalendarPanel,
+}
