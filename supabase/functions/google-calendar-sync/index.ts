@@ -108,6 +108,29 @@ async function integrationFor(db: any, tenantId: string) {
   if (!data?.oauth_refresh_token) throw new Error('Google Calendar não conectado')
   return data
 }
+async function clearIntegrationCredentials(db: any, integrationId: string) {
+  await db.from('calendar_integrations').update({
+    active: false,
+    oauth_refresh_token: null,
+    oauth_access_token: null,
+    token_expires_at: null,
+    sync_token: null,
+    watch_channel_id: null,
+    watch_resource_id: null,
+    watch_token: null,
+    watch_expires_at: null,
+    updated_at: new Date().toISOString(),
+  }).eq('id', integrationId)
+}
+function isRevokedCredential(error: unknown): boolean {
+  const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase()
+  return (error as any)?.status === 401 || message.includes('invalid_grant') || message.includes('expired or revoked')
+}
+async function validateIntegrationCredential(db: any, integration: any) {
+  const token = await accessToken(db, integration)
+  const calendar = encodeURIComponent(integration.calendar_id || 'primary')
+  await google(token, `/calendars/${calendar}/events?maxResults=1&singleEvents=true`)
+}
 async function stopWatch(db: any, integration: any) {
   if (!integration.watch_channel_id || !integration.watch_resource_id) return
   try {
@@ -325,6 +348,20 @@ Deno.serve(async (req) => {
     if (body.action === 'oauth_start') return json({ url: consentUrl(await makeState({ tenantId: body.tenantId, redirectTo: allowedRedirect(body.redirectTo), exp: Date.now() + 10 * 60_000 })) })
     if (body.action === 'status') {
       const { data } = await db.from('calendar_integrations').select('*').eq('tenant_id', body.tenantId).eq('provider', 'google').maybeSingle()
+      if (data?.active && data.oauth_refresh_token) {
+        try {
+          await validateIntegrationCredential(db, data)
+        } catch (error) {
+          if (isRevokedCredential(error)) {
+            await clearIntegrationCredentials(db, data.id)
+            data.active = false
+            data.oauth_refresh_token = null
+            data.oauth_access_token = null
+          } else {
+            console.warn('[google-calendar-status] credential check skipped', error)
+          }
+        }
+      }
       return json({ integration: data ? { id: data.id, calendarId: data.calendar_id ?? 'primary', active: data.active ?? true, connected: Boolean(data.active && data.oauth_refresh_token), lastSyncAt: data.last_sync_at ?? undefined, watchExpiresAt: data.watch_expires_at ?? undefined, mappedAssigneeId: data.mapped_assignee_id ?? undefined } : null })
     }
     if (body.action === 'disconnect') {
@@ -340,7 +377,7 @@ Deno.serve(async (req) => {
         credentialUnreadable = true
       }
       if (credential) { const revoke = await fetch('https://oauth2.googleapis.com/revoke', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ token: credential }) }); if (!revoke.ok && revoke.status !== 400) throw new Error(`Google não confirmou a revogação (${revoke.status})`) }
-      await db.from('calendar_integrations').update({ active: false, oauth_refresh_token: null, oauth_access_token: null, token_expires_at: null, sync_token: null, watch_channel_id: null, watch_resource_id: null, watch_token: null, watch_expires_at: null, updated_at: new Date().toISOString() }).eq('id', integration.id)
+      await clearIntegrationCredentials(db, integration.id)
       return json({ ok: true, revokedAtGoogle: Boolean(credential), credentialUnreadable })
     }
     if (body.action === 'set_calendar') {
