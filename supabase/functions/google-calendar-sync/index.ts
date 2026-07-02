@@ -124,7 +124,10 @@ async function clearIntegrationCredentials(db: any, integrationId: string) {
 }
 function isRevokedCredential(error: unknown): boolean {
   const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase()
-  return (error as any)?.status === 401 || message.includes('invalid_grant') || message.includes('expired or revoked')
+  return (error as any)?.status === 401
+    || message.includes('invalid_grant')
+    || message.includes('expired or revoked')
+    || message.includes('incompatíveis com a chave atual')
 }
 async function validateIntegrationCredential(db: any, integration: any) {
   const token = await accessToken(db, integration)
