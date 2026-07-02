@@ -134,6 +134,17 @@ async function applyGoogleEvent(db: any, integration: any, event: any) {
   }
   if (!event.start?.dateTime) return // all-day events are intentionally not mapped to staff blocks.
   let bookingId = event.extendedProperties?.private?.beautyBookingId
+  if (bookingId) {
+    const { data: booking } = await db.schema('saas_core').from('bookings').select('id')
+      .eq('tenant_id', integration.tenant_id).eq('id', bookingId).maybeSingle()
+    if (!booking) {
+      // A Google event created by this tenant may outlive a locally deleted
+      // booking until its outbound delete job runs. Never resurrect it or let
+      // the stale private reference abort the incremental batch.
+      if (event.extendedProperties?.private?.beautyTenantId === integration.tenant_id) return
+      bookingId = undefined
+    }
+  }
   if (!bookingId) {
     const { data: linked } = await db.schema('saas_core').from('bookings').select('id').eq('tenant_id', integration.tenant_id).contains('metadata', { googleCalendarEventId: event.id }).maybeSingle()
     bookingId = linked?.id
