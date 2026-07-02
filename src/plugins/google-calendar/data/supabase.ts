@@ -30,7 +30,20 @@ async function invoke<T>(action: string, payload: Record<string, unknown> = {}):
   const { data, error } = await client().functions.invoke(FUNCTION, {
     body: { action, tenantId: activeTenantId, ...payload },
   })
-  if (error) throw new Error(error.message)
+  if (error) {
+    const response = (error as any).context as Response | undefined
+    if (response) {
+      try {
+        const details = await response.clone().json()
+        if (details?.error) throw new Error(details.error)
+      } catch (detailsError) {
+        if (detailsError instanceof Error && detailsError.message !== 'Unexpected end of JSON input') {
+          throw detailsError
+        }
+      }
+    }
+    throw new Error(error.message)
+  }
   if (data?.error) throw new Error(data.error)
   return data as T
 }

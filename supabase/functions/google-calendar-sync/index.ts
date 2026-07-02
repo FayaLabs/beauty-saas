@@ -123,7 +123,7 @@ async function startWatch(db: any, integration: any) {
 }
 async function command(db: any, name: string, args: Record<string, unknown>) {
   const { data, error } = await db.schema('saas_core').rpc(name, args)
-  if (error) throw error
+  if (error) throw new Error(`${name}: ${error.message}${error.details ? ` (${error.details})` : ''}`)
   return data
 }
 async function applyGoogleEvent(db: any, integration: any, event: any) {
@@ -316,8 +316,11 @@ Deno.serve(async (req) => {
       return json({ ok: true, revokedAtGoogle: Boolean(credential) })
     }
     if (body.action === 'set_calendar') {
-      const integration = await integrationFor(db, body.tenantId); await stopWatch(db, integration)
-      const { data: updated, error } = await db.from('calendar_integrations').update({ calendar_id: body.calendarId || 'primary', sync_token: null, updated_at: new Date().toISOString() }).eq('id', integration.id).select('*').single(); if (error) throw error
+      const integration = await integrationFor(db, body.tenantId)
+      const requestedCalendar = body.calendarId || 'primary'
+      if (integration.calendar_id === requestedCalendar) return json({ ok: true, changed: false })
+      await stopWatch(db, integration)
+      const { data: updated, error } = await db.from('calendar_integrations').update({ calendar_id: requestedCalendar, sync_token: null, updated_at: new Date().toISOString() }).eq('id', integration.id).select('*').single(); if (error) throw new Error(error.message)
       await incrementalSync(db, updated, 'calendar_changed'); await seedOutbound(db, body.tenantId); await startWatch(db, updated); return json({ ok: true })
     }
     if (body.action === 'pull_events') return json(await incrementalSync(db, await integrationFor(db, body.tenantId), body.trigger || 'manual'))
