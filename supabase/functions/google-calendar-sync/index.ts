@@ -52,9 +52,13 @@ async function encryptToken(value?: string | null): Promise<string | null> {
 async function decryptToken(value?: string | null): Promise<string | null> {
   if (!value) return null
   if (!value.startsWith('v1.')) return value // migration compatibility; reconnect rewrites encrypted.
-  const [, iv, cipher] = value.split('.')
-  const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: decode(iv) }, await encryptionKey(), decode(cipher))
-  return new TextDecoder().decode(plain)
+  try {
+    const [, iv, cipher] = value.split('.')
+    const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: decode(iv) }, await encryptionKey(), decode(cipher))
+    return new TextDecoder().decode(plain)
+  } catch {
+    throw new Error('Credenciais Google incompatíveis com a chave atual; desconecte e conecte novamente')
+  }
 }
 function allowedRedirect(raw: string): string {
   const target = new URL(raw || 'http://localhost:5180')
@@ -325,10 +329,19 @@ Deno.serve(async (req) => {
     }
     if (body.action === 'disconnect') {
       const integration = await integrationFor(db, body.tenantId); await stopWatch(db, integration)
-      const credential = await decryptToken(integration.oauth_refresh_token) ?? await decryptToken(integration.oauth_access_token)
+      let credential: string | null = null
+      let credentialUnreadable = false
+      try {
+        credential = await decryptToken(integration.oauth_refresh_token) ?? await decryptToken(integration.oauth_access_token)
+      } catch {
+        // Key rotation without token re-encryption makes the old credential
+        // unrecoverable. Local disconnect must still succeed so the tenant can
+        // reconnect; Google-side access should then be reviewed by the user.
+        credentialUnreadable = true
+      }
       if (credential) { const revoke = await fetch('https://oauth2.googleapis.com/revoke', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ token: credential }) }); if (!revoke.ok && revoke.status !== 400) throw new Error(`Google não confirmou a revogação (${revoke.status})`) }
       await db.from('calendar_integrations').update({ active: false, oauth_refresh_token: null, oauth_access_token: null, token_expires_at: null, sync_token: null, watch_channel_id: null, watch_resource_id: null, watch_token: null, watch_expires_at: null, updated_at: new Date().toISOString() }).eq('id', integration.id)
-      return json({ ok: true, revokedAtGoogle: Boolean(credential) })
+      return json({ ok: true, revokedAtGoogle: Boolean(credential), credentialUnreadable })
     }
     if (body.action === 'set_calendar') {
       const integration = await integrationFor(db, body.tenantId)
