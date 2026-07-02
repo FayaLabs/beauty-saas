@@ -1,29 +1,30 @@
-# Revisão final — Google Calendar
+# Revisão de prontidão — Google Calendar
 
-Data: 2026-07-01
+Data: 2026-07-02
 
 ## Decisão
 
-**GO condicionado para staging; NO-GO para produção sem o checklist operacional.**
+**GO para staging controlado. NO-GO para produção em massa até concluir operação e carga.**
 
-Concluído no código:
+## Validado
 
-- domain events transacionais e comandos públicos no SDK;
-- roteamento somente para extensão conectada;
-- outbox/inbox, claim concorrente, retry exponencial e dead-letter;
-- outbound por booking, sem scan periódico;
-- webhook validado, `events.watch`, `syncToken` e recuperação de HTTP 410;
-- origin/correlation ID contra loops;
-- tokens cifrados e mapeamento explícito para profissional;
-- polling do browser removido.
+- OAuth, revogação e detecção de token revogado;
+- criptografia AES-GCM e recuperação após troca indevida de chave;
+- create/update/cancel/delete bidirecional;
+- domain events, outbox/inbox, idempotência e loop prevention;
+- webhook não bloqueante, cron de recuperação e watch renewal;
+- incremental sync, HTTP 410 e referências órfãs;
+- Realtime atualizando Agenda sem clique manual;
+- isolamento por tenant nos endpoints e reconciliação manual;
+- builds SDK/app e typecheck Deno.
 
-Antes de produção:
+## Bloqueadores de produção em massa
 
-- aplicar migrations empilhadas em staging e executar o roteiro E2E;
-- configurar Database Webhook, cron do worker e renovação de canais;
-- criar alertas de dead-letter, backlog e falhas OAuth/Google;
-- executar carga, concorrência, quotas e isolamento multi-tenant;
-- definir retenção e limpeza de domain events, outbox e inbox concluídos.
+- teste de carga com volume e quotas realistas;
+- dashboards/alertas de backlog, `dead`, latência e OAuth;
+- retenção e purge de dados operacionais;
+- runbook de incidentes e rotação assistida de chave;
+- separar superfícies públicas e autenticadas em Edge Functions distintas;
+- decidir semântica financeira da exclusão de appointment originada no Google.
 
-O PR BeautySaaS depende do PR fayz-sdk. Não retargetar para `main` sem garantir a
-ordem de migrations.
+O PR BeautySaaS depende do PR fayz-sdk e da ordem documentada de migrations.

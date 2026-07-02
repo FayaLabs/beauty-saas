@@ -1,64 +1,111 @@
 # Integração Google Calendar
 
-## Arquitetura
+## Estado
 
-A Agenda é dona dos bookings e não conhece Google. A migration `009_booking_domain_events.sql`
-do fayz-sdk grava, na mesma transação, um dos eventos duráveis `booking.created`,
-`booking.updated`, `booking.status_changed`, `booking.cancelled` ou `booking.deleted`.
+Integração bidirecional validada em staging. O transporte normal é automático;
+`Sincronizar agora` existe somente para reconciliação e suporte.
 
-Quando a extensão Google está ativa e conectada, o roteador cria um job na
-`calendar_event_outbox`. O worker entrega somente esse booking ao Google. A tela
-nunca aguarda uma chamada externa.
+## Limites de responsabilidade
 
-No sentido inverso, `events.watch` chama o webhook, que valida channel ID,
-resource ID e channel token e persiste a notificação em `calendar_webhook_inbox`.
-O worker usa `syncToken` e chama os comandos públicos da Agenda com
-`origin=google-calendar` e correlation ID. Isso impede loops. HTTP 410 invalida o
-cursor e dispara um novo full sync controlado.
+- Agenda é dona de bookings e publica eventos neutros.
+- A extensão Google conhece OAuth, Calendar API, outbox, inbox e cursores.
+- Nenhum componente ou comando da Agenda chama o Google diretamente.
+- Falhas externas nunca impedem criar, editar ou excluir um booking.
 
-O polling no browser e o scan de 180 dias foram removidos. “Sincronizar agora” é
-somente uma ferramenta de reconciliação.
+## Fluxo outbound
 
-## Ordem de deploy
+```text
+comando Agenda
+  -> booking + domain_event na mesma transação
+  -> roteador verifica extensão ativa/conectada
+  -> calendar_event_outbox
+  -> trigger assíncrono pg_net
+  -> Edge worker
+  -> Google Calendar
+```
 
-1. Aplicar `fayz-sdk/packages/db/migrations/009_booking_domain_events.sql`.
-2. Aplicar as migrations deste repositório, incluindo
-   `20260701000007_google_calendar_durable_delivery.sql`.
-3. Configurar os secrets e implantar `google-calendar-sync`.
-4. Configurar Database Webhook para INSERT em `calendar_event_outbox`, chamando
-   a Edge Function com `{"action":"process_outbox"}` e header `X-Worker-Secret`.
-5. Configurar cron de reconciliação do worker a cada minuto.
-6. Renovar diariamente canais que expirem nas próximas 24 horas.
+O ID Google criado pelo BeautySaaS é determinístico. Repetir um job não cria
+eventos duplicados. Jobs usam claim com `FOR UPDATE SKIP LOCKED`, oito tentativas,
+backoff exponencial e estado `dead`.
 
-Secrets server-side:
+## Fluxo inbound
+
+```text
+Google events.watch
+  -> webhook valida channel/resource/token
+  -> calendar_webhook_inbox
+  -> events.list com syncToken
+  -> comando público da Agenda
+  -> Supabase Realtime
+  -> agenda:refresh
+```
+
+Eventos externos viram bloqueios do profissional mapeado. Eventos all-day são
+ignorados. HTTP 410 invalida o cursor e executa full sync controlado desde 30 dias
+atrás. `origin=google-calendar` evita feedback loop.
+
+## Configuração
+
+Aplicar primeiro `fayz-sdk/packages/db/migrations/009_booking_domain_events.sql`
+e depois as migrations deste repositório. Configurar:
 
 ```text
 GOOGLE_CLIENT_ID
 GOOGLE_CLIENT_SECRET
 GCAL_REDIRECT_URI=https://<project-ref>.supabase.co/functions/v1/google-calendar-sync
 GCAL_WEBHOOK_URL=https://<project-ref>.supabase.co/functions/v1/google-calendar-sync
-GCAL_STATE_SECRET=<32 bytes aleatórios ou mais>
-GCAL_TOKEN_ENCRYPTION_KEY=<32 bytes aleatórios ou mais>
-GCAL_WORKER_SECRET=<32 bytes aleatórios ou mais>
-GCAL_ALLOWED_REDIRECT_ORIGINS=http://localhost:5180,https://app.exemplo.com
+GCAL_STATE_SECRET=<aleatório>
+GCAL_TOKEN_ENCRYPTION_KEY=<aleatório e estável>
+GCAL_WORKER_SECRET=<aleatório>
+GCAL_ALLOWED_REDIRECT_ORIGINS=https://app.exemplo.com
 ```
 
-Tokens legados sem prefixo `v1.` são aceitos temporariamente. Reconectar a conta
-os regrava cifrados com AES-GCM. Nunca exponha esses valores em variáveis `VITE_*`.
+O banco precisa do mesmo valor de `GCAL_WORKER_SECRET`, com nome fixo no Vault:
 
-## Teste em staging
+```sql
+select vault.create_secret(
+  '<mesmo valor de GCAL_WORKER_SECRET>',
+  'gcal_worker_secret',
+  'Google Calendar worker secret'
+);
+```
 
-1. Habilitar `VITE_GOOGLE_CALENDAR_ENABLED=true`.
-2. Conectar uma conta e selecionar calendário e profissional.
-3. Criar, editar, cancelar e excluir um agendamento no BeautySaaS; validar Google.
-4. Criar, editar e excluir um evento no Google; validar BeautySaaS.
-5. Repetir notificações e worker para validar idempotência.
-6. Simular falha Google, validar retry e depois recuperação.
-7. Validar dois tenants sem vazamento de dados.
-8. Desconectar e confirmar revogação na Conta Google.
+Os argumentos são valor, nome e descrição. Nunca use o token como nome. A Edge
+Function preenche `calendar_worker_config.endpoint_url` a partir de
+`GCAL_WEBHOOK_URL`; nenhuma migration depende do project ref de staging.
 
-## Liberação para produção
+## Secrets e rotação
 
-O código fica apto a staging. Produção exige ainda alertas para filas `dead`,
-limites de backlog, teste de carga/quota, política de retenção de eventos/jobs e
-automação operacional dos webhooks, cron e renovação de canais.
+- `GCAL_TOKEN_ENCRYPTION_KEY` cifra tokens OAuth com AES-GCM. Não rotacionar sem
+  uma migração de recriptografia. Se for perdida, é obrigatório reconectar contas.
+- `GCAL_WORKER_SECRET` pode ser rotacionado, mas Edge Secret e Vault devem ser
+  atualizados juntos.
+- Nunca colocar secrets em `VITE_*`, logs, screenshots, SQL versionado ou metadata.
+- Revogação manual no Google é detectada ao consultar o status da integração.
+
+## Recuperação
+
+- Database trigger entrega imediatamente.
+- Cron `google-calendar-worker-reconciliation` roda a cada minuto e recupera
+  retries, claims abandonados, inbox pendente e canais próximos da expiração.
+- `Sincronizar agora` drena somente o tenant autenticado e depois faz incremental.
+- Falhas ficam em `calendar_sync_log`; jobs esgotados permanecem como `dead`.
+
+## Teste E2E
+
+1. Conectar e mapear profissional.
+2. Criar, editar, cancelar e excluir no BeautySaaS sem sincronização manual.
+3. Criar, mover e excluir no Google/celular sem sincronização manual.
+4. Confirmar atualização da tela via Realtime.
+5. Repetir notificações/jobs e confirmar ausência de duplicatas.
+6. Revogar no Google e confirmar status local desconectado.
+7. Validar isolamento com dois tenants.
+
+## Próxima evolução
+
+- métricas e alertas para backlog/dead-letter;
+- retenção automática de events/jobs concluídos;
+- testes automatizados contra Google sandbox/conta dedicada;
+- rate limiting por tenant e controle explícito de quota;
+- separar callback OAuth, webhook e worker em funções independentes;
+- política explícita para exclusão Google de appointments com financeiro.

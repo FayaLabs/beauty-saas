@@ -1,37 +1,60 @@
 # Guia para IA/agentes — Google Calendar
 
-## Invariantes
+## Invariantes obrigatórias
 
-1. Agenda é o aggregate owner; Google é extensão opcional.
-2. Não importar SDK Google nem chamar Edge Function em componentes, store ou provider da Agenda.
-3. Fluxo outbound: transação -> `domain_events` -> outbox -> worker -> Google.
-4. Fluxo inbound: webhook -> inbox -> `syncToken` -> comando público da Agenda.
-5. Toda operação inclui tenant, origin e correlation ID.
-6. `origin=google-calendar` nunca volta para a outbox Google.
-7. O webhook confirma rápido; processamento acontece após persistência na inbox.
-8. Polling é reconciliação, nunca transporte principal.
+1. Agenda é aggregate owner; Google é consumidor opcional.
+2. Nunca chamar Google dentro da transação do booking.
+3. Outbound é `domain_events -> outbox -> worker`.
+4. Inbound é `watch -> inbox -> syncToken -> comando Agenda`.
+5. Toda operação carrega tenant, origin e correlation ID.
+6. Eventos com `origin=google-calendar` não retornam à outbox Google.
+7. Entrega é at-least-once; toda operação externa deve ser idempotente.
+8. Falha de configuração/rede apenas registra erro; nunca aborta booking.
+9. Polling não é transporte. O botão manual é reconciliação tenant-scoped.
+10. Nunca persistir secrets em código, migrations, payloads ou logs.
 
 ## Contratos
 
-O contrato canônico está em `fayz-sdk/packages/db/migrations/009_booking_domain_events.sql`
-e os tipos em `plugins/plugin-agenda/src/types.ts`. A extensão roteia os cinco
-eventos `booking.*` definidos ali. Inbound usa exclusivamente:
+Eventos canônicos:
 
-- `saas_core.command_update_booking`;
-- `saas_core.command_import_external_block`;
-- `saas_core.command_delete_external_booking`;
-- `saas_core.command_link_external_event`.
+- `booking.created`
+- `booking.updated`
+- `booking.status_changed`
+- `booking.cancelled`
+- `booking.deleted`
 
-Não escrever diretamente em bookings na Edge Function. Não colocar credenciais
-em logs, metadata, localStorage ou código cliente.
+Comandos inbound permitidos:
 
-## Arquivos
+- `saas_core.command_update_booking`
+- `saas_core.command_import_external_block`
+- `saas_core.command_delete_external_booking`
+- `saas_core.command_link_external_event`
 
-- `supabase/migrations/20260701000007_google_calendar_durable_delivery.sql`:
-  watch state, roteamento, outbox/inbox, claims e mapeamento;
-- `supabase/functions/google-calendar-sync/index.ts`: OAuth, webhook, cursor e workers;
-- `src/plugins/google-calendar`: control plane e configuração;
-- `docs/GOOGLE_CALENDAR_INTEGRATION.md`: deploy e teste humano.
+Não escrever bookings diretamente na Edge Function.
 
-Qualquer mudança deve validar idempotência, ausência de loop, concorrência,
-isolamento multi-tenant, revogação OAuth e recuperação de falhas.
+## Dados operacionais
+
+- `calendar_integrations`: conexão, tokens cifrados, cursor e watch.
+- `calendar_event_outbox`: entrega outbound e dead-letter.
+- `calendar_webhook_inbox`: deduplicação das notificações Google.
+- `calendar_sync_log`: auditoria legível pelo tenant.
+- `calendar_worker_config`: endpoint não secreto preenchido pela Edge.
+- Vault `gcal_worker_secret`: mesmo valor do Edge Secret
+  `GCAL_WORKER_SECRET`.
+
+## Regras de mudança
+
+- alterar payload exige versão compatível;
+- migrations devem ser idempotentes e não conter project ref;
+- preservar 404/410 como sucesso em delete remoto;
+- preservar fallback 410 do syncToken;
+- não reduzir validações de membership, canal ou worker secret;
+- validar Deno, TypeScript, build SDK, RLS e loop antes de publicar.
+
+## Arquivos de referência
+
+- `supabase/functions/google-calendar-sync/index.ts`
+- `supabase/migrations/20260701000007_google_calendar_durable_delivery.sql`
+- `docs/GOOGLE_CALENDAR_INTEGRATION.md`
+- `fayz-sdk/packages/db/migrations/009_booking_domain_events.sql`
+- `fayz-sdk/plugins/plugin-agenda/docs/EXTENSION_HOOKS.md`
