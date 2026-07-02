@@ -39,7 +39,7 @@ export function createGoogleCalendarProvider() {
   return {
     async getIntegration(): Promise<CalendarIntegration | null> {
       const data = await invoke<{
-        integration: { id: string; calendarId: string; active: boolean; connected: boolean; lastSyncAt?: string } | null
+        integration: CalendarIntegration | null
       }>('status')
       return data.integration
     },
@@ -47,6 +47,8 @@ export function createGoogleCalendarProvider() {
       return (await invoke<{ url: string }>('oauth_start', { redirectTo })).url
     },
     async setCalendar(calendarId: string) { await invoke('set_calendar', { calendarId }) },
+    async getMappingOptions() { return invoke<{ professionals: Array<{ id: string; name: string }> }>('mapping_options') },
+    async setMapping(assigneeId: string) { await invoke('set_mapping', { assigneeId }) },
     async disconnect() { await invoke('disconnect') },
     async syncNow() { return invoke<{ fetched: number; written: number }>('pull_events', { trigger: 'manual' }) },
     async getSyncLog(): Promise<CalendarSyncLogEntry[]> {

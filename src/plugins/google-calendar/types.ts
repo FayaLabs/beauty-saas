@@ -4,6 +4,8 @@ export interface CalendarIntegration {
   connected: boolean
   active: boolean
   lastSyncAt?: string
+  watchExpiresAt?: string
+  mappedAssigneeId?: string
 }
 
 export interface CalendarSyncLogEntry {

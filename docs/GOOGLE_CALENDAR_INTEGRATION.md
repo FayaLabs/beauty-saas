@@ -1,126 +1,64 @@
 # Integração Google Calendar
 
-## Objetivo
+## Arquitetura
 
-Conectar a Agenda do BeautySaaS ao Google Calendar sem acoplar o plugin Agenda
-ao provedor Google. A Agenda é dona dos bookings; a extensão é uma consumidora
-opcional dos eventos de domínio publicados pela Agenda.
+A Agenda é dona dos bookings e não conhece Google. A migration `009_booking_domain_events.sql`
+do fayz-sdk grava, na mesma transação, um dos eventos duráveis `booking.created`,
+`booking.updated`, `booking.status_changed`, `booking.cancelled` ou `booking.deleted`.
 
-## Estado atual
+Quando a extensão Google está ativa e conectada, o roteador cria um job na
+`calendar_event_outbox`. O worker entrega somente esse booking ao Google. A tela
+nunca aguarda uma chamada externa.
 
-O ambiente de homologação comprova:
+No sentido inverso, `events.watch` chama o webhook, que valida channel ID,
+resource ID e channel token e persiste a notificação em `calendar_webhook_inbox`.
+O worker usa `syncToken` e chama os comandos públicos da Agenda com
+`origin=google-calendar` e correlation ID. Isso impede loops. HTTP 410 invalida o
+cursor e dispara um novo full sync controlado.
 
-- OAuth Google com credenciais exclusivamente server-side;
-- isolamento por tenant;
-- conexão, status, troca de calendário e revogação do consentimento;
-- criação, atualização e exclusão nos dois sentidos;
-- importação de eventos Google como bloqueios quando existe exatamente um
-  profissional ativo;
-- histórico de sincronização e reconciliação manual;
-- polling rápido somente em `DEV`, para facilitar testes.
+O polling no browser e o scan de 180 dias foram removidos. “Sincronizar agora” é
+somente uma ferramenta de reconciliação.
 
-O polling e a varredura de 180 dias são mecanismos de homologação. Eles não são
-o desenho aprovado para produção e devem ser removidos quando hooks duráveis,
-outbox e notificações `events.watch` estiverem completos.
+## Ordem de deploy
 
-## Arquitetura aprovada para produção
+1. Aplicar `fayz-sdk/packages/db/migrations/009_booking_domain_events.sql`.
+2. Aplicar as migrations deste repositório, incluindo
+   `20260701000007_google_calendar_durable_delivery.sql`.
+3. Configurar os secrets e implantar `google-calendar-sync`.
+4. Configurar Database Webhook para INSERT em `calendar_event_outbox`, chamando
+   a Edge Function com `{"action":"process_outbox"}` e header `X-Worker-Secret`.
+5. Configurar cron de reconciliação do worker a cada minuto.
+6. Renovar diariamente canais que expirem nas próximas 24 horas.
 
-```text
-Agenda command
-  -> grava booking e domain event na mesma transação
-  -> outbox durável
-  -> extensão ativa recebe o hook
-  -> fila do Google Calendar
-  -> worker idempotente
-  -> Google Calendar API
-
-Google events.watch
-  -> webhook autenticado
-  -> fila de entrada
-  -> leitura incremental com syncToken
-  -> comando público da Agenda
-  -> origin=google_calendar evita loop
-```
-
-A Agenda nunca importa SDKs Google, não conhece OAuth e não chama a Edge
-Function do conector. Ela publica apenas eventos neutros:
-
-- `booking.created`;
-- `booking.updated`;
-- `booking.status_changed`;
-- `booking.cancelled`;
-- `booking.deleted`.
-
-A extensão registra quais eventos consome. Se não estiver instalada e ativa no
-tenant, nenhum job Google deve ser criado.
-
-## Regras de consistência
-
-- Toda operação externa possui `idempotency_key`.
-- O vínculo usa `(tenant_id, booking_id, provider, external_event_id)`.
-- Handlers nunca bloqueiam o salvamento da Agenda esperando o Google.
-- Falhas usam retry exponencial com jitter e dead-letter.
-- Alterações inbound carregam `origin=google_calendar` e `external_event_id`.
-- Exclusões usam tombstone/outbox; nunca dependem do booking continuar existindo.
-- Polling periódico é apenas reconciliação, não transporte principal.
-
-## Segurança
-
-- `GOOGLE_CLIENT_SECRET`, refresh tokens e service-role nunca entram no browser.
-- Toda ação autenticada valida JWT, tenant ativo e membership.
-- O callback OAuth usa estado HMAC, expiração e allowlist de retorno.
-- A revogação chama o endpoint Google antes de apagar tokens locais.
-- Logs não podem conter tokens, códigos OAuth nem payloads sensíveis.
-
-## Secrets de homologação
+Secrets server-side:
 
 ```text
 GOOGLE_CLIENT_ID
 GOOGLE_CLIENT_SECRET
 GCAL_REDIRECT_URI=https://<project-ref>.supabase.co/functions/v1/google-calendar-sync
+GCAL_WEBHOOK_URL=https://<project-ref>.supabase.co/functions/v1/google-calendar-sync
 GCAL_STATE_SECRET=<32 bytes aleatórios ou mais>
-GCAL_ALLOWED_REDIRECT_ORIGINS=http://localhost:5180
+GCAL_TOKEN_ENCRYPTION_KEY=<32 bytes aleatórios ou mais>
+GCAL_WORKER_SECRET=<32 bytes aleatórios ou mais>
+GCAL_ALLOWED_REDIRECT_ORIGINS=http://localhost:5180,https://app.exemplo.com
 ```
 
-## Banco e deploy
+Tokens legados sem prefixo `v1.` são aceitos temporariamente. Reconectar a conta
+os regrava cifrados com AES-GCM. Nunca exponha esses valores em variáveis `VITE_*`.
 
-As migrations versionadas ficam em `supabase/migrations`. A função fica em
-`supabase/functions/google-calendar-sync`.
+## Teste em staging
 
-```powershell
-npx supabase link --project-ref <project-ref>
-npx supabase db push --dry-run
-npx supabase db push
-npx supabase functions deploy google-calendar-sync --project-ref <project-ref>
-```
+1. Habilitar `VITE_GOOGLE_CALENDAR_ENABLED=true`.
+2. Conectar uma conta e selecionar calendário e profissional.
+3. Criar, editar, cancelar e excluir um agendamento no BeautySaaS; validar Google.
+4. Criar, editar e excluir um evento no Google; validar BeautySaaS.
+5. Repetir notificações e worker para validar idempotência.
+6. Simular falha Google, validar retry e depois recuperação.
+7. Validar dois tenants sem vazamento de dados.
+8. Desconectar e confirmar revogação na Conta Google.
 
-Sempre revisar o `--dry-run`. Nunca mover secrets para variáveis `VITE_*`.
+## Liberação para produção
 
-Para habilitar o addon apenas no ambiente de homologação:
-
-```text
-VITE_GOOGLE_CALENDAR_ENABLED=true
-```
-
-Sem essa variável, o addon e o polling DEV não são registrados.
-
-## Teste de homologação
-
-1. Conectar uma conta em Configurações -> Agenda -> Integrações.
-2. Confirmar status conectado e calendário `primary`.
-3. Criar booking com cliente, profissional e serviço realmente selecionados.
-4. Confirmar criação no Google.
-5. Alterar horário no Google e confirmar atualização no BeautySaaS.
-6. Excluir no BeautySaaS e confirmar exclusão no Google.
-7. Criar evento futuro no Google e confirmar importação como bloqueio.
-8. Desconectar e confirmar revogação nas conexões da Conta Google.
-
-## Critérios antes de produção
-
-- hooks da Agenda e contratos de payload versionados;
-- outbox transacional e worker concorrente;
-- `events.watch`, renovação de canais e `syncToken` incremental;
-- mapeamento explícito calendário -> profissional/unidade;
-- criptografia de refresh token;
-- métricas, alertas, retry, dead-letter e reconciliação;
-- testes de idempotência, loop, concorrência, quota e isolamento multi-tenant.
+O código fica apto a staging. Produção exige ainda alertas para filas `dead`,
+limites de backlog, teste de carga/quota, política de retenção de eventos/jobs e
+automação operacional dos webhooks, cron e renovação de canais.

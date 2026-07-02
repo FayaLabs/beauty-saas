@@ -11,10 +11,12 @@ function GoogleCalendarPanel() {
   const [connected, setConnected] = useState(false)
   const [calendarId, setCalendarId] = useState('primary')
   const [syncing, setSyncing] = useState(false)
+  const [assigneeId, setAssigneeId] = useState('')
+  const [professionals, setProfessionals] = useState<Array<{ id: string; name: string }>>([])
   const [log, setLog] = useState<CalendarSyncLogEntry[]>([])
   useEffect(() => { void provider.getIntegration().then((value) => {
-    setConnected(Boolean(value?.connected)); if (value) setCalendarId(value.calendarId)
-    if (value?.connected) void provider.getSyncLog().then(setLog)
+    setConnected(Boolean(value?.connected)); if (value) { setCalendarId(value.calendarId); setAssigneeId(value.mappedAssigneeId ?? '') }
+    if (value?.connected) { void provider.getSyncLog().then(setLog); void provider.getMappingOptions().then((result) => setProfessionals(result.professionals)) }
   }).catch((error) => toast.error(error.message)) }, [])
   if (!connected) return null
   return <div className="space-y-4 border-t pt-4">
@@ -22,6 +24,12 @@ function GoogleCalendarPanel() {
       <label className="block min-w-[220px] flex-1"><span className="text-xs font-medium text-muted-foreground">ID do calendário</span>
         <input className="mt-1 w-full rounded-input border border-input bg-card px-3 py-2 text-sm" value={calendarId} onChange={(e) => setCalendarId(e.target.value)} placeholder="primary" />
       </label>
+      <label className="block min-w-[220px] flex-1"><span className="text-xs font-medium text-muted-foreground">Profissional para eventos externos</span>
+        <select className="mt-1 w-full rounded-input border border-input bg-card px-3 py-2 text-sm" value={assigneeId} onChange={(e) => setAssigneeId(e.target.value)}>
+          <option value="">Selecione</option>{professionals.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
+        </select>
+      </label>
+      <Button variant="outline" size="sm" disabled={!assigneeId} onClick={() => void provider.setMapping(assigneeId).then(() => toast.success('Profissional salvo')).catch((e) => toast.error(e.message))}>Salvar profissional</Button>
       <Button variant="outline" size="sm" onClick={() => void provider.setCalendar(calendarId).then(() => toast.success('Calendário salvo')).catch((e) => toast.error(e.message))}>Salvar</Button>
       <Button variant="outline" size="sm" disabled={syncing} onClick={() => { setSyncing(true); void provider.syncNow().then((r) => { toast.success(`${r.written} agendamento(s) atualizado(s)`); return provider.getSyncLog() }).then(setLog).catch((e) => toast.error(e.message)).finally(() => setSyncing(false)) }}>
         <RefreshCw className={`h-3.5 w-3.5 ${syncing ? 'animate-spin' : ''}`} /> Sincronizar agora
