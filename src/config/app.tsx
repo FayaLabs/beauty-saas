@@ -2,12 +2,13 @@ import { createArchetypeLookup, type FayzAppConfig } from '@fayz-ai/saas'
 import { createFinancialPlugin, createSafeFinancialProvider } from '@fayz-ai/plugin-financial'
 import { createInventoryPlugin } from '@fayz-ai/plugin-inventory'
 import { createCrmPlugin } from '@fayz-ai/plugin-crm'
-import { createAgendaPlugin, createFinancialBridge, createGoogleCalendarPlugin } from '@fayz-ai/plugin-agenda'
+import { createAgendaPlugin, createFinancialBridge } from '@fayz-ai/plugin-agenda'
 import { createCustomFormsPlugin } from '@fayz-ai/plugin-forms'
 import { createTasksPlugin } from '@fayz-ai/plugin-tasks'
 import { createMarketingPlugin } from '@fayz-ai/plugin-marketing'
 
 import { createOpenBankingPlugin } from '../plugins/openbanking'
+import { createGoogleCalendarPlugin } from '../plugins/google-calendar'
 import { Logo } from '../components/Logo'
 import { clientEntity } from '../types/client'
 import { beautyBilling } from './billing'
@@ -142,9 +143,10 @@ export const beautyAppConfig: FayzAppConfig = {
       // Open Banking connector (Tecnospeed PlugBank) — settings-only; feeds the
       // financial Conciliação view. App-local incubator plugin.
       createOpenBankingPlugin(),
-      // Google Calendar — official SDK integration; two-way booking sync,
-      // settings-only UI. Deploy supabase/functions/google-calendar-sync.
-      createGoogleCalendarPlugin(),
+      // Experimental Google Calendar addon. Explicit opt-in for homologation.
+      ...(import.meta.env.VITE_GOOGLE_CALENDAR_ENABLED === 'true'
+        ? [createGoogleCalendarPlugin()]
+        : []),
       createInventoryPlugin({
         navPosition: 4,
         currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },

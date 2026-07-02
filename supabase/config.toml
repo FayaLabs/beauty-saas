@@ -394,3 +394,7 @@ s3_secret_key = "env(S3_SECRET_KEY)"
 # declarative_schema_path = "./declarative"
 # JSON string passed through to pg-delta SQL formatting.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":80,\"commaStyle\":\"trailing\"}"
+# Google calls the OAuth callback without a Supabase JWT. The function validates
+# authenticated POST actions itself and verifies signed, expiring OAuth state.
+[functions.google-calendar-sync]
+verify_jwt = false

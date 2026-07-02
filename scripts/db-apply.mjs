@@ -13,8 +13,9 @@
 import { readdirSync, readFileSync, existsSync } from 'node:fs'
 import { basename, resolve } from 'node:path'
 
-const REF = process.env.SUPABASE_REF || 'gphxclpkbtbucoqclbco'
+const REF = process.env.SUPABASE_REF
 const PAT = process.env.SUPABASE_PAT
+if (!REF) { console.error('SUPABASE_REF env var required'); process.exit(1) }
 if (!PAT) { console.error('✗ SUPABASE_PAT env var required'); process.exit(1) }
 
 const CWD = process.cwd()
@@ -67,6 +68,11 @@ for (const p of ENABLED_PLUGINS) {
     }
     await run(readFileSync(f, 'utf8'), `${p}/${basename(f)}`)
   }
+}
+
+console.log('â–¸ Google Calendar addon')
+for (const f of sqlFiles(resolve(CWD, 'supabase', 'migrations'))) {
+  await run(readFileSync(f, 'utf8'), `google-calendar/${basename(f)}`)
 }
 
 console.log('â–¸ TecnoSpeed Windows bridge (Open Finance)')
