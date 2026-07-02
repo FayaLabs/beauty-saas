@@ -234,8 +234,10 @@ async function deliverOutboxItem(db: any, item: any) {
     await command(db, 'command_link_external_event', { p_tenant_id: item.tenant_id, p_booking_id: item.aggregate_id, p_external_id: saved.id, p_origin: ORIGIN, p_correlation_id: item.correlation_id })
   }
 }
-async function processOutbox(db: any, limit = 25) {
-  const { data: items, error } = await db.rpc('claim_google_calendar_outbox', { p_limit: limit })
+async function processOutbox(db: any, limit = 25, tenantId?: string) {
+  const claim = tenantId ? 'claim_google_calendar_outbox_for_tenant' : 'claim_google_calendar_outbox'
+  const args = tenantId ? { p_tenant_id: tenantId, p_limit: limit } : { p_limit: limit }
+  const { data: items, error } = await db.rpc(claim, args)
   if (error) throw error
   let completed = 0; let failed = 0
   for (const item of items ?? []) {
@@ -310,7 +312,9 @@ Deno.serve(async (req) => {
     }
     if (req.method !== 'POST') return json({ error: 'Método não permitido' }, 405)
     const body = await req.json()
-    if (body.action === 'process_outbox' && req.headers.get('X-Worker-Secret') === env('GCAL_WORKER_SECRET')) {
+    const validWorker = req.headers.get('X-Worker-Secret') === env('GCAL_WORKER_SECRET') && Boolean(env('GCAL_WORKER_SECRET'))
+    const isOutboxWebhook = body.type === 'INSERT' && body.table === 'calendar_event_outbox'
+    if (validWorker && (body.action === 'process_outbox' || isOutboxWebhook)) {
       const db = admin(); return json({ outbound: await processOutbox(db, body.limit), inbound: await processWebhookInbox(db, body.limit), watchesRenewed: await renewExpiringWatches(db) })
     }
     const db = await authenticatedTenant(req, body.tenantId)
@@ -334,7 +338,11 @@ Deno.serve(async (req) => {
       const { data: updated, error } = await db.from('calendar_integrations').update({ calendar_id: requestedCalendar, sync_token: null, updated_at: new Date().toISOString() }).eq('id', integration.id).select('*').single(); if (error) throw new Error(error.message)
       await incrementalSync(db, updated, 'calendar_changed'); await seedOutbound(db, body.tenantId); await startWatch(db, updated); return json({ ok: true })
     }
-    if (body.action === 'pull_events') return json(await incrementalSync(db, await integrationFor(db, body.tenantId), body.trigger || 'manual'))
+    if (body.action === 'pull_events') {
+      const outbound = await processOutbox(db, 100, body.tenantId)
+      const inbound = await incrementalSync(db, await integrationFor(db, body.tenantId), body.trigger || 'manual')
+      return json({ ...inbound, outbound })
+    }
     if (body.action === 'mapping_options') {
       const { data, error } = await db.schema('saas_core').from('persons').select('id,name').eq('tenant_id', body.tenantId).eq('kind', 'staff').eq('is_active', true).order('name'); if (error) throw error
       return json({ professionals: data ?? [] })
