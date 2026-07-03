@@ -821,6 +821,15 @@ Deno.serve(async (req) => {
           : null,
       });
     }
+    if (body.action === "health") {
+      await db.rpc("refresh_google_calendar_operational_alerts");
+      const { data: health, error } = await db.rpc(
+        "get_google_calendar_health",
+        { p_tenant_id: body.tenantId },
+      );
+      if (error) throw error;
+      return json({ health });
+    }
     if (body.action === "disconnect") {
       const integration = await integrationFor(db, body.tenantId);
       await stopWatch(db, integration);

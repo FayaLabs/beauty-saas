@@ -91,7 +91,25 @@ Function preenche `calendar_worker_config.endpoint_url` a partir de
 - `Sincronizar agora` drena somente o tenant autenticado e depois faz incremental.
 - Falhas ficam em `calendar_sync_log`; jobs esgotados permanecem como `dead`.
 
+## Operação e observabilidade
+
+- O painel mostra filas de entrada e saída, falhas definitivas, última
+  sincronização e alertas abertos do tenant.
+- `refresh_google_calendar_operational_alerts()` roda a cada cinco minutos. Ele
+  abre alertas para jobs `dead`, backlog superior a cinco minutos e canal
+  `events.watch` ausente ou a menos de seis horas da expiração. O alerta é
+  resolvido automaticamente quando a condição deixa de existir.
+- `cleanup_google_calendar_operational_data()` roda diariamente. Jobs concluídos
+  ficam 30 dias; logs de sincronização e alertas resolvidos ficam 90 dias.
+- Alertas e métricas não participam da transação do booking. Uma falha nesse
+  subsistema não impede criar, editar, cancelar ou excluir um agendamento.
+- Tabelas operacionais e RPCs são restritas ao `service_role`. A Edge Function
+  valida a sessão e o vínculo com o tenant antes de retornar a saúde.
+
 ## Teste E2E
+
+Antes do teste funcional, confirme no painel que a sincronização automática está
+operacional e que não existem jobs em falha definitiva.
 
 1. Conectar e mapear profissional.
 2. Criar, editar, cancelar e excluir no BeautySaaS sem sincronização manual.
@@ -103,8 +121,6 @@ Function preenche `calendar_worker_config.endpoint_url` a partir de
 
 ## Próxima evolução
 
-- métricas e alertas para backlog/dead-letter;
-- retenção automática de events/jobs concluídos;
 - testes automatizados contra Google sandbox/conta dedicada;
 - rate limiting por tenant e controle explícito de quota;
 - separar callback OAuth, webhook e worker em funções independentes;

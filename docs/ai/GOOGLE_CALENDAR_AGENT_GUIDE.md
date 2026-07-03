@@ -44,6 +44,16 @@ Não escrever bookings diretamente na Edge Function.
 
 ## Regras de mudança
 
+- Consultar saúde somente pela action autenticada `health` da Edge Function.
+- Nunca expor `calendar_event_outbox`, `calendar_webhook_inbox` ou
+  `calendar_operational_alerts` diretamente ao browser.
+- `outboxDead` ou `inboxDead` acima de zero exigem intervenção. Pendências podem
+  ser transitórias, mas geram alerta depois de cinco minutos.
+- Não apagar dead letters para esconder o sintoma. Corrigir a causa e
+  reprocessar de forma idempotente.
+- A retenção remove somente transporte concluído e histórico operacional. Os
+  eventos de domínio pertencem à plataforma.
+
 - alterar payload exige versão compatível;
 - migrations devem ser idempotentes e não conter project ref;
 - preservar 404/410 como sucesso em delete remoto;

@@ -1,5 +1,9 @@
 import { getActiveTenantId, getSupabaseClientOptional } from "@fayz-ai/saas";
-import type { CalendarIntegration, CalendarSyncLogEntry } from "../types";
+import type {
+  CalendarIntegration,
+  CalendarIntegrationHealth,
+  CalendarSyncLogEntry,
+} from "../types";
 
 const FUNCTION = "google-calendar-sync";
 
@@ -85,6 +89,10 @@ export function createGoogleCalendarProvider() {
       return invoke<{ fetched: number; written: number }>("pull_events", {
         trigger: "manual",
       });
+    },
+    async getHealth(): Promise<CalendarIntegrationHealth> {
+      return (await invoke<{ health: CalendarIntegrationHealth }>("health"))
+        .health;
     },
     async getSyncLog(): Promise<CalendarSyncLogEntry[]> {
       const { data, error } = await client().from("calendar_sync_log").select(

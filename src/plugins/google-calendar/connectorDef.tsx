@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { AlertCircle, CheckCircle2, History, RefreshCw } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  HeartPulse,
+  History,
+  RefreshCw,
+} from "lucide-react";
 import { Button, toast } from "@fayz-ai/saas/ui";
 import type { ConnectorDefinition } from "@fayz-ai/saas";
 import { createGoogleCalendarProvider } from "./data/supabase";
-import type { CalendarSyncLogEntry } from "./types";
+import type {
+  CalendarIntegrationHealth,
+  CalendarSyncLogEntry,
+} from "./types";
 
 const provider = createGoogleCalendarProvider();
 
@@ -16,6 +25,7 @@ function GoogleCalendarPanel() {
     Array<{ id: string; name: string }>
   >([]);
   const [log, setLog] = useState<CalendarSyncLogEntry[]>([]);
+  const [health, setHealth] = useState<CalendarIntegrationHealth | null>(null);
   useEffect(() => {
     void provider.getIntegration().then((value) => {
       setConnected(Boolean(value?.connected));
@@ -25,6 +35,9 @@ function GoogleCalendarPanel() {
       }
       if (value?.connected) {
         void provider.getSyncLog().then(setLog);
+        void provider.getHealth().then(setHealth).catch((error) =>
+          toast.error(`Não foi possível consultar a saúde: ${error.message}`)
+        );
         void provider.getMappingOptions().then((result) =>
           setProfessionals(result.professionals)
         );
@@ -90,8 +103,14 @@ function GoogleCalendarPanel() {
             setSyncing(true);
             void provider.syncNow().then((r) => {
               toast.success(`${r.written} agendamento(s) atualizado(s)`);
-              return provider.getSyncLog();
-            }).then(setLog).catch((e) => toast.error(e.message)).finally(() =>
+              return Promise.all([
+                provider.getSyncLog(),
+                provider.getHealth(),
+              ]);
+            }).then(([nextLog, nextHealth]) => {
+              setLog(nextLog);
+              setHealth(nextHealth);
+            }).catch((e) => toast.error(e.message)).finally(() =>
               setSyncing(false)
             );
           }}
@@ -102,6 +121,49 @@ function GoogleCalendarPanel() {
           Sincronizar agora
         </Button>
       </div>
+      {health && (
+        <div className="rounded-md border p-3 text-sm">
+          <div className="flex items-center gap-2">
+            <HeartPulse className="h-4 w-4" />
+            <h4 className="font-semibold">Saúde da sincronização automática</h4>
+            {health.alerts.length === 0
+              ? (
+                <span className="ml-auto flex items-center gap-1 text-xs text-success">
+                  <CheckCircle2 className="h-3.5 w-3.5" /> Operacional
+                </span>
+              )
+              : (
+                <span className="ml-auto flex items-center gap-1 text-xs text-warning">
+                  <AlertCircle className="h-3.5 w-3.5" /> Requer atenção
+                </span>
+              )}
+          </div>
+          <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted-foreground">
+            <span>Saída pendente: {health.outboxPending}</span>
+            <span>Entrada pendente: {health.inboxPending}</span>
+            <span>Falhas definitivas: {health.outboxDead + health.inboxDead}</span>
+            {health.lastSyncAt && (
+              <span>
+                Última sincronização: {new Date(health.lastSyncAt).toLocaleString("pt-BR")}
+              </span>
+            )}
+          </div>
+          {health.alerts.length > 0 && (
+            <div className="mt-3 space-y-1 border-t pt-2">
+              {health.alerts.map((alert) => (
+                <div
+                  key={alert.id}
+                  className={alert.severity === "critical"
+                    ? "text-destructive"
+                    : "text-warning"}
+                >
+                  {alert.message}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
       {log.length > 0 && (
         <div className="space-y-2">
           <div className="flex items-center gap-2">

@@ -18,3 +18,24 @@ export interface CalendarSyncLogEntry {
   error?: string
   createdAt: string
 }
+
+export interface CalendarOperationalAlert {
+  id: string
+  code: string
+  severity: "warning" | "critical"
+  message: string
+  details: Record<string, unknown>
+  lastSeenAt: string
+}
+
+export interface CalendarIntegrationHealth {
+  lastSyncAt?: string
+  watchExpiresAt?: string
+  outboxPending: number
+  outboxDead: number
+  oldestOutboxAt?: string
+  inboxPending: number
+  inboxDead: number
+  oldestInboxAt?: string
+  alerts: CalendarOperationalAlert[]
+}
