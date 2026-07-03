@@ -50,6 +50,14 @@ if (!pluginsOnly) {
   for (const f of sqlFiles(resolve(CWD, 'drizzle'))) {
     await run(readFileSync(f, 'utf8'), `drizzle/${f.split('/').pop()}`)
   }
+
+  // saas_core catalog seed (plans + granular permissions + salon roles). Depends
+  // on the spine tables above; idempotent (ON CONFLICT upserts).
+  const seed = resolve(CWD, 'supabase', 'seed-saas-core.sql')
+  if (existsSync(seed)) {
+    console.log('▸ saas_core seed (plans + RBAC catalog + roles)')
+    await run(readFileSync(seed, 'utf8'), 'supabase/seed-saas-core.sql')
+  }
 }
 
 for (const p of ENABLED_PLUGINS) {

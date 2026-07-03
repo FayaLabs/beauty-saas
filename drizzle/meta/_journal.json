@@ -8,6 +8,27 @@
       "when": 1781732354837,
       "tag": "0000_baseline_beauty",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1782844924234,
+      "tag": "0001_agenda_execution_parity",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1782850320000,
+      "tag": "0002_salon_ops_report_views",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1782849537723,
+      "tag": "0003_client_care_profile",
+      "breakpoints": true
     }
   ]
 }

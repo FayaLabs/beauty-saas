@@ -1,5 +1,19 @@
-import { createReportsPlugin } from '@fayz-ai/plugin-reports'
+import { createReportsPlugin, type ReportGrain } from '@fayz-ai/plugin-reports'
 import { tl } from '../i18n/tl'
+
+function reportContract(sourceView: string, grain: ReportGrain, canonicalOwner: string) {
+  return {
+    sourceView,
+    grain,
+    ownerPlugin: '@fayz-ai/plugin-reports',
+    canonicalOwner,
+    allowedActions: ['read' as const],
+  }
+}
+
+function reportDescription(en: string, pt: string) {
+  return tl(en, pt)
+}
 
 export const beautyReportsPlugin = createReportsPlugin({
   currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
@@ -12,7 +26,10 @@ export const beautyReportsPlugin = createReportsPlugin({
     {
       id: 'appointments-by-period',
       name: tl('Appointments by Period', 'Agendamentos por Período'),
-      description: tl('Complete appointment listing', 'Listagem completa de agendamentos'),
+      description: reportDescription(
+        'Complete appointment listing by booking date and status',
+        'Listagem de agendamentos por data, cliente, profissional, servico e status',
+      ),
       icon: 'Calendar',
       category: tl('Scheduling & Agenda', 'Agendamentos & Agenda'),
       columns: [
@@ -38,12 +55,16 @@ export const beautyReportsPlugin = createReportsPlugin({
         },
       ],
       dataSource: { kind: 'view', name: 'rep_appointments_by_period', dateColumn: 'date', defaultSort: 'date', defaultSortDir: 'desc' },
+      ...reportContract('rep_appointments_by_period', 'booking', 'saas_core.bookings linked to saas_core.orders'),
       showSummary: true,
     },
     {
       id: 'occupancy-rate',
       name: tl('Occupancy Rate', 'Taxa de Ocupação'),
-      description: tl('Occupancy analysis by professional and period', 'Análise de ocupação por profissional e período'),
+      description: reportDescription(
+        'Occupancy analysis by professional and period',
+        'Analise de ocupacao por profissional e periodo',
+      ),
       icon: 'Activity',
       category: tl('Scheduling & Agenda', 'Agendamentos & Agenda'),
       badge: 'essential',
@@ -54,12 +75,16 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'occupancyRate', label: tl('Occupancy %', 'Ocupação %'), type: 'number' },
       ],
       dataSource: { kind: 'view', name: 'rep_occupancy_rate', defaultSort: 'occupancy_rate', defaultSortDir: 'desc' },
+      ...reportContract('rep_occupancy_rate', 'booking', 'saas_core.bookings and saas_core.schedules'),
       available: false,
     },
     {
       id: 'cancellations',
       name: tl('Cancellations', 'Cancelamentos'),
-      description: tl('Cancellation reasons and patterns', 'Análise de motivos e padrões de cancelamento'),
+      description: reportDescription(
+        'Cancellation reasons and patterns by booking date',
+        'Motivos e padroes de cancelamento por data de agendamento',
+      ),
       icon: 'CalendarX',
       category: tl('Scheduling & Agenda', 'Agendamentos & Agenda'),
       columns: [
@@ -69,13 +94,17 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'serviceName', label: tl('Service', 'Serviço'), type: 'text' },
         { key: 'reason', label: tl('Reason', 'Motivo'), type: 'text' },
       ],
-      dataSource: { kind: 'view', name: 'rep_cancellations', defaultSort: 'date', defaultSortDir: 'desc' },
-      available: false,
+      dataSource: { kind: 'view', name: 'rep_cancellations', dateColumn: 'date', defaultSort: 'date', defaultSortDir: 'desc' },
+      ...reportContract('rep_cancellations', 'booking', 'saas_core.bookings linked to cancellation reason properties'),
+      showSummary: true,
     },
     {
       id: 'no-shows',
       name: tl('No-Show', 'No-Show (Faltou)'),
-      description: tl('Clients who did not show up', 'Clientes que não compareceram'),
+      description: reportDescription(
+        'Clients who did not show up and estimated lost revenue',
+        'Clientes que faltaram e estimativa de receita perdida',
+      ),
       icon: 'Clock',
       category: tl('Scheduling & Agenda', 'Agendamentos & Agenda'),
       columns: [
@@ -85,14 +114,17 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'serviceName', label: tl('Service', 'Serviço'), type: 'text' },
         { key: 'lostRevenue', label: tl('Lost Revenue', 'Receita Perdida'), type: 'currency', aggregate: 'sum' },
       ],
-      dataSource: { kind: 'view', name: 'rep_no_shows', defaultSort: 'date', defaultSortDir: 'desc' },
+      dataSource: { kind: 'view', name: 'rep_no_shows', dateColumn: 'date', defaultSort: 'date', defaultSortDir: 'desc' },
+      ...reportContract('rep_no_shows', 'booking', 'saas_core.bookings linked to saas_core.orders'),
       showSummary: true,
-      available: false,
     },
     {
       id: 'peak-hours',
       name: tl('Peak Hours', 'Horários de Pico'),
-      description: tl('Most booked hours analysis', 'Análise dos horários mais agendados'),
+      description: reportDescription(
+        'Most booked hours analysis with booking counts and average revenue',
+        'Horarios mais procurados com volume de agendamentos e receita media',
+      ),
       icon: 'CalendarClock',
       category: tl('Scheduling & Agenda', 'Agendamentos & Agenda'),
       badge: 'popular',
@@ -102,13 +134,17 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'bookingCount', label: tl('Bookings', 'Agendamentos'), type: 'number', aggregate: 'sum' },
         { key: 'avgRevenue', label: tl('Avg Revenue', 'Receita Média'), type: 'currency' },
       ],
-      dataSource: { kind: 'view', name: 'rep_peak_hours', defaultSort: 'booking_count', defaultSortDir: 'desc' },
-      available: false,
+      dataSource: { kind: 'view', name: 'rep_peak_hours', dateColumn: 'date', defaultSort: 'booking_count', defaultSortDir: 'desc' },
+      ...reportContract('rep_peak_hours', 'booking', 'saas_core.bookings with monetary values bridged through saas_core.orders'),
+      showSummary: true,
     },
     {
       id: 'revenue-by-service',
       name: tl('Revenue by Service', 'Receita por Serviço'),
-      description: tl('Revenue breakdown by service type', 'Detalhamento de receita por tipo de serviço'),
+      description: reportDescription(
+        'Revenue breakdown by service type',
+        'Receita agrupada por tipo de servico',
+      ),
       icon: 'DollarSign',
       category: tl('Financial', 'Financeiro'),
       columns: [
@@ -117,14 +153,17 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'totalRevenue', label: tl('Total Revenue', 'Receita Total'), type: 'currency', aggregate: 'sum' },
         { key: 'avgTicket', label: tl('Avg Ticket', 'Ticket Médio'), type: 'currency' },
       ],
-      dataSource: { kind: 'view', name: 'rep_revenue_by_service', defaultSort: 'total_revenue', defaultSortDir: 'desc' },
+      dataSource: { kind: 'view', name: 'rep_revenue_by_service', dateColumn: 'date', defaultSort: 'total_revenue', defaultSortDir: 'desc' },
+      ...reportContract('rep_revenue_by_service', 'order_item', 'saas_core.order_items linked to saas_core.orders'),
       showSummary: true,
-      available: false,
     },
     {
       id: 'revenue-by-professional',
       name: tl('Revenue by Professional', 'Receita por Profissional'),
-      description: tl('Revenue breakdown by staff member', 'Detalhamento de receita por profissional'),
+      description: reportDescription(
+        'Revenue breakdown by staff member',
+        'Receita agrupada por profissional',
+      ),
       icon: 'Users',
       category: tl('Financial', 'Financeiro'),
       badge: 'popular',
@@ -135,14 +174,17 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'avgTicket', label: tl('Avg Ticket', 'Ticket Médio'), type: 'currency' },
         { key: 'commission', label: tl('Commission', 'Comissão'), type: 'currency', aggregate: 'sum' },
       ],
-      dataSource: { kind: 'view', name: 'rep_revenue_by_professional', defaultSort: 'total_revenue', defaultSortDir: 'desc' },
+      dataSource: { kind: 'view', name: 'rep_revenue_by_professional', dateColumn: 'date', defaultSort: 'total_revenue', defaultSortDir: 'desc' },
+      ...reportContract('rep_revenue_by_professional', 'order_item', 'saas_core.order_items linked to bookings/professionals'),
       showSummary: true,
-      available: false,
     },
     {
       id: 'client-frequency',
       name: tl('Client Frequency', 'Frequência de Clientes'),
-      description: tl('Visit frequency and retention', 'Frequência de visitas e retenção'),
+      description: reportDescription(
+        'Visit frequency and retention by client',
+        'Frequencia, recencia e valor gasto por cliente',
+      ),
       icon: 'UserCheck',
       category: tl('Clients', 'Clientes'),
       columns: [
@@ -152,14 +194,17 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'totalSpent', label: tl('Total Spent', 'Total Gasto'), type: 'currency', aggregate: 'sum' },
         { key: 'avgTicket', label: tl('Avg Ticket', 'Ticket Médio'), type: 'currency' },
       ],
-      dataSource: { kind: 'view', name: 'rep_client_frequency', defaultSort: 'visit_count', defaultSortDir: 'desc' },
+      dataSource: { kind: 'view', name: 'rep_client_frequency', dateColumn: 'last_visit', defaultSort: 'visit_count', defaultSortDir: 'desc' },
+      ...reportContract('rep_client_frequency', 'order', 'saas_core.orders linked to client persons/bookings'),
       showSummary: true,
-      available: false,
     },
     {
       id: 'new-clients',
       name: tl('New Clients', 'Clientes Novos'),
-      description: tl('New client acquisition by period', 'Aquisição de novos clientes por período'),
+      description: reportDescription(
+        'New client acquisition by period and origin',
+        'Novos clientes por periodo e origem de aquisicao',
+      ),
       icon: 'UserPlus',
       category: tl('Clients', 'Clientes'),
       columns: [
@@ -168,8 +213,54 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'origin', label: tl('Origin', 'Origem'), type: 'text' },
         { key: 'firstService', label: tl('First Service', 'Primeiro Serviço'), type: 'text' },
       ],
-      dataSource: { kind: 'view', name: 'rep_new_clients', defaultSort: 'date', defaultSortDir: 'desc' },
-      available: false,
+      filters: [
+        {
+          key: 'origin',
+          label: tl('Origin', 'Origem'),
+          type: 'text',
+          placeholder: tl('Filter by acquisition origin', 'Filtrar por origem de aquisicao'),
+        },
+      ],
+      dataSource: { kind: 'view', name: 'rep_new_clients', dateColumn: 'date', defaultSort: 'date', defaultSortDir: 'desc' },
+      ...reportContract('rep_new_clients', 'event', 'saas_core.persons customer lifecycle with /settings/marketing/_properties/origins'),
+    },
+    {
+      id: 'financial-accounting-dimensions',
+      name: tl('Financial Dimensions', 'Dimensões Financeiras'),
+      description: reportDescription(
+        'Invoice totals by chart of accounts and cost center',
+        'Totais financeiros por plano de contas e centro de custo',
+      ),
+      icon: 'BookOpenCheck',
+      category: tl('Financial', 'Financeiro'),
+      badge: 'new',
+      columns: [
+        { key: 'date', label: tl('Date', 'Data'), type: 'date' },
+        { key: 'direction', label: tl('Direction', 'Direção'), type: 'select' },
+        { key: 'accountCode', label: tl('Account Code', 'Código da Conta'), type: 'text' },
+        { key: 'accountName', label: tl('Chart of Accounts', 'Plano de Contas'), type: 'text' },
+        { key: 'costCenterCode', label: tl('Cost Center Code', 'Código do Centro'), type: 'text' },
+        { key: 'costCenterName', label: tl('Cost Center', 'Centro de Custo'), type: 'text' },
+        { key: 'invoiceCount', label: tl('Invoices', 'Títulos'), type: 'number', aggregate: 'sum' },
+        { key: 'lineCount', label: tl('Lines', 'Itens'), type: 'number', aggregate: 'sum' },
+        { key: 'totalAmount', label: tl('Total Amount', 'Valor Total'), type: 'currency', aggregate: 'sum' },
+        { key: 'paidAmount', label: tl('Paid Amount', 'Valor Pago'), type: 'currency', aggregate: 'sum' },
+        { key: 'openAmount', label: tl('Open Amount', 'Valor em Aberto'), type: 'currency', aggregate: 'sum' },
+      ],
+      filters: [
+        {
+          key: 'direction',
+          label: tl('Direction', 'Direção'),
+          type: 'select',
+          options: [
+            { label: tl('Receivable', 'A receber'), value: 'credit' },
+            { label: tl('Payable', 'A pagar'), value: 'debit' },
+          ],
+        },
+      ],
+      dataSource: { kind: 'view', name: 'rep_financial_accounting_dimensions', dateColumn: 'date', defaultSort: 'date', defaultSortDir: 'desc' },
+      ...reportContract('rep_financial_accounting_dimensions', 'ledger_movement', 'public.financial_movements and plugin-financial accounting dimensions'),
+      showSummary: true,
     },
   ],
 })

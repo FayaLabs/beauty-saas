@@ -23,6 +23,27 @@ App runs at `http://localhost:5180`
 - **Email:** teste@teste.com
 - **Password:** teste123
 
+## Migration E2E account
+
+Use this account when validating beautyplace-to-v2 migration parity as a real
+user:
+
+- **Email:** maia.silvio.rj@gmail.com
+- **Password:** do not store in repo docs or logs. Use local env var
+  `BEAUTY_SAAS_E2E_PASSWORD`.
+
+For scripted tests, prefer:
+
+```
+export BEAUTY_SAAS_E2E_EMAIL="maia.silvio.rj@gmail.com"
+export BEAUTY_SAAS_E2E_PASSWORD="<provided out-of-band>"
+```
+
+2026-06-30 smoke result:
+
+- V2 accepted this account and loaded dashboard, `/agenda`, and the create appointment modal.
+- V1 `beautyplace` reached `/auth` locally but rejected the same account with invalid credentials, so side-by-side v1 comparison is blocked until that account/environment mismatch is fixed.
+
 ## Playwright MCP testing
 
 The Playwright MCP launches its own browser. To test the app:

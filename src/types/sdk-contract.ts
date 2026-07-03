@@ -104,6 +104,7 @@ export interface BeautyPermissionFeature {
 export interface BeautyPermissionProfile {
   id: string
   name: string
+  description?: string
   isSystem: boolean
   systemPermissions: SystemPermission[]
   grants: Record<string, PermissionAction[]>

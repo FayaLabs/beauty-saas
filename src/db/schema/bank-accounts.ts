@@ -1,12 +1,2 @@
-import { pgTable, uuid, text, boolean, tenantId, timestamps } from '@fayz-ai/saas/db'
-
-// Standalone app table (no archetype match) — beauty bank accounts.
-export const bankAccounts = pgTable('bank_accounts', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  tenantId: tenantId(),
-  name: text('name').notNull(),
-  type: text('type').default('checking'),
-  bankName: text('bank_name'),
-  isActive: boolean('is_active').default(true),
-  ...timestamps,
-})
+// Compatibility note: bank_accounts is owned by @fayz-ai/plugin-financial.
+// Keep this placeholder file until existing migration history is consolidated.

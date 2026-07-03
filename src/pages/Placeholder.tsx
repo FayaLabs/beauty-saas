@@ -10,9 +10,9 @@ export function createPlaceholder(title: string, description?: string): React.FC
         )}
         <div className="mt-8 flex items-center justify-center rounded-card border border-dashed border-border bg-card p-16">
           <div className="text-center">
-            <p className="text-lg font-medium text-muted-foreground">Coming Soon</p>
+            <p className="text-lg font-medium text-muted-foreground">Em organizacao</p>
             <p className="mt-1 text-sm text-muted-foreground/70">
-              This module is being built as a plugin.
+              Use as opcoes do menu para acessar as telas ja disponiveis.
             </p>
           </div>
         </div>

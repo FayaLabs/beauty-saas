@@ -138,7 +138,7 @@ export const beautyDashboardPlugin = createDashboardPlugin({
     pageSubtitle: tl('Business overview', 'Visão geral do seu negócio'),
     kpiTitle: tl('Key Metrics', 'Métricas'),
     onboardingTitle: tl('Getting Started', 'Primeiros Passos'),
-    onboardingSubtitle: tl('Set up your salon', 'Configure seu salão'),
+    onboardingSubtitle: tl('Complete the essentials for daily operations', 'Complete os itens essenciais da operacao'),
     settingsTitle: tl('Dashboard', 'Painel'),
   },
   currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
@@ -404,6 +404,9 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       icon: 'Zap',
       zone: 'bottom-right',
       order: 10,
+      // Full-width row so the action buttons spread across instead of stacking
+      // into a half-width column.
+      span: 4,
       component: QuickActionsSection,
     },
   ],
@@ -431,12 +434,12 @@ export const beautyDashboardPlugin = createDashboardPlugin({
     {
       id: 'setup-schedule',
       title: tl('Set up your schedule', 'Configure sua agenda'),
-      description: tl('Define business hours and booking rules', 'Defina horários de funcionamento e regras de agendamento'),
+      description: tl('Define booking windows, intervals, and advance rules', 'Defina janelas de agendamento, intervalos e antecedencia'),
       icon: 'Calendar',
       order: 2,
       // ≥1 schedule row (business hours / work schedule) in saas_core.schedules.
       check: () => tableHasRows('schedules', { schema: 'saas_core' }),
-      action: '/settings/agenda',
+      action: '/settings/agenda/_properties/schedule-rules',
     },
     {
       id: 'setup-payments',
@@ -446,7 +449,7 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       order: 3,
       // plugin-financial public.payment_methods (default public schema).
       check: () => tableHasRows('payment_methods'),
-      action: '/settings/financial',
+      action: '/settings/financial/_properties/payment-methods',
     },
   ],
 })
