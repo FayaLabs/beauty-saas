@@ -618,8 +618,10 @@ export const beautyAppConfig: FayzAppConfig = {
           campaigns: tl('Campaigns', 'Campanhas'),
           funnel: tl('Funnel', 'Funil'),
           landingPages: tl('Landing pages', 'Páginas'),
+          content: tl('Content', 'Conteúdo'),
           settings: tl('Settings', 'Configurações'),
         },
+        modules: { contentPlanner: true },
         settingsRegistries: [
           {
             id: 'origins',

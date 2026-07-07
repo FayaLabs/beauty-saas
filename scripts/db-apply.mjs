@@ -23,7 +23,7 @@ const pluginsOnly = process.argv.includes('--plugins-only')
 
 // Enabled plugins that ship companion SQL, in provisioning order.
 // (Mirror the app's plugin list; financial before crm since CRM RPCs its fn.)
-const ENABLED_PLUGINS = ['plugin-financial', 'plugin-crm', 'plugin-inventory', 'plugin-forms', 'plugin-tasks']
+const ENABLED_PLUGINS = ['plugin-financial', 'plugin-crm', 'plugin-inventory', 'plugin-forms', 'plugin-tasks', 'plugin-marketing']
 
 async function run(sql, label) {
   const res = await fetch(`https://api.supabase.com/v1/projects/${REF}/database/query`, {
