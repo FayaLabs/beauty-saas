@@ -22,15 +22,15 @@
         "description": "Salon management — scheduling, clients, inventory, financial and marketing for beauty professionals."
       },
       "plugins": [
-        { "id": "dashboard", "enabled": true, "config": { "label": "Dashboard" } },
-        { "id": "agenda", "enabled": true, "config": { "label": "Agenda", "description": "Scheduling and appointments." } },
-        { "id": "crm", "enabled": true, "config": { "label": "Clients", "description": "Clients and relationships." } },
-        { "id": "inventory", "enabled": true, "config": { "label": "Inventory", "description": "Products and stock." } },
-        { "id": "financial", "enabled": true, "config": { "label": "Financial", "description": "Payments and invoices." } },
-        { "id": "marketing", "enabled": true, "config": { "label": "Marketing", "description": "Campaigns and channels." } },
-        { "id": "forms", "enabled": true, "config": { "label": "Forms", "description": "Custom forms and documents." } },
+        { "id": "dashboard", "enabled": true, "config": { "label": "Dashboard", "navPosition": 1 } },
+        { "id": "agenda", "enabled": true, "config": { "label": "Agenda", "description": "Scheduling and appointments.", "navPosition": 2, "navSection": "main" } },
+        { "id": "crm", "enabled": true, "config": { "label": "Clients", "description": "Clients and relationships.", "navPosition": 6, "currency": { "code": "BRL", "locale": "pt-BR", "symbol": "R$" } } },
+        { "id": "inventory", "enabled": true, "config": { "label": "Inventory", "description": "Products and stock.", "navPosition": 4, "currency": { "code": "BRL", "locale": "pt-BR", "symbol": "R$" }, "modules": { "recipes": false, "batchTracking": false } } },
+        { "id": "financial", "enabled": true, "config": { "label": "Financial", "description": "Payments and invoices.", "navPosition": 7, "currency": { "code": "BRL", "locale": "pt-BR", "symbol": "R$" } } },
+        { "id": "marketing", "enabled": true, "config": { "label": "Marketing", "description": "Campaigns and channels.", "navPosition": 5, "domain": "beauty", "currency": { "code": "BRL", "locale": "pt-BR", "symbol": "R$" }, "modules": { "contentPlanner": true } } },
+        { "id": "forms", "enabled": true, "config": { "label": "Forms", "description": "Custom forms and documents.", "scope": "universal", "navSection": "settings" } },
         { "id": "tasks", "enabled": true, "config": { "label": "Tasks" } },
-        { "id": "reports", "enabled": true, "config": { "label": "Reports" } },
+        { "id": "reports", "enabled": true, "config": { "label": "Reports", "navPosition": 10, "currency": { "code": "BRL", "locale": "pt-BR", "symbol": "R$" } } },
         { "id": "admin", "enabled": true, "config": { "label": "Admin" } }
       ]
     }
