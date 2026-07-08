@@ -30,7 +30,8 @@
         { "id": "marketing", "enabled": true, "config": { "label": "Marketing", "description": "Campaigns and channels." } },
         { "id": "forms", "enabled": true, "config": { "label": "Forms", "description": "Custom forms and documents." } },
         { "id": "tasks", "enabled": true, "config": { "label": "Tasks" } },
-        { "id": "reports", "enabled": true, "config": { "label": "Reports" } }
+        { "id": "reports", "enabled": true, "config": { "label": "Reports" } },
+        { "id": "admin", "enabled": true, "config": { "label": "Admin" } }
       ]
     }
   }
