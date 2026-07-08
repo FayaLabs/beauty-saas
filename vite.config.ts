@@ -7,7 +7,7 @@ export default defineConfig(
     fayzVite({ port: 5180, plugins: [react()] }),
     {
       resolve: {
-        dedupe: ['react', 'react-dom', 'react-router-dom'],
+        dedupe: ['react', 'react-dom', 'react-router-dom', '@fayz-ai/saas', '@fayz-ai/ui'],
       },
     }
   )
