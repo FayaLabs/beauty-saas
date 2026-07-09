@@ -37,5 +37,10 @@ export default defineConfig({
       ...((base.optimizeDeps as any)?.exclude ?? []),
       ...fayzPackages,
     ],
+    include: [
+      ...((base.optimizeDeps as any)?.include ?? []),
+      'use-sync-external-store/shim/with-selector',
+      'zustand',
+    ],
   },
 })
