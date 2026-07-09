@@ -59,6 +59,7 @@ export default defineConfig({
       'lodash/groupBy',
       'lodash/throttle',
       'lodash/clamp',
+      'lodash/isNumber',
     ],
   },
 })
