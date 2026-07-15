@@ -2,7 +2,12 @@
   "manifestVersion": 2,
   "id": "beauty-saas",
   "name": "BeautySoft",
-  "backend": { "provider": "supabase" },
+  "backend": {
+    "provider": "supabase",
+    "projectRef": "gphxclpkbtbucoqclbco",
+    "pool": "cluster-salon-br-01",
+    "tenantId": ""
+  },
   "locale": { "default": "pt-BR", "supported": ["pt-BR", "en"] },
   "entities": [
     { "id": "clients", "label": "Clients" },

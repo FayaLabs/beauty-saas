@@ -26,7 +26,7 @@ async function run(sql, label) {
   console.log(`  ✓ ${label}`)
 }
 
-console.log(`▸ Seeding saas_core catalog + salon roles → ${REF}`)
+console.log(`▸ Seeding core catalog + salon roles → ${REF}`)
 await run(readFileSync(seed, 'utf8'), 'supabase/seed-saas-core.sql')
 await run("NOTIFY pgrst, 'reload schema';", 'reload PostgREST schema cache')
 console.log('✓ seed complete')

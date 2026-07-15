@@ -7,8 +7,9 @@
 // (Plugins without a Drizzle schema yet — agenda/financial/inventory — are
 // provisioned via their companion SQL through `pnpm db:apply`, not here.)
 
-// Ring 0 — spine references (baseline snapshot; never re-created live)
-export { tenants, persons, orders, bookings } from '@fayz-ai/saas/db'
+// Ring 0 — spine references (baseline snapshot; never re-created live).
+// Core-v1: core lives in public; persons->people, bookings->appointments.
+export { tenants, people, orders, appointments } from '@fayz-ai/saas/db'
 
 // Ring 2 / standalone — beauty-owned tables
 export { clients } from './clients'
@@ -23,7 +24,7 @@ export {
   serviceDefaultTemplates,
 } from './services'
 export {
-  appointments,
+  appointmentExecution,
   appointmentCancellationReasons,
   appointmentConfirmationChannels,
   appointmentScheduleRules,

@@ -1,13 +1,13 @@
 -- Demo seed for the ⇄ Reconciliation (conciliação) UI — tenant of maia.silvio.rj@gmail.com.
 -- Idempotent + clearly tagged (external_id 'demo-rec-*') so it's easy to remove later:
---   DELETE FROM public.financial_movements WHERE external_id LIKE 'demo-rec-%';
---   DELETE FROM public.financial_movements WHERE notes LIKE '[demo-rec] %';
+--   DELETE FROM public.plg_financial_movements WHERE external_id LIKE 'demo-rec-%';
+--   DELETE FROM public.plg_financial_movements WHERE notes LIKE '[demo-rec] %';
 -- Requires the reconciliation columns (plugin-financial 007_reconciliation.sql) to be applied first.
 -- Run via the same Management-API path as db-apply.mjs.
 
 WITH t AS (
   SELECT tm.tenant_id
-  FROM saas_core.tenant_members tm
+  FROM public.tenant_members tm
   JOIN auth.users u ON u.id = tm.user_id
   WHERE lower(u.email) = 'maia.silvio.rj@gmail.com'
   ORDER BY tm.created_at NULLS LAST
@@ -52,7 +52,7 @@ existing_cost_center AS (
   LIMIT 1
 )
 -- (1) Two internal receivables the bank lines should reconcile against (external_source NULL).
-INSERT INTO public.financial_movements
+INSERT INTO public.plg_financial_movements
   (tenant_id, direction, movement_kind, amount, paid_amount, status, due_date, notes, metadata)
 SELECT
   t.tenant_id,
@@ -76,14 +76,14 @@ CROSS JOIN (VALUES
   ('credit', 320.00, DATE '2026-06-10', '[demo-rec] Fatura Cliente B')
 ) AS v(direction, amount, d, descr)
 WHERE NOT EXISTS (
-  SELECT 1 FROM public.financial_movements m
+  SELECT 1 FROM public.plg_financial_movements m
   WHERE m.tenant_id = t.tenant_id AND m.notes = v.descr
 );
 
 -- (2) Imported bank-statement lines pending reconciliation (external_source = 'plugbank').
 WITH t AS (
   SELECT tm.tenant_id
-  FROM saas_core.tenant_members tm
+  FROM public.tenant_members tm
   JOIN auth.users u ON u.id = tm.user_id
   WHERE lower(u.email) = 'maia.silvio.rj@gmail.com'
   ORDER BY tm.created_at NULLS LAST
@@ -103,7 +103,7 @@ existing_cost_center AS (
   WHERE c.code = 'RJ-SALON'
   LIMIT 1
 )
-INSERT INTO public.financial_movements
+INSERT INTO public.plg_financial_movements
   (tenant_id, direction, movement_kind, amount, paid_amount, status, due_date, payment_date, notes, external_id, external_source, metadata)
 SELECT
   t.tenant_id,

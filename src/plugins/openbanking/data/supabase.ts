@@ -1,7 +1,7 @@
 // Open Banking plugin (app-local) — Supabase data provider.
 //
 // Thin control-plane client. The heavy lifting (calling the Tecnospeed PlugBank
-// API, normalizing lines, importing into financial_movements with idempotency)
+// API, normalizing lines, importing into plg_financial_movements with idempotency)
 // runs in the `plugbank-sync` Edge Function. This provider reads/writes the
 // connection row, invokes the function, and reads the sync log.
 //

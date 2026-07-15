@@ -7,24 +7,34 @@ import {
   text,
   timestamp,
   uuid,
-  saasCore,
   tenantId,
   timestamps,
-  bookings,
-  persons,
 } from '@fayz-ai/saas/db'
 
-const coreLocations = saasCore.table('locations', {
+// Core-v1: core tables live in public. Thin FK-target refs (booking archetype
+// is now public.appointments; persons -> public.people).
+const coreLocations = pgTable('locations', {
   id: uuid('id').primaryKey(),
 })
 
-const coreServices = saasCore.table('services', {
+const coreServices = pgTable('services', {
   id: uuid('id').primaryKey(),
 })
 
-// Ring-2 archetype extension: beauty appointments (booking archetype).
-export const appointments = pgTable('appointments', {
-  bookingId: uuid('booking_id').primaryKey().references(() => bookings.id, { onDelete: 'cascade' }),
+const coreAppointments = pgTable('appointments', {
+  id: uuid('id').primaryKey(),
+})
+
+const people = pgTable('people', {
+  id: uuid('id').primaryKey(),
+})
+
+// Ring-2 extension: per-appointment execution/confirmation/cancellation state.
+// Renamed from the bespoke `appointments` extension (which collided with the
+// new core `public.appointments`) to `appointment_execution`, keyed by the core
+// appointment (booking) id.
+export const appointmentExecution = pgTable('appointment_execution', {
+  bookingId: uuid('booking_id').primaryKey().references(() => coreAppointments.id, { onDelete: 'cascade' }),
   tenantId: tenantId(),
   cancellationReasonId: uuid('cancellation_reason_id').references(() => appointmentCancellationReasons.id),
   cancellationNotes: text('cancellation_notes'),
@@ -82,7 +92,7 @@ export const appointmentScheduleRules = pgTable('appointment_schedule_rules', {
   name: text('name').notNull(),
   scope: text('scope').notNull().default('tenant'),
   locationId: uuid('location_id').references(() => coreLocations.id, { onDelete: 'set null' }),
-  professionalId: uuid('professional_id').references(() => persons.id, { onDelete: 'set null' }),
+  professionalId: uuid('professional_id').references(() => people.id, { onDelete: 'set null' }),
   startTime: text('start_time').notNull().default('08:00'),
   endTime: text('end_time').notNull().default('20:00'),
   slotDurationMinutes: integer('slot_duration_minutes').notNull().default(30),
@@ -102,8 +112,8 @@ export const appointmentScheduleRules = pgTable('appointment_schedule_rules', {
 export const appointmentWaitlistEntries = pgTable('appointment_waitlist_entries', {
   id: uuid('id').primaryKey().defaultRandom(),
   tenantId: tenantId(),
-  clientId: uuid('client_id').references(() => persons.id, { onDelete: 'set null' }),
-  professionalId: uuid('professional_id').references(() => persons.id, { onDelete: 'set null' }),
+  clientId: uuid('client_id').references(() => people.id, { onDelete: 'set null' }),
+  professionalId: uuid('professional_id').references(() => people.id, { onDelete: 'set null' }),
   serviceId: uuid('service_id').references(() => coreServices.id, { onDelete: 'set null' }),
   locationId: uuid('location_id').references(() => coreLocations.id, { onDelete: 'set null' }),
   requestedDate: timestamp('requested_date', { withTimezone: true }),
@@ -112,7 +122,7 @@ export const appointmentWaitlistEntries = pgTable('appointment_waitlist_entries'
   priority: integer('priority').notNull().default(0),
   status: text('status').notNull().default('waiting'),
   notes: text('notes'),
-  convertedBookingId: uuid('converted_booking_id').references(() => bookings.id, { onDelete: 'set null' }),
+  convertedBookingId: uuid('converted_booking_id').references(() => coreAppointments.id, { onDelete: 'set null' }),
   metadata: jsonb('metadata').$type<Record<string, unknown>>().notNull().default({}),
   ...timestamps,
 }, (table) => ({

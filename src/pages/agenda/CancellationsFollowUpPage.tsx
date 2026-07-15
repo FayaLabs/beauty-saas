@@ -108,7 +108,7 @@ async function saveCancellationContext(bookingId: string, state: CancellationFor
   if (!supabase || !tenantId || !state.reasonId) return
 
   const { error } = await supabase
-    .from('appointments')
+    .from('appointment_execution')
     .upsert({
       booking_id: bookingId,
       tenant_id: tenantId,

@@ -7,7 +7,7 @@ export default defineConfig({
   dialect: 'postgresql',
   schema: './src/db/schema/index.ts',
   out: './drizzle',
-  schemaFilter: ['public', 'saas_core'],
+  schemaFilter: ['public'],
   verbose: true,
   strict: true,
 })
