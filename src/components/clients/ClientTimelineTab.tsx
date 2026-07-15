@@ -67,7 +67,7 @@ async function loadAppointments(clientId: string): Promise<TimelineItem[]> {
 
   const tenantId = getActiveTenantId()
   let query = supabase
-    .from('v_bookings')
+    .from('v_appointments')
     .select('id, starts_at, status, services, professional_name, location_name, notes, updated_at')
     .eq('client_id', clientId)
     .order('starts_at', { ascending: false })
@@ -98,7 +98,7 @@ async function loadActivities(clientId: string): Promise<TimelineItem[]> {
 
   const tenantId = getActiveTenantId()
   let query = supabase
-    .from('crm_activities')
+    .from('plg_crm_activities')
     .select('id, activity_type, title, description, due_date, completed_at, created_at')
     .eq('contact_id', clientId)
     .order('created_at', { ascending: false })

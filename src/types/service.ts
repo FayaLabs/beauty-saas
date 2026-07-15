@@ -21,7 +21,7 @@ export interface ServicePackage {
 }
 
 // ---------------------------------------------------------------------------
-// Services — service archetype, direct query on saas_core.services
+// Services — service archetype, direct query on public.services
 // ---------------------------------------------------------------------------
 export const serviceEntity: EntityDef<BeautyService> = {
   name: tl('Service', 'Serviço'),
@@ -36,11 +36,11 @@ export const serviceEntity: EntityDef<BeautyService> = {
     { key: 'price', label: tl('Price', 'Preço'), type: 'currency', required: true, showInTable: true },
     { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', showInTable: true, defaultValue: true, inlineToggle: true },
   ],
-  // Services are their own Ring-0 archetype table (saas_core.services), not a
+  // Services are their own Ring-0 archetype table (public.services), not a
   // kind of product. Direct query by table+schema (no kind filter).
   data: {
     table: 'services',
-    schema: 'saas_core',
+    schema: 'public',
     tenantScoped: true,
     searchColumns: ['name'],
   },
@@ -86,7 +86,7 @@ export const servicePackageItemEntity: EntityDef = {
       key: 'serviceId',
       label: tl('Service', 'Serviço'),
       type: 'relation',
-      relation: { table: 'services', schema: 'saas_core', labelField: 'name' },
+      relation: { table: 'services', schema: 'public', labelField: 'name' },
       required: true,
       showInTable: true,
     },
@@ -141,7 +141,7 @@ export const servicePriceTableItemEntity: EntityDef = {
       key: 'serviceId',
       label: tl('Service', 'Serviço'),
       type: 'relation',
-      relation: { table: 'services', schema: 'saas_core', labelField: 'name' },
+      relation: { table: 'services', schema: 'public', labelField: 'name' },
       required: true,
       showInTable: true,
     },
@@ -208,7 +208,7 @@ export const servicePriceVariationEntity: EntityDef = {
       key: 'serviceId',
       label: tl('Service', 'Serviço'),
       type: 'relation',
-      relation: { table: 'services', schema: 'saas_core', labelField: 'name' },
+      relation: { table: 'services', schema: 'public', labelField: 'name' },
       group: 'filters',
     },
     {
@@ -224,7 +224,7 @@ export const servicePriceVariationEntity: EntityDef = {
       key: 'professionalId',
       label: tl('Professional', 'Profissional'),
       type: 'relation',
-      relation: { table: 'persons', schema: 'saas_core', labelField: 'name', filter: { kind: 'staff' } },
+      relation: { table: 'people', schema: 'public', labelField: 'name', filter: { kind: 'staff' } },
       group: 'filters',
     },
     {
@@ -240,7 +240,7 @@ export const servicePriceVariationEntity: EntityDef = {
       key: 'categoryId',
       label: tl('Category', 'Categoria'),
       type: 'relation',
-      relation: { table: 'categories', schema: 'saas_core', labelField: 'name', filter: { kind: 'service_category' } },
+      relation: { table: 'categories', schema: 'public', labelField: 'name', filter: { kind: 'service_category' } },
       group: 'filters',
     },
     {
@@ -256,7 +256,7 @@ export const servicePriceVariationEntity: EntityDef = {
       key: 'unitId',
       label: tl('Unit/Location', 'Unidade/Local'),
       type: 'relation',
-      relation: { table: 'locations', schema: 'saas_core', labelField: 'name', filter: { kind: 'branch' } },
+      relation: { table: 'locations', schema: 'public', labelField: 'name', filter: { kind: 'branch' } },
       group: 'filters',
     },
     {
@@ -272,7 +272,7 @@ export const servicePriceVariationEntity: EntityDef = {
       key: 'partnershipId',
       label: tl('Partnership', 'Parceria'),
       type: 'relation',
-      relation: { table: 'persons', schema: 'saas_core', labelField: 'name', filter: { kind: 'partner' } },
+      relation: { table: 'people', schema: 'public', labelField: 'name', filter: { kind: 'partner' } },
       group: 'filters',
     },
     { key: 'sortOrder', label: tl('Order', 'Ordem'), type: 'number', showInTable: true, defaultValue: 0, group: 'rule' },
@@ -296,7 +296,7 @@ export const serviceDefaultProductEntity: EntityDef = {
       key: 'serviceId',
       label: tl('Service', 'Serviço'),
       type: 'relation',
-      relation: { table: 'services', schema: 'saas_core', labelField: 'name' },
+      relation: { table: 'services', schema: 'public', labelField: 'name' },
       required: true,
       showInTable: true,
     },
@@ -304,7 +304,7 @@ export const serviceDefaultProductEntity: EntityDef = {
       key: 'productId',
       label: tl('Product', 'Produto'),
       type: 'relation',
-      relation: { table: 'products', schema: 'saas_core', labelField: 'name' },
+      relation: { table: 'products', schema: 'public', labelField: 'name' },
       required: true,
       showInTable: true,
     },
@@ -344,7 +344,7 @@ export const serviceDefaultTemplateEntity: EntityDef = {
       key: 'serviceId',
       label: tl('Service', 'Serviço'),
       type: 'relation',
-      relation: { table: 'services', schema: 'saas_core', labelField: 'name' },
+      relation: { table: 'services', schema: 'public', labelField: 'name' },
       required: true,
       showInTable: true,
     },
@@ -352,7 +352,7 @@ export const serviceDefaultTemplateEntity: EntityDef = {
       key: 'templateId',
       label: tl('Template', 'Modelo'),
       type: 'relation',
-      relation: { table: 'frm_templates', labelField: 'name' },
+      relation: { table: 'plg_forms_templates', labelField: 'name' },
       required: true,
       showInTable: true,
     },

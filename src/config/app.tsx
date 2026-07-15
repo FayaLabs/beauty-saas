@@ -209,8 +209,7 @@ function createBeautyAgendaClientLookup(): EntityLookup {
     if (!supabase || !tenantId) return []
 
     let qb = supabase
-      .schema('saas_core')
-      .from('persons')
+      .from('people')
       .select('*')
       .eq('tenant_id', tenantId)
       .eq('kind', 'customer')
@@ -237,8 +236,7 @@ function createBeautyAgendaClientLookup(): EntityLookup {
       if (!supabase || !tenantId) return null
 
       const { data } = await supabase
-        .schema('saas_core')
-        .from('persons')
+        .from('people')
         .select('*')
         .eq('id', id)
         .eq('tenant_id', tenantId)
@@ -276,7 +274,6 @@ function createBeautyAgendaServiceLookup(): EntityLookup {
     if (!supabase || !tenantId) return []
 
     let qb = supabase
-      .schema('saas_core')
       .from('services')
       .select('*')
       .eq('tenant_id', tenantId)
@@ -302,7 +299,6 @@ function createBeautyAgendaServiceLookup(): EntityLookup {
       if (!supabase || !tenantId) return null
 
       const { data } = await supabase
-        .schema('saas_core')
         .from('services')
         .select('*')
         .eq('id', id)
@@ -344,7 +340,7 @@ function createBeautyCancellationDetailsProvider(): NonNullable<AgendaPluginOpti
       if (!supabase || !tenantId) return
 
       const { error } = await supabase
-        .from('appointments')
+        .from('appointment_execution')
         .upsert({
           booking_id: input.bookingId,
           tenant_id: tenantId,

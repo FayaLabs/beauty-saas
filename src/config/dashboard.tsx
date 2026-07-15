@@ -42,7 +42,7 @@ function trendOf(value: number, previousValue: number): 'up' | 'down' | 'neutral
 async function countActiveBookingsForDay(offsetDays = 0): Promise<number> {
   const { start, end } = getLocalDayRange(offsetDays)
   const count = await countRows({
-    table: 'v_bookings',
+    table: 'v_appointments',
     filters: [
       { column: 'starts_at', operator: 'gte', value: start },
       { column: 'starts_at', operator: 'lt', value: end },
@@ -73,7 +73,7 @@ async function sumColumn(
 // Revenue = realized order_total of non-cancelled/no-show bookings in the window.
 async function revenueForWeek(offsetWeeks = 0): Promise<number> {
   const { start, end } = getLocalWeekRange(offsetWeeks)
-  return sumColumn('v_bookings', 'order_total', [
+  return sumColumn('v_appointments', 'order_total', [
     { column: 'starts_at', operator: 'gte', value: start },
     { column: 'starts_at', operator: 'lt', value: end },
     { column: 'status', operator: 'neq', value: 'cancelled' },
@@ -84,7 +84,7 @@ async function revenueForWeek(offsetWeeks = 0): Promise<number> {
 // Active (non-cancelled/no-show) bookings across an arbitrary window.
 async function countActiveBookingsBetween(start: string, end: string): Promise<number> {
   const count = await countRows({
-    table: 'v_bookings',
+    table: 'v_appointments',
     filters: [
       { column: 'starts_at', operator: 'gte', value: start },
       { column: 'starts_at', operator: 'lt', value: end },
@@ -282,10 +282,10 @@ export const beautyDashboardPlugin = createDashboardPlugin({
           ]
           const [noShow, total] = await Promise.all([
             countRows({
-              table: 'v_bookings',
+              table: 'v_appointments',
               filters: [...window, { column: 'status', operator: 'eq', value: 'no_show' }],
             }),
-            countRows({ table: 'v_bookings', filters: window }),
+            countRows({ table: 'v_appointments', filters: window }),
           ])
           return safeNumber(total) > 0 ? (safeNumber(noShow) / safeNumber(total)) * 100 : 0
         }
@@ -427,8 +427,8 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       description: tl('Add the services your salon offers', 'Adicione os serviços que seu salão oferece'),
       icon: 'Briefcase',
       order: 1,
-      // service archetype lives in saas_core.services (queried directly by schema).
-      check: () => tableHasRows('services', { schema: 'saas_core' }),
+      // service archetype lives in public.services (queried directly by schema).
+      check: () => tableHasRows('services', { schema: 'public' }),
       action: '/registry/services',
     },
     {
@@ -437,8 +437,8 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       description: tl('Define booking windows, intervals, and advance rules', 'Defina janelas de agendamento, intervalos e antecedencia'),
       icon: 'Calendar',
       order: 2,
-      // ≥1 schedule row (business hours / work schedule) in saas_core.schedules.
-      check: () => tableHasRows('schedules', { schema: 'saas_core' }),
+      // ≥1 schedule row (business hours / work schedule) in public.schedules.
+      check: () => tableHasRows('schedules', { schema: 'public' }),
       action: '/settings/agenda/_properties/schedule-rules',
     },
     {

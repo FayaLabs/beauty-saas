@@ -55,7 +55,7 @@ export const beautyReportsPlugin = createReportsPlugin({
         },
       ],
       dataSource: { kind: 'view', name: 'rep_appointments_by_period', dateColumn: 'date', defaultSort: 'date', defaultSortDir: 'desc' },
-      ...reportContract('rep_appointments_by_period', 'booking', 'saas_core.bookings linked to saas_core.orders'),
+      ...reportContract('rep_appointments_by_period', 'booking', 'public.appointments linked to public.orders'),
       showSummary: true,
     },
     {
@@ -75,7 +75,7 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'occupancyRate', label: tl('Occupancy %', 'Ocupação %'), type: 'number' },
       ],
       dataSource: { kind: 'view', name: 'rep_occupancy_rate', defaultSort: 'occupancy_rate', defaultSortDir: 'desc' },
-      ...reportContract('rep_occupancy_rate', 'booking', 'saas_core.bookings and saas_core.schedules'),
+      ...reportContract('rep_occupancy_rate', 'booking', 'public.appointments and public.schedules'),
       available: false,
     },
     {
@@ -95,7 +95,7 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'reason', label: tl('Reason', 'Motivo'), type: 'text' },
       ],
       dataSource: { kind: 'view', name: 'rep_cancellations', dateColumn: 'date', defaultSort: 'date', defaultSortDir: 'desc' },
-      ...reportContract('rep_cancellations', 'booking', 'saas_core.bookings linked to cancellation reason properties'),
+      ...reportContract('rep_cancellations', 'booking', 'public.appointments linked to cancellation reason properties'),
       showSummary: true,
     },
     {
@@ -115,7 +115,7 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'lostRevenue', label: tl('Lost Revenue', 'Receita Perdida'), type: 'currency', aggregate: 'sum' },
       ],
       dataSource: { kind: 'view', name: 'rep_no_shows', dateColumn: 'date', defaultSort: 'date', defaultSortDir: 'desc' },
-      ...reportContract('rep_no_shows', 'booking', 'saas_core.bookings linked to saas_core.orders'),
+      ...reportContract('rep_no_shows', 'booking', 'public.appointments linked to public.orders'),
       showSummary: true,
     },
     {
@@ -135,7 +135,7 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'avgRevenue', label: tl('Avg Revenue', 'Receita Média'), type: 'currency' },
       ],
       dataSource: { kind: 'view', name: 'rep_peak_hours', dateColumn: 'date', defaultSort: 'booking_count', defaultSortDir: 'desc' },
-      ...reportContract('rep_peak_hours', 'booking', 'saas_core.bookings with monetary values bridged through saas_core.orders'),
+      ...reportContract('rep_peak_hours', 'booking', 'public.appointments with monetary values bridged through public.orders'),
       showSummary: true,
     },
     {
@@ -154,7 +154,7 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'avgTicket', label: tl('Avg Ticket', 'Ticket Médio'), type: 'currency' },
       ],
       dataSource: { kind: 'view', name: 'rep_revenue_by_service', dateColumn: 'date', defaultSort: 'total_revenue', defaultSortDir: 'desc' },
-      ...reportContract('rep_revenue_by_service', 'order_item', 'saas_core.order_items linked to saas_core.orders'),
+      ...reportContract('rep_revenue_by_service', 'order_item', 'public.order_items linked to public.orders'),
       showSummary: true,
     },
     {
@@ -175,7 +175,7 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'commission', label: tl('Commission', 'Comissão'), type: 'currency', aggregate: 'sum' },
       ],
       dataSource: { kind: 'view', name: 'rep_revenue_by_professional', dateColumn: 'date', defaultSort: 'total_revenue', defaultSortDir: 'desc' },
-      ...reportContract('rep_revenue_by_professional', 'order_item', 'saas_core.order_items linked to bookings/professionals'),
+      ...reportContract('rep_revenue_by_professional', 'order_item', 'public.order_items linked to appointments/professionals'),
       showSummary: true,
     },
     {
@@ -195,7 +195,7 @@ export const beautyReportsPlugin = createReportsPlugin({
         { key: 'avgTicket', label: tl('Avg Ticket', 'Ticket Médio'), type: 'currency' },
       ],
       dataSource: { kind: 'view', name: 'rep_client_frequency', dateColumn: 'last_visit', defaultSort: 'visit_count', defaultSortDir: 'desc' },
-      ...reportContract('rep_client_frequency', 'order', 'saas_core.orders linked to client persons/bookings'),
+      ...reportContract('rep_client_frequency', 'order', 'public.orders linked to client people/appointments'),
       showSummary: true,
     },
     {
@@ -222,7 +222,7 @@ export const beautyReportsPlugin = createReportsPlugin({
         },
       ],
       dataSource: { kind: 'view', name: 'rep_new_clients', dateColumn: 'date', defaultSort: 'date', defaultSortDir: 'desc' },
-      ...reportContract('rep_new_clients', 'event', 'saas_core.persons customer lifecycle with /settings/marketing/_properties/origins'),
+      ...reportContract('rep_new_clients', 'event', 'public.people customer lifecycle with /settings/marketing/_properties/origins'),
     },
     {
       id: 'financial-accounting-dimensions',
@@ -259,7 +259,7 @@ export const beautyReportsPlugin = createReportsPlugin({
         },
       ],
       dataSource: { kind: 'view', name: 'rep_financial_accounting_dimensions', dateColumn: 'date', defaultSort: 'date', defaultSortDir: 'desc' },
-      ...reportContract('rep_financial_accounting_dimensions', 'ledger_movement', 'public.financial_movements and plugin-financial accounting dimensions'),
+      ...reportContract('rep_financial_accounting_dimensions', 'ledger_movement', 'public.plg_financial_movements and plugin-financial accounting dimensions'),
       showSummary: true,
     },
   ],

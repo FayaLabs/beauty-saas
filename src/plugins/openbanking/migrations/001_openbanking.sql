@@ -1,11 +1,11 @@
 -- Open Banking plugin (app-local) — companion SQL: tables + RLS + grants.
 -- Idempotent (safe to re-run). Mirrors the Drizzle schema in ../schema/index.ts.
--- The bank-statement reconciliation columns on public.financial_movements come
+-- The bank-statement reconciliation columns on public.plg_financial_movements come
 -- from the SDK financial plugin migration 007_reconciliation.sql — apply that too.
 
 CREATE TABLE IF NOT EXISTS public.bank_integrations (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  tenant_id uuid NOT NULL REFERENCES saas_core.tenants(id) ON DELETE CASCADE,
+  tenant_id uuid NOT NULL REFERENCES public.tenants(id) ON DELETE CASCADE,
   provider text NOT NULL DEFAULT 'plugbank',
   bank_account_id uuid,
   api_token text,
@@ -21,7 +21,7 @@ CREATE INDEX IF NOT EXISTS idx_bank_integrations_tenant ON public.bank_integrati
 
 CREATE TABLE IF NOT EXISTS public.bank_integration_sync_log (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  tenant_id uuid NOT NULL REFERENCES saas_core.tenants(id) ON DELETE CASCADE,
+  tenant_id uuid NOT NULL REFERENCES public.tenants(id) ON DELETE CASCADE,
   bank_integration_id uuid NOT NULL REFERENCES public.bank_integrations(id) ON DELETE CASCADE,
   bank_account_id uuid,
   period_from date,

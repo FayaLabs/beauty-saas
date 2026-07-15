@@ -55,7 +55,7 @@ async function loadStatement(clientId: string): Promise<StatementEntry[]> {
 
   const tenantId = getActiveTenantId()
   let query = supabase
-    .from('financial_movements')
+    .from('plg_financial_movements')
     .select('id, date, due_date, payment_date, description, movement_kind, direction, amount, paid_amount, status, reference_number, invoice_id')
     .eq('party_id', clientId)
     .order('date', { ascending: false })

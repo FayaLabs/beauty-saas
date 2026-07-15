@@ -18,7 +18,7 @@ SELECT
   reason.requires_notes,
   true,
   reason.sort_order
-FROM saas_core.tenants t
+FROM public.tenants t
 CROSS JOIN (
   VALUES
     ('Cliente desmarcou', 'Cliente solicitou o cancelamento antes do horario.', false, 10),
@@ -54,7 +54,7 @@ SELECT
   channel.is_default,
   true,
   channel.sort_order
-FROM saas_core.tenants t
+FROM public.tenants t
 CROSS JOIN (
   VALUES
     (
@@ -110,7 +110,7 @@ SELECT
   1,
   true,
   true
-FROM saas_core.tenants t
+FROM public.tenants t
 WHERE NOT EXISTS (
   SELECT 1
   FROM public.appointment_schedule_rules existing

@@ -186,7 +186,7 @@ async function loadExecutionQueue(): Promise<ExecutionBooking[]> {
 
   const tenantId = getActiveTenantId()
   let bookingsQuery = supabase
-    .from('v_bookings')
+    .from('v_appointments')
     .select('id, tenant_id, client_id, starts_at, status, client_name, professional_name, services')
     .gte('starts_at', startOfToday())
     .lte('starts_at', endOfNextWeek())
@@ -218,7 +218,7 @@ async function loadExecutionQueue(): Promise<ExecutionBooking[]> {
   const bookingIds = bookings.map((booking) => booking.bookingId)
 
   let appointmentsQuery = supabase
-    .from('appointments')
+    .from('appointment_execution')
     .select('booking_id, execution_status, execution_checklist, stock_deduction_status')
     .in('booking_id', bookingIds)
 
@@ -318,7 +318,7 @@ async function saveExecutionChecklist(booking: ExecutionBooking, checklist: Exec
   nextBooking.executionStatus = checklistIsComplete(nextBooking) ? 'ready' : 'pending'
 
   const { error } = await supabase
-    .from('appointments')
+    .from('appointment_execution')
     .upsert({
       booking_id: booking.bookingId,
       tenant_id: tenantId,
@@ -374,7 +374,6 @@ async function ensureExecutionDocuments(booking: ExecutionBooking, kind: 'forms'
 
     if (!documentId) {
       const { data: coreDoc, error: coreError } = await supabase
-        .schema('saas_core')
         .from('documents')
         .insert({
           tenant_id: tenantId,
@@ -392,7 +391,7 @@ async function ensureExecutionDocuments(booking: ExecutionBooking, kind: 'forms'
       documentId = String(coreDoc.id)
 
       const { error: extensionError } = await supabase
-        .from('frm_documents')
+        .from('plg_forms_documents')
         .insert({
           document_id: documentId,
           tenant_id: tenantId,
@@ -405,7 +404,7 @@ async function ensureExecutionDocuments(booking: ExecutionBooking, kind: 'forms'
         })
 
       if (extensionError) {
-        await supabase.schema('saas_core').from('documents').delete().eq('id', documentId)
+        await supabase.from('documents').delete().eq('id', documentId)
         throw extensionError
       }
     }
@@ -451,7 +450,7 @@ async function ensureStockDeduction(booking: ExecutionBooking): Promise<Executio
     }
 
     const { data: existing } = await supabase
-      .from('stock_movements')
+      .from('plg_inventory_stock_movements')
       .select('id')
       .eq('tenant_id', tenantId)
       .eq('product_id', product.productId)
@@ -463,7 +462,7 @@ async function ensureStockDeduction(booking: ExecutionBooking): Promise<Executio
     if (!movementId) {
       const quantity = Number(product.quantity ?? 0)
       const { data: movement, error: movementError } = await supabase
-        .from('stock_movements')
+        .from('plg_inventory_stock_movements')
         .insert({
           tenant_id: tenantId,
           product_id: product.productId,
@@ -485,7 +484,6 @@ async function ensureStockDeduction(booking: ExecutionBooking): Promise<Executio
       movementId = String(movement.id)
 
       const { data: productRow } = await supabase
-        .schema('saas_core')
         .from('products')
         .select('stock')
         .eq('id', product.productId)
@@ -493,7 +491,6 @@ async function ensureStockDeduction(booking: ExecutionBooking): Promise<Executio
 
       if (productRow) {
         await supabase
-          .schema('saas_core')
           .from('products')
           .update({ stock: Number(productRow.stock ?? 0) - quantity })
           .eq('id', product.productId)

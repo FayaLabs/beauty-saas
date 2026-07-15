@@ -1,5 +1,20 @@
 // Fayz migration applier (thin Management-API executor — the editor-host path).
 //
+// ⚠️ DEPRECATED (core-v1 / industry-pools). SUPERSEDED by the `fayz db apply`
+// CLI. This legacy applier assumes the pre-core-v1 world:
+//   * a `saas_core` schema (dissolved into `public` by @fayz-ai/db
+//     000_core_v1_convert.sql — persons->people, bookings->appointments,
+//     booking_items->appointment_items);
+//   * plugin tables under legacy names (renamed to plg_<plugin>_* by each
+//     plugin's 000_plg_rename.sql);
+//   * the app's own drizzle/*.sql baseline (which recreates saas_core stubs and
+//     the bespoke `appointments` extension — now colliding with core
+//     `public.appointments`; it must be regenerated as `appointment_execution`).
+// Do NOT run this against a converted pool. Provision/seed via `fayz db apply`,
+// which pulls @fayz-ai/db (public core), each plugin's migrations (incl.
+// 000_plg_rename) and the app's regenerated extension migrations. The
+// ENABLED_PLUGINS list + SDK paths below are kept only for historical reference.
+//
 // Applies, in order: (1) Drizzle-generated table migrations, then (2) each
 // ENABLED plugin's companion SQL (functions / views / RLS / grants the Drizzle
 // diff doesn't cover). This is how plugin-specific migrations JOIN the pipeline:

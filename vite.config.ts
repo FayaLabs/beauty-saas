@@ -1,15 +1,5 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import path from 'path'
+import { fayzVite } from '@fayz-ai/sdk/vite'
 
-export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
-  server: {
-    port: 5180,
-  },
-})
+export default defineConfig(fayzVite({ port: 5301, strictPort: true, plugins: [react()] }))

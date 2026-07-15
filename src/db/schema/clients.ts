@@ -1,9 +1,12 @@
-import { boolean, date, integer, jsonb, numeric, pgTable, text, tenantId, timestamps, uuid, persons } from '@fayz-ai/saas/db'
+import { boolean, date, integer, jsonb, numeric, pgTable, text, tenantId, timestamps, uuid } from '@fayz-ai/saas/db'
+
+// Core-v1: persons -> public.people (thin FK-target ref).
+const people = pgTable('people', { id: uuid('id').primaryKey() })
 
 // Ring-2 archetype extension: beauty clients (person kind=client).
 // Mirrors the live table; this Drizzle definition is the migration baseline.
 export const clients = pgTable('clients', {
-  personId: uuid('person_id').primaryKey().references(() => persons.id, { onDelete: 'cascade' }),
+  personId: uuid('person_id').primaryKey().references(() => people.id, { onDelete: 'cascade' }),
   tenantId: tenantId(),
   gender: text('gender'),
   origin: text('origin'),

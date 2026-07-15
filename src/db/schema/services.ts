@@ -10,30 +10,29 @@ import {
   tenantId,
   timestamps,
   uuid,
-  saasCore,
 } from '@fayz-ai/saas/db'
 
-const coreServices = saasCore.table('services', {
+const coreServices = pgTable('services', {
   id: uuid('id').primaryKey(),
 })
 
-const coreProducts = saasCore.table('products', {
+const coreProducts = pgTable('products', {
   id: uuid('id').primaryKey(),
 })
 
-const formTemplates = pgTable('frm_templates', {
+const formTemplates = pgTable('plg_forms_templates', {
   id: uuid('id').primaryKey(),
 })
 
-const serviceCategories = saasCore.table('categories', {
+const serviceCategories = pgTable('categories', {
   id: uuid('id').primaryKey(),
 })
 
-const serviceLocations = saasCore.table('locations', {
+const serviceLocations = pgTable('locations', {
   id: uuid('id').primaryKey(),
 })
 
-const corePersons = saasCore.table('persons', {
+const corePersons = pgTable('people', {
   id: uuid('id').primaryKey(),
 })
 

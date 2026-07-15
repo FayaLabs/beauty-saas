@@ -191,7 +191,6 @@ async function queueWaitlistReminder(row: WaitlistRow) {
   if (updateError) throw updateError
 
   const { error: notificationError } = await supabase
-    .schema('saas_core')
     .from('notifications')
     .insert({
       tenant_id: tenantId,

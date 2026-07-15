@@ -57,7 +57,7 @@ export function TodayScheduleSection({ onNavigate }: DashboardSectionProps) {
         const end = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString()
 
         const { rows } = await fayz.data.listRows<BookingRow>({
-          table: 'v_bookings',
+          table: 'v_appointments',
           filters: [
             { column: 'starts_at', operator: 'gte', value: start },
             { column: 'starts_at', operator: 'lt', value: end },

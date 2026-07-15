@@ -3,7 +3,7 @@
 // CLIENT-OWNED connector that follows the SDK plugin contract. It owns the bank
 // connection + sync-audit tables and a Supabase Edge Function (plugbank-sync)
 // that imports bank-statement lines into the SDK financial ledger
-// (public.financial_movements, tagged external_source='plugbank'). The matching
+// (public.plg_financial_movements, tagged external_source='plugbank'). The matching
 // happens in the SDK financial plugin's Reconciliation view.
 //
 // Graduation path (see PLUGIN.md): move this folder to

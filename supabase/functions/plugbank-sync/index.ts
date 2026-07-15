@@ -2,8 +2,8 @@
 //
 // Holds the bank-API credentials server-side and does the real work: validate
 // the connection, fetch the statement for a date range, and import selected
-// lines into public.financial_movements (tagged external_source='plugbank',
-// idempotent via the uq_financial_movements_external index). The browser only
+// lines into public.plg_financial_movements (tagged external_source='plugbank',
+// idempotent via the uq_plg_financial_movements_external index). The browser only
 // invokes these actions; it never sees the bank API directly.
 //
 // Actions: test_connection | fetch_statement | import_transactions.
@@ -117,7 +117,7 @@ Deno.serve(async (req: Request) => {
       const lines: NormalizedLine[] = body.lines ?? []
       let imported = 0, duplicates = 0
       for (const l of lines) {
-        const { error } = await admin.from('financial_movements').insert({
+        const { error } = await admin.from('plg_financial_movements').insert({
           tenant_id: integration.tenant_id,
           direction: l.type === 'C' ? 'credit' : 'debit',
           movement_kind: 'payment',

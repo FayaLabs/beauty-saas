@@ -7,7 +7,7 @@ and drives **reconciliation (conciliação)**. Provider: **Tecnospeed PlugBank**
 - **DB**: `public.bank_integrations` (connection + credentials) and
   `public.bank_integration_sync_log` (run audit). See `schema/` + `migrations/`.
 - **Edge function**: `supabase/functions/plugbank-sync` (data plane) — calls the
-  PlugBank API, normalizes lines, imports into `public.financial_movements`
+  PlugBank API, normalizes lines, imports into `public.plg_financial_movements`
   tagged `external_source='plugbank'` (idempotent via the SDK financial
   `uq_financial_movements_external` index).
 - **UI**: an "Open Banking" tab in `/settings` (`settings/BankIntegrationSettings.tsx`)
