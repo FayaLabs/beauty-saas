@@ -19,7 +19,7 @@
     "@fayz-ai/auth": "^0.8.0",
     "@fayz-ai/core": "^0.8.0",
     "@fayz-ai/db": "^0.8.0",
-    "@fayz-ai/plugin-agenda": "^0.8.0",
+    "@fayz-ai/plugin-agenda": "^0.8.1",
     "@fayz-ai/plugin-crm": "^0.8.0",
     "@fayz-ai/plugin-dashboard": "^0.8.0",
     "@fayz-ai/plugin-financial": "^0.8.0",
