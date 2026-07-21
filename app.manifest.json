@@ -1,43 +1,4845 @@
 {
-  "manifestVersion": 2,
-  "id": "beauty-saas",
-  "name": "BeautySoft",
-  "backend": {
-    "provider": "supabase",
-    "projectRef": "gphxclpkbtbucoqclbco",
-    "pool": "cluster-salon-br-01",
-    "tenantId": ""
+  "agent": {
+    "declaredFeatures": [
+      {
+        "group": "Painel",
+        "id": "dashboard",
+        "label": "Painel"
+      },
+      {
+        "group": "Agenda",
+        "id": "appointments",
+        "label": "Agenda"
+      },
+      {
+        "group": "Agenda",
+        "id": "agenda.schedules",
+        "label": "Schedule Management"
+      },
+      {
+        "group": "Financeiro",
+        "id": "financial",
+        "label": "Financeiro (acesso)"
+      },
+      {
+        "group": "Financeiro",
+        "id": "financial.receivables",
+        "label": "Contas a Receber"
+      },
+      {
+        "group": "Financeiro",
+        "id": "financial.payables",
+        "label": "Contas a Pagar"
+      },
+      {
+        "group": "Financeiro",
+        "id": "financial.commissions",
+        "label": "Comissões"
+      },
+      {
+        "group": "Estoque",
+        "id": "inventory",
+        "label": "Estoque (acesso)"
+      },
+      {
+        "group": "Vendas",
+        "id": "sales",
+        "label": "Vendas (acesso)"
+      },
+      {
+        "group": "Vendas",
+        "id": "crm.leads",
+        "label": "Leads"
+      },
+      {
+        "group": "Vendas",
+        "id": "crm.quotes",
+        "label": "Orçamentos"
+      },
+      {
+        "group": "Vendas",
+        "id": "crm.pipeline",
+        "label": "Pipeline"
+      },
+      {
+        "group": "Relatórios",
+        "id": "reports",
+        "label": "Relatórios (acesso)"
+      },
+      {
+        "group": "Marketing",
+        "id": "marketing",
+        "label": "Marketing (acesso)"
+      },
+      {
+        "group": "Engage",
+        "id": "marketing.content",
+        "label": "Conteúdo"
+      },
+      {
+        "group": "Engage",
+        "id": "marketing.blog",
+        "label": "Blog"
+      },
+      {
+        "group": "Formulários",
+        "id": "custom_forms",
+        "label": "Formulários"
+      },
+      {
+        "group": "Agenda",
+        "id": "agenda_waitlist",
+        "label": "Lista de Espera"
+      },
+      {
+        "group": "Agenda",
+        "id": "agenda_schedules",
+        "label": "Horários de Trabalho"
+      },
+      {
+        "group": "Agenda",
+        "id": "agenda_settings",
+        "label": "Configurações da Agenda"
+      },
+      {
+        "group": "Clientes",
+        "id": "clients",
+        "label": "Clientes"
+      },
+      {
+        "group": "Cadastros",
+        "id": "services",
+        "label": "Serviços"
+      },
+      {
+        "group": "Estoque",
+        "id": "inv_products",
+        "label": "Produtos"
+      },
+      {
+        "group": "Estoque",
+        "id": "inv_stock",
+        "label": "Movimentações"
+      },
+      {
+        "group": "Estoque",
+        "id": "inv_settings",
+        "label": "Cadastros de Estoque"
+      },
+      {
+        "group": "Vendas",
+        "id": "crm_pipeline",
+        "label": "Funil de Vendas"
+      },
+      {
+        "group": "Vendas",
+        "id": "crm_leads",
+        "label": "Leads"
+      },
+      {
+        "group": "Vendas",
+        "id": "crm_quotes",
+        "label": "Orçamentos"
+      },
+      {
+        "group": "Vendas",
+        "id": "crm_activities",
+        "label": "Atividades"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_receivables",
+        "label": "Contas a Receber"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_payables",
+        "label": "Contas a Pagar"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_cashbox",
+        "label": "Caixa"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_statements",
+        "label": "Extrato"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_commissions",
+        "label": "Comissões"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_cards",
+        "label": "Cartões"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_reconciliation",
+        "label": "Conciliação"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_settings",
+        "label": "Cadastros Financeiros"
+      },
+      {
+        "group": "Marketing",
+        "id": "mkt_campaigns",
+        "label": "Campanhas"
+      },
+      {
+        "group": "Marketing",
+        "id": "mkt_channels",
+        "label": "Canais"
+      },
+      {
+        "group": "Marketing",
+        "id": "mkt_funnel",
+        "label": "Funil"
+      },
+      {
+        "group": "Relatórios",
+        "id": "reports_operations",
+        "label": "Relatórios Operacionais"
+      },
+      {
+        "group": "Relatórios",
+        "id": "reports_financial",
+        "label": "Relatórios Financeiros"
+      },
+      {
+        "group": "Relatórios",
+        "id": "reports_clients",
+        "label": "Relatórios de Clientes"
+      }
+    ],
+    "entities": [
+      {
+        "data": {
+          "searchColumns": [
+            "name",
+            "city",
+            "state"
+          ],
+          "table": "locations",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "phone",
+            "label": "Phone",
+            "type": "phone"
+          },
+          {
+            "key": "city",
+            "label": "City",
+            "type": "text"
+          },
+          {
+            "key": "state",
+            "label": "State",
+            "type": "text"
+          },
+          {
+            "key": "address",
+            "label": "Address",
+            "type": "text"
+          },
+          {
+            "key": "country",
+            "label": "Country",
+            "type": "text"
+          },
+          {
+            "key": "postalCode",
+            "label": "Postal Code",
+            "type": "text"
+          },
+          {
+            "key": "email",
+            "label": "Email",
+            "type": "email"
+          },
+          {
+            "key": "isHeadquarters",
+            "label": "Headquarters",
+            "type": "boolean"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          },
+          {
+            "key": "notes",
+            "label": "Notes",
+            "type": "textarea"
+          }
+        ],
+        "key": "location",
+        "label": "Location",
+        "labelPlural": "Locations",
+        "limitKey": "locations"
+      },
+      {
+        "data": {
+          "archetype": "person",
+          "archetypeKind": "customer",
+          "searchColumns": [
+            "name",
+            "email",
+            "phone"
+          ],
+          "table": "clients",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "email",
+            "label": "E-mail",
+            "required": true,
+            "searchable": true,
+            "type": "email"
+          },
+          {
+            "key": "phone",
+            "label": "Telefone",
+            "type": "phone"
+          },
+          {
+            "key": "dateOfBirth",
+            "label": "Data de Nascimento",
+            "type": "date"
+          },
+          {
+            "key": "notes",
+            "label": "Observações",
+            "type": "textarea"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          },
+          {
+            "key": "gender",
+            "label": "Gênero",
+            "options": [
+              "male",
+              "female",
+              "other",
+              "prefer_not_to_say"
+            ],
+            "type": "select"
+          },
+          {
+            "key": "origin",
+            "label": "Origem",
+            "type": "text"
+          },
+          {
+            "key": "lifecycleStatus",
+            "label": "Status do Cliente",
+            "options": [
+              "active",
+              "vip",
+              "inactive",
+              "restricted"
+            ],
+            "type": "select"
+          },
+          {
+            "key": "stage",
+            "label": "Etapa de Relacionamento",
+            "options": [
+              "new",
+              "returning",
+              "loyal",
+              "at_risk"
+            ],
+            "type": "select"
+          },
+          {
+            "key": "statusAlert",
+            "label": "Alerta do Cliente",
+            "type": "textarea"
+          },
+          {
+            "key": "anamnesisNotes",
+            "label": "Anamnese",
+            "type": "textarea"
+          },
+          {
+            "key": "hasAnamnesisAlert",
+            "label": "Alerta",
+            "type": "boolean"
+          },
+          {
+            "key": "visits",
+            "label": "Visitas",
+            "type": "number"
+          },
+          {
+            "key": "totalSpent",
+            "label": "Total Gasto",
+            "type": "currency"
+          },
+          {
+            "key": "lastVisit",
+            "label": "Última Visita",
+            "type": "date"
+          }
+        ],
+        "key": "person:customer",
+        "label": "Cliente",
+        "labelPlural": "Cliente",
+        "limitKey": "clients"
+      },
+      {
+        "data": {
+          "searchColumns": [
+            "notes",
+            "status"
+          ],
+          "table": "appointment_waitlist_entries",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "clientId",
+            "label": "Cliente",
+            "relationTable": "people",
+            "type": "relation"
+          },
+          {
+            "key": "professionalId",
+            "label": "Profissional",
+            "relationTable": "people",
+            "type": "relation"
+          },
+          {
+            "key": "serviceId",
+            "label": "Serviço",
+            "relationTable": "services",
+            "type": "relation"
+          },
+          {
+            "key": "requestedDate",
+            "label": "Data desejada",
+            "type": "datetime"
+          },
+          {
+            "key": "preferredStartTime",
+            "label": "Início preferido",
+            "type": "time"
+          },
+          {
+            "key": "preferredEndTime",
+            "label": "Fim preferido",
+            "type": "time"
+          },
+          {
+            "key": "priority",
+            "label": "Prioridade",
+            "type": "number"
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "options": [
+              "waiting",
+              "contacted",
+              "scheduled",
+              "cancelled"
+            ],
+            "type": "select"
+          },
+          {
+            "key": "notes",
+            "label": "Observações",
+            "searchable": true,
+            "type": "textarea"
+          }
+        ],
+        "key": "entrada-da-lista-de-espera",
+        "label": "Entrada da Lista de Espera",
+        "labelPlural": "Lista de Espera"
+      },
+      {
+        "data": {
+          "schema": "public",
+          "searchColumns": [
+            "name"
+          ],
+          "table": "services",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome do Serviço",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "description",
+            "label": "Descrição",
+            "type": "textarea"
+          },
+          {
+            "key": "durationMinutes",
+            "label": "Duração (min)",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "key": "price",
+            "label": "Preço",
+            "required": true,
+            "type": "currency"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "serviço",
+        "label": "Serviço",
+        "labelPlural": "Serviço"
+      },
+      {
+        "data": {
+          "filters": {
+            "kind": "service_category"
+          },
+          "schema": "public",
+          "table": "categories",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "sortOrder",
+            "label": "Ordem",
+            "type": "number"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "categoria-de-serviço",
+        "label": "Categoria de Serviço",
+        "labelPlural": "Categorias de Serviço"
+      },
+      {
+        "data": {
+          "filters": {
+            "kind": "branch"
+          },
+          "schema": "public",
+          "searchColumns": [
+            "name",
+            "city",
+            "state"
+          ],
+          "table": "locations",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "phone",
+            "label": "Telefone",
+            "type": "phone"
+          },
+          {
+            "key": "city",
+            "label": "Cidade",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "state",
+            "label": "Estado",
+            "type": "text"
+          },
+          {
+            "key": "address",
+            "label": "Endereço",
+            "type": "text"
+          },
+          {
+            "key": "country",
+            "label": "País",
+            "type": "text"
+          },
+          {
+            "key": "postalCode",
+            "label": "CEP",
+            "type": "text"
+          },
+          {
+            "key": "email",
+            "label": "E-mail",
+            "type": "email"
+          },
+          {
+            "key": "isHeadquarters",
+            "label": "Matriz",
+            "type": "boolean"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          },
+          {
+            "key": "notes",
+            "label": "Observações",
+            "type": "textarea"
+          }
+        ],
+        "key": "local-de-atendimento",
+        "label": "Local de Atendimento",
+        "labelPlural": "Locais de Atendimento"
+      },
+      {
+        "data": {
+          "filters": {
+            "kind": "location_group"
+          },
+          "schema": "public",
+          "searchColumns": [
+            "name",
+            "description"
+          ],
+          "table": "categories",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "description",
+            "label": "Descrição",
+            "type": "textarea"
+          },
+          {
+            "key": "sortOrder",
+            "label": "Ordem",
+            "type": "number"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "grupo-de-locais",
+        "label": "Grupo de Locais",
+        "labelPlural": "Grupos de Locais"
+      },
+      {
+        "data": {
+          "archetype": "person",
+          "archetypeKind": "staff",
+          "searchColumns": [
+            "name",
+            "email",
+            "phone"
+          ],
+          "table": "staff_members",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "email",
+            "label": "E-mail",
+            "searchable": true,
+            "type": "email"
+          },
+          {
+            "key": "phone",
+            "label": "Telefone",
+            "type": "phone"
+          },
+          {
+            "key": "profession",
+            "label": "Profissão",
+            "type": "text"
+          },
+          {
+            "key": "commissionRate",
+            "label": "Comissão (%)",
+            "type": "number"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "person:staff",
+        "label": "Profissional",
+        "labelPlural": "Profissionais"
+      },
+      {
+        "data": {
+          "filters": {
+            "kind": "contact"
+          },
+          "schema": "public",
+          "searchColumns": [
+            "name",
+            "email",
+            "phone"
+          ],
+          "table": "people",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "email",
+            "label": "E-mail",
+            "searchable": true,
+            "type": "email"
+          },
+          {
+            "key": "phone",
+            "label": "Telefone",
+            "searchable": true,
+            "type": "phone"
+          },
+          {
+            "key": "notes",
+            "label": "Observações",
+            "type": "textarea"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "contato",
+        "label": "Contato",
+        "labelPlural": "Contatos"
+      },
+      {
+        "data": {
+          "filters": {
+            "kind": "supplier"
+          },
+          "schema": "public",
+          "table": "people",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "email",
+            "label": "E-mail",
+            "type": "email"
+          },
+          {
+            "key": "phone",
+            "label": "Telefone",
+            "type": "phone"
+          },
+          {
+            "key": "notes",
+            "label": "Observações",
+            "type": "textarea"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "fornecedor",
+        "label": "Fornecedor",
+        "labelPlural": "Fornecedores"
+      },
+      {
+        "data": {
+          "filters": {
+            "kind": "partner"
+          },
+          "schema": "public",
+          "table": "people",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "phone",
+            "label": "Telefone",
+            "type": "phone"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "parceria",
+        "label": "Parceria",
+        "labelPlural": "Parcerias"
+      },
+      {
+        "data": {
+          "filters": {
+            "kind": "asset"
+          },
+          "schema": "public",
+          "table": "products",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "description",
+            "label": "Modelo",
+            "type": "text"
+          },
+          {
+            "key": "sku",
+            "label": "Número de Série",
+            "type": "text"
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "options": [
+              "active",
+              "maintenance",
+              "retired"
+            ],
+            "type": "select"
+          }
+        ],
+        "key": "equipamento",
+        "label": "Equipamento",
+        "labelPlural": "Equipamentos"
+      },
+      {
+        "data": {
+          "searchColumns": [
+            "name",
+            "description"
+          ],
+          "table": "service_packages",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome do Pacote",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "description",
+            "label": "Descrição",
+            "type": "textarea"
+          },
+          {
+            "key": "price",
+            "label": "Preço do Pacote",
+            "required": true,
+            "type": "currency"
+          },
+          {
+            "key": "validityDays",
+            "label": "Validade (dias)",
+            "type": "number"
+          },
+          {
+            "key": "maxUses",
+            "label": "Usos máximos",
+            "type": "number"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "pacote-de-serviços",
+        "label": "Pacote de Serviços",
+        "labelPlural": "Pacotes de Serviços"
+      },
+      {
+        "data": {
+          "table": "service_package_items",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "packageId",
+            "label": "Pacote",
+            "relationTable": "service_packages",
+            "required": true,
+            "type": "relation"
+          },
+          {
+            "key": "serviceId",
+            "label": "Serviço",
+            "relationTable": "services",
+            "required": true,
+            "type": "relation"
+          },
+          {
+            "key": "includedQuantity",
+            "label": "Qtd. incluída",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "key": "unitPrice",
+            "label": "Preço unitário",
+            "type": "currency"
+          },
+          {
+            "key": "sortOrder",
+            "label": "Ordem",
+            "type": "number"
+          }
+        ],
+        "key": "serviço-do-pacote",
+        "label": "Serviço do Pacote",
+        "labelPlural": "Serviços do Pacote"
+      },
+      {
+        "data": {
+          "table": "service_default_products",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "serviceId",
+            "label": "Serviço",
+            "relationTable": "services",
+            "required": true,
+            "type": "relation"
+          },
+          {
+            "key": "productId",
+            "label": "Produto",
+            "relationTable": "products",
+            "required": true,
+            "type": "relation"
+          },
+          {
+            "key": "quantity",
+            "label": "Quantidade",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "key": "unit",
+            "label": "Unidade",
+            "type": "text"
+          },
+          {
+            "key": "deductionTiming",
+            "label": "Momento da Baixa",
+            "options": [
+              "on_execution",
+              "on_completion",
+              "manual"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "isRequired",
+            "label": "Obrigatório",
+            "type": "boolean"
+          },
+          {
+            "key": "sortOrder",
+            "label": "Ordem",
+            "type": "number"
+          },
+          {
+            "key": "notes",
+            "label": "Observações",
+            "type": "textarea"
+          }
+        ],
+        "key": "produto-padrão-do-serviço",
+        "label": "Produto Padrão do Serviço",
+        "labelPlural": "Produtos Padrão dos Serviços"
+      },
+      {
+        "data": {
+          "searchColumns": [
+            "name",
+            "description"
+          ],
+          "table": "service_price_tables",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "description",
+            "label": "Descrição",
+            "type": "textarea"
+          },
+          {
+            "key": "startsOn",
+            "label": "Início",
+            "type": "date"
+          },
+          {
+            "key": "endsOn",
+            "label": "Fim",
+            "type": "date"
+          },
+          {
+            "key": "isDefault",
+            "label": "Padrão",
+            "type": "boolean"
+          },
+          {
+            "key": "sortOrder",
+            "label": "Ordem",
+            "type": "number"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "tabela-de-preços",
+        "label": "Tabela de Preços",
+        "labelPlural": "Tabelas de Preços"
+      },
+      {
+        "data": {
+          "table": "service_price_table_items",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "priceTableId",
+            "label": "Tabela de Preços",
+            "relationTable": "service_price_tables",
+            "required": true,
+            "type": "relation"
+          },
+          {
+            "key": "serviceId",
+            "label": "Serviço",
+            "relationTable": "services",
+            "required": true,
+            "type": "relation"
+          },
+          {
+            "key": "price",
+            "label": "Preço",
+            "required": true,
+            "type": "currency"
+          },
+          {
+            "key": "durationMinutes",
+            "label": "Duração (min)",
+            "type": "number"
+          },
+          {
+            "key": "notes",
+            "label": "Observações",
+            "type": "textarea"
+          }
+        ],
+        "key": "preço-de-serviço",
+        "label": "Preço de Serviço",
+        "labelPlural": "Preços de Serviços"
+      },
+      {
+        "data": {
+          "searchColumns": [
+            "name"
+          ],
+          "table": "service_price_variations",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "variationType",
+            "label": "Tipo de Variação",
+            "options": [
+              "discount",
+              "addition"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "valueType",
+            "label": "Tipo de Valor",
+            "options": [
+              "percentage",
+              "fixed"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "value",
+            "label": "Valor",
+            "required": true,
+            "type": "currency"
+          },
+          {
+            "key": "firstAppointmentOnly",
+            "label": "Somente Primeiro Atendimento",
+            "type": "boolean"
+          },
+          {
+            "key": "serviceFilterType",
+            "label": "Filtro de Serviço",
+            "options": [
+              "all",
+              "only",
+              "except"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "serviceId",
+            "label": "Serviço",
+            "relationTable": "services",
+            "type": "relation"
+          },
+          {
+            "key": "professionalFilterType",
+            "label": "Filtro de Profissional",
+            "options": [
+              "all",
+              "only",
+              "except"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "professionalId",
+            "label": "Profissional",
+            "relationTable": "people",
+            "type": "relation"
+          },
+          {
+            "key": "categoryFilterType",
+            "label": "Filtro de Categoria",
+            "options": [
+              "all",
+              "only",
+              "except"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "categoryId",
+            "label": "Categoria",
+            "relationTable": "categories",
+            "type": "relation"
+          },
+          {
+            "key": "unitFilterType",
+            "label": "Filtro de Unidade",
+            "options": [
+              "all",
+              "only",
+              "except"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "unitId",
+            "label": "Unidade/Local",
+            "relationTable": "locations",
+            "type": "relation"
+          },
+          {
+            "key": "partnershipFilterType",
+            "label": "Filtro de Parceria",
+            "options": [
+              "all",
+              "only",
+              "except"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "partnershipId",
+            "label": "Parceria",
+            "relationTable": "people",
+            "type": "relation"
+          },
+          {
+            "key": "sortOrder",
+            "label": "Ordem",
+            "type": "number"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "variação-de-preço",
+        "label": "Variação de Preço",
+        "labelPlural": "Variações de Preço"
+      },
+      {
+        "data": {
+          "table": "holidays",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "date",
+            "label": "Date",
+            "required": true,
+            "type": "date"
+          },
+          {
+            "key": "recurring",
+            "label": "Recurring Annually",
+            "type": "boolean"
+          },
+          {
+            "key": "description",
+            "label": "Description",
+            "type": "text"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "agenda:holidays",
+        "label": "Holiday",
+        "labelPlural": "Holidays"
+      },
+      {
+        "data": {
+          "table": "appointment_cancellation_reasons",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "description",
+            "label": "Descrição",
+            "type": "textarea"
+          },
+          {
+            "key": "requiresNotes",
+            "label": "Exigir observação",
+            "type": "boolean"
+          },
+          {
+            "key": "sortOrder",
+            "label": "Ordem",
+            "type": "number"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "agenda:cancellation-reasons",
+        "label": "Motivo de Cancelamento",
+        "labelPlural": "Motivos de Cancelamento"
+      },
+      {
+        "data": {
+          "table": "appointment_confirmation_channels",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "channel",
+            "label": "Canal",
+            "options": [
+              "whatsapp",
+              "sms",
+              "email",
+              "phone"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "template",
+            "label": "Modelo da Mensagem",
+            "type": "textarea"
+          },
+          {
+            "key": "sendOffsetHours",
+            "label": "Enviar antes (horas)",
+            "type": "number"
+          },
+          {
+            "key": "retryOffsetHours",
+            "label": "Repetir antes (horas)",
+            "type": "number"
+          },
+          {
+            "key": "isDefault",
+            "label": "Padrão",
+            "type": "boolean"
+          },
+          {
+            "key": "sortOrder",
+            "label": "Ordem",
+            "type": "number"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "agenda:confirmation-channels",
+        "label": "Canal de Confirmação",
+        "labelPlural": "Canais de Confirmação"
+      },
+      {
+        "data": {
+          "table": "appointment_schedule_rules",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "scope",
+            "label": "Escopo",
+            "options": [
+              "tenant",
+              "location",
+              "professional"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "startTime",
+            "label": "Hora Inicial",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "endTime",
+            "label": "Hora Final",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "slotDurationMinutes",
+            "label": "Intervalo (min)",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "key": "bufferMinutes",
+            "label": "Intervalo entre atendimentos",
+            "type": "number"
+          },
+          {
+            "key": "minAdvanceHours",
+            "label": "Antecedência mínima (horas)",
+            "type": "number"
+          },
+          {
+            "key": "maxAdvanceDays",
+            "label": "Antecedência máxima (dias)",
+            "type": "number"
+          },
+          {
+            "key": "maxConcurrent",
+            "label": "Agendamentos simultâneos",
+            "type": "number"
+          },
+          {
+            "key": "allowOnlineBooking",
+            "label": "Agendamento Online",
+            "type": "boolean"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "agenda:schedule-rules",
+        "label": "Regra de Agenda",
+        "labelPlural": "Regras de Agenda"
+      },
+      {
+        "data": {
+          "table": "plg_financial_payment_methods",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "paymentMethodTypeId",
+            "label": "Type",
+            "relationTable": "plg_financial_payment_method_types",
+            "required": true,
+            "type": "relation"
+          },
+          {
+            "key": "discountValue",
+            "label": "Discount %",
+            "type": "number"
+          },
+          {
+            "key": "interestValue",
+            "label": "Interest %",
+            "type": "number"
+          },
+          {
+            "key": "minInstallments",
+            "label": "Min Installments",
+            "type": "number"
+          },
+          {
+            "key": "maxInstallments",
+            "label": "Max Installments",
+            "type": "number"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "financial:payment-methods",
+        "label": "Payment Method",
+        "labelPlural": "Payment Methods"
+      },
+      {
+        "data": {
+          "table": "plg_financial_chart_of_accounts",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "code",
+            "label": "Code",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "nodeType",
+            "label": "Type",
+            "options": [
+              "group",
+              "leaf"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "parentId",
+            "label": "Parent",
+            "type": "text"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "financial:chart-of-accounts",
+        "label": "Ledger Account",
+        "labelPlural": "Chart of Accounts"
+      },
+      {
+        "data": {
+          "table": "plg_financial_cost_centers",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "code",
+            "label": "Code",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "financial:cost-centers",
+        "label": "Cost Center",
+        "labelPlural": "Cost Centers"
+      },
+      {
+        "data": {
+          "table": "plg_financial_bank_accounts",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "accountType",
+            "label": "Type",
+            "options": [
+              "bank_account",
+              "cash_register",
+              "credit_card",
+              "digital_wallet"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "bankName",
+            "label": "Bank",
+            "type": "text"
+          },
+          {
+            "key": "accountNumber",
+            "label": "Account Number",
+            "type": "text"
+          },
+          {
+            "key": "agencyNumber",
+            "label": "Agency",
+            "type": "text"
+          },
+          {
+            "key": "initialBalance",
+            "label": "Initial Balance",
+            "type": "currency"
+          },
+          {
+            "key": "creditLimit",
+            "label": "Credit Limit",
+            "type": "currency"
+          },
+          {
+            "key": "closingDay",
+            "label": "Closing Day",
+            "type": "number"
+          },
+          {
+            "key": "dueDay",
+            "label": "Due Day",
+            "type": "number"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "financial:bank-accounts",
+        "label": "Bank Account",
+        "labelPlural": "Bank Accounts"
+      },
+      {
+        "data": {
+          "table": "commission_rules",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "priority",
+            "label": "Priority",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "key": "valueType",
+            "label": "Type",
+            "options": [
+              "percentage",
+              "fixed"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "value",
+            "label": "Value",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "key": "description",
+            "label": "Description",
+            "type": "textarea"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "financial:commission-rules",
+        "label": "Commission Rule",
+        "labelPlural": "Commission Rules"
+      },
+      {
+        "data": {
+          "table": "price_tables",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "description",
+            "label": "Description",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "options": [
+              "sale",
+              "cost"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "validFrom",
+            "label": "Valid From",
+            "type": "date"
+          },
+          {
+            "key": "validUntil",
+            "label": "Valid Until",
+            "type": "date"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "financial:price-tables",
+        "label": "Price Table",
+        "labelPlural": "Price Tables"
+      },
+      {
+        "data": {
+          "table": "price_variations",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "variationType",
+            "label": "Type",
+            "options": [
+              "discount",
+              "increase"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "valueType",
+            "label": "Value Type",
+            "options": [
+              "percentage",
+              "fixed"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "value",
+            "label": "Value",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "key": "firstAppointmentOnly",
+            "label": "First Appointment Only",
+            "type": "boolean"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "financial:price-variations",
+        "label": "Price Variation",
+        "labelPlural": "Price Variations"
+      },
+      {
+        "data": {
+          "table": "plg_financial_payment_method_types",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "transactionType",
+            "label": "Transaction Type",
+            "options": [
+              "cash",
+              "credit_card",
+              "debit_card",
+              "pix",
+              "bank_transfer",
+              "check",
+              "voucher"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "financial:payment-method-types",
+        "label": "Payment Type",
+        "labelPlural": "Payment Types"
+      },
+      {
+        "data": {
+          "table": "plg_financial_card_brands",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "financial:card-brands",
+        "label": "Card Brand",
+        "labelPlural": "Card Brands"
+      },
+      {
+        "data": {
+          "filters": {
+            "kind": "supplier"
+          },
+          "table": "people",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "phone",
+            "label": "Phone",
+            "type": "phone"
+          },
+          {
+            "key": "email",
+            "label": "Email",
+            "type": "email"
+          },
+          {
+            "key": "documentNumber",
+            "label": "Tax ID",
+            "type": "text"
+          },
+          {
+            "key": "address",
+            "label": "Address",
+            "type": "text"
+          },
+          {
+            "key": "notes",
+            "label": "Notes",
+            "type": "textarea"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "inventory:suppliers",
+        "label": "Supplier",
+        "labelPlural": "Suppliers"
+      },
+      {
+        "data": {
+          "table": "plg_inventory_product_categories",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "parentId",
+            "label": "Parent",
+            "type": "text"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "inventory:product-categories",
+        "label": "Product Category",
+        "labelPlural": "Product Categories"
+      },
+      {
+        "data": {
+          "table": "plg_inventory_stock_locations",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "description",
+            "label": "Description",
+            "type": "textarea"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "inventory:stock-locations",
+        "label": "Stock Location",
+        "labelPlural": "Stock Locations"
+      },
+      {
+        "data": {
+          "table": "plg_inventory_measurement_units",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "abbreviation",
+            "label": "Abbreviation",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "inventory:measurement-units",
+        "label": "Measurement Unit",
+        "labelPlural": "Measurement Units"
+      },
+      {
+        "data": {
+          "table": "plg_crm_pipeline_stages",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "pipelineId",
+            "label": "Pipeline",
+            "relationTable": "plg_crm_pipelines",
+            "required": true,
+            "type": "relation"
+          },
+          {
+            "key": "order",
+            "label": "Order",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "key": "color",
+            "label": "Color",
+            "type": "color"
+          },
+          {
+            "key": "probability",
+            "label": "Probability %",
+            "type": "number"
+          },
+          {
+            "key": "isWon",
+            "label": "Won Stage",
+            "type": "boolean"
+          },
+          {
+            "key": "isLost",
+            "label": "Lost Stage",
+            "type": "boolean"
+          }
+        ],
+        "key": "crm:stages",
+        "label": "Stage",
+        "labelPlural": "Stages"
+      },
+      {
+        "data": {
+          "table": "plg_crm_lead_sources",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "crm:lead-sources",
+        "label": "Lead Source",
+        "labelPlural": "Lead Sources"
+      },
+      {
+        "data": {
+          "table": "plg_crm_tags",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "color",
+            "label": "Color",
+            "type": "color"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "crm:tags",
+        "label": "Tag",
+        "labelPlural": "Tags"
+      },
+      {
+        "data": {
+          "table": "plg_crm_activity_types",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "crm:activity-types",
+        "label": "Activity Type",
+        "labelPlural": "Activity Types"
+      },
+      {
+        "data": {
+          "filters": {
+            "kind": "origin"
+          },
+          "schema": "public",
+          "table": "categories",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          }
+        ],
+        "key": "marketing:origins",
+        "label": "Origem",
+        "labelPlural": "Origens"
+      },
+      {
+        "data": {
+          "table": "plg_forms_categories",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "icon",
+            "label": "Icon",
+            "type": "text"
+          },
+          {
+            "key": "color",
+            "label": "Color",
+            "type": "color"
+          },
+          {
+            "key": "sortOrder",
+            "label": "Order",
+            "type": "number"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "custom_forms:form-categories",
+        "label": "Category",
+        "labelPlural": "Categories"
+      },
+      {
+        "data": {
+          "table": "service_default_templates",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "serviceId",
+            "label": "Serviço",
+            "relationTable": "services",
+            "required": true,
+            "type": "relation"
+          },
+          {
+            "key": "templateId",
+            "label": "Modelo",
+            "relationTable": "plg_forms_templates",
+            "required": true,
+            "type": "relation"
+          },
+          {
+            "key": "templateKind",
+            "label": "Tipo do Modelo",
+            "options": [
+              "form",
+              "contract",
+              "consent",
+              "anamnesis"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "trigger",
+            "label": "Gatilho",
+            "options": [
+              "before_execution",
+              "during_execution",
+              "after_completion"
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "key": "isRequired",
+            "label": "Obrigatório",
+            "type": "boolean"
+          },
+          {
+            "key": "sortOrder",
+            "label": "Ordem",
+            "type": "number"
+          },
+          {
+            "key": "notes",
+            "label": "Observações",
+            "type": "textarea"
+          }
+        ],
+        "key": "custom_forms:service-default-forms",
+        "label": "Formulário/Contrato Padrão do Serviço",
+        "labelPlural": "Formulários/Contratos Padrão dos Serviços"
+      },
+      {
+        "data": {
+          "table": "plg_tasks_labels",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "color",
+            "label": "Color",
+            "type": "text"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "tasks:task-labels",
+        "label": "Task Label",
+        "labelPlural": "Task Labels"
+      }
+    ],
+    "executionPlane": "client",
+    "persona": {
+      "name": "Assistente Glow",
+      "systemPrompt": "You are the BeautySoft salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance."
+    },
+    "registries": [
+      {
+        "entityKey": "agenda:holidays",
+        "id": "holidays",
+        "pluginId": "agenda"
+      },
+      {
+        "entityKey": "agenda:cancellation-reasons",
+        "id": "cancellation-reasons",
+        "pluginId": "agenda"
+      },
+      {
+        "entityKey": "agenda:confirmation-channels",
+        "id": "confirmation-channels",
+        "pluginId": "agenda"
+      },
+      {
+        "entityKey": "agenda:schedule-rules",
+        "id": "schedule-rules",
+        "pluginId": "agenda"
+      },
+      {
+        "entityKey": "financial:payment-methods",
+        "id": "payment-methods",
+        "pluginId": "financial"
+      },
+      {
+        "entityKey": "financial:chart-of-accounts",
+        "id": "chart-of-accounts",
+        "pluginId": "financial"
+      },
+      {
+        "entityKey": "financial:cost-centers",
+        "id": "cost-centers",
+        "pluginId": "financial"
+      },
+      {
+        "entityKey": "financial:bank-accounts",
+        "id": "bank-accounts",
+        "pluginId": "financial"
+      },
+      {
+        "entityKey": "financial:commission-rules",
+        "id": "commission-rules",
+        "pluginId": "financial"
+      },
+      {
+        "entityKey": "financial:price-tables",
+        "id": "price-tables",
+        "pluginId": "financial"
+      },
+      {
+        "entityKey": "financial:price-variations",
+        "id": "price-variations",
+        "pluginId": "financial"
+      },
+      {
+        "entityKey": "financial:payment-method-types",
+        "id": "payment-method-types",
+        "pluginId": "financial",
+        "readOnly": true
+      },
+      {
+        "entityKey": "financial:card-brands",
+        "id": "card-brands",
+        "pluginId": "financial",
+        "readOnly": true
+      },
+      {
+        "entityKey": "inventory:suppliers",
+        "id": "suppliers",
+        "pluginId": "inventory"
+      },
+      {
+        "entityKey": "inventory:product-categories",
+        "id": "product-categories",
+        "pluginId": "inventory"
+      },
+      {
+        "entityKey": "inventory:stock-locations",
+        "id": "stock-locations",
+        "pluginId": "inventory"
+      },
+      {
+        "entityKey": "inventory:measurement-units",
+        "id": "measurement-units",
+        "pluginId": "inventory",
+        "readOnly": true
+      },
+      {
+        "entityKey": "crm:stages",
+        "id": "stages",
+        "pluginId": "crm"
+      },
+      {
+        "entityKey": "crm:lead-sources",
+        "id": "lead-sources",
+        "pluginId": "crm"
+      },
+      {
+        "entityKey": "crm:tags",
+        "id": "tags",
+        "pluginId": "crm"
+      },
+      {
+        "entityKey": "crm:activity-types",
+        "id": "activity-types",
+        "pluginId": "crm",
+        "readOnly": true
+      },
+      {
+        "entityKey": "marketing:channels",
+        "id": "channels",
+        "pluginId": "marketing",
+        "readOnly": true
+      },
+      {
+        "entityKey": "marketing:origins",
+        "id": "origins",
+        "pluginId": "marketing"
+      },
+      {
+        "entityKey": "custom_forms:form-categories",
+        "id": "form-categories",
+        "pluginId": "custom_forms"
+      },
+      {
+        "entityKey": "custom_forms:service-default-forms",
+        "id": "service-default-forms",
+        "pluginId": "custom_forms"
+      },
+      {
+        "entityKey": "tasks:task-labels",
+        "id": "task-labels",
+        "pluginId": "tasks"
+      }
+    ],
+    "tools": [
+      {
+        "category": "Core",
+        "description": "Returns a summary of the current business: name, plan, vertical, team size, and key metrics.",
+        "execution": {
+          "plane": "client"
+        },
+        "id": "core.business-summary",
+        "mode": "read",
+        "name": "getBusinessSummary",
+        "parameters": {
+          "properties": {},
+          "required": [],
+          "type": "object"
+        }
+      },
+      {
+        "category": "Core",
+        "description": "Lists team members for the current tenant with their roles and status.",
+        "execution": {
+          "plane": "client"
+        },
+        "id": "core.team-members",
+        "mode": "read",
+        "name": "getTeamMembers",
+        "parameters": {
+          "properties": {
+            "role": {
+              "description": "Filter by role: owner, admin, manager, staff, viewer",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "permission": {
+          "action": "read",
+          "feature": "team"
+        }
+      },
+      {
+        "category": "Core",
+        "description": "Helps the user find and navigate to a specific page or feature in the app.",
+        "execution": {
+          "plane": "client"
+        },
+        "id": "core.navigate",
+        "mode": "read",
+        "name": "navigateTo",
+        "parameters": {
+          "properties": {
+            "page": {
+              "description": "Page name or feature the user is looking for",
+              "type": "string"
+            }
+          },
+          "required": [
+            "page"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches locations and returns matching records with their fields. Use this to answer questions about a specific location or to count them.",
+        "execution": {
+          "entity": "location",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.location",
+        "mode": "read",
+        "name": "searchLocation",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent locations.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches cliente and returns matching records with their fields. Use this to answer questions about a specific cliente or to count them.",
+        "execution": {
+          "entity": "person:customer",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.person:customer",
+        "mode": "read",
+        "name": "searchPersonCustomer",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent cliente.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches lista de espera and returns matching records with their fields. Use this to answer questions about a specific entrada da lista de espera or to count them.",
+        "execution": {
+          "entity": "entrada-da-lista-de-espera",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.entrada-da-lista-de-espera",
+        "mode": "read",
+        "name": "searchEntradaDaListaDeEspera",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent lista de espera.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches serviço and returns matching records with their fields. Use this to answer questions about a specific serviço or to count them.",
+        "execution": {
+          "entity": "serviço",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.serviço",
+        "mode": "read",
+        "name": "searchServico",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent serviço.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches categorias de serviço and returns matching records with their fields. Use this to answer questions about a specific categoria de serviço or to count them.",
+        "execution": {
+          "entity": "categoria-de-serviço",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.categoria-de-serviço",
+        "mode": "read",
+        "name": "searchCategoriaDeServico",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent categorias de serviço.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches locais de atendimento and returns matching records with their fields. Use this to answer questions about a specific local de atendimento or to count them.",
+        "execution": {
+          "entity": "local-de-atendimento",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.local-de-atendimento",
+        "mode": "read",
+        "name": "searchLocalDeAtendimento",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent locais de atendimento.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches grupos de locais and returns matching records with their fields. Use this to answer questions about a specific grupo de locais or to count them.",
+        "execution": {
+          "entity": "grupo-de-locais",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.grupo-de-locais",
+        "mode": "read",
+        "name": "searchGrupoDeLocais",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent grupos de locais.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches profissionais and returns matching records with their fields. Use this to answer questions about a specific profissional or to count them.",
+        "execution": {
+          "entity": "person:staff",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.person:staff",
+        "mode": "read",
+        "name": "searchPersonStaff",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent profissionais.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches contatos and returns matching records with their fields. Use this to answer questions about a specific contato or to count them.",
+        "execution": {
+          "entity": "contato",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.contato",
+        "mode": "read",
+        "name": "searchContato",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent contatos.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches fornecedores and returns matching records with their fields. Use this to answer questions about a specific fornecedor or to count them.",
+        "execution": {
+          "entity": "fornecedor",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.fornecedor",
+        "mode": "read",
+        "name": "searchFornecedor",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent fornecedores.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches parcerias and returns matching records with their fields. Use this to answer questions about a specific parceria or to count them.",
+        "execution": {
+          "entity": "parceria",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.parceria",
+        "mode": "read",
+        "name": "searchParceria",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent parcerias.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches equipamentos and returns matching records with their fields. Use this to answer questions about a specific equipamento or to count them.",
+        "execution": {
+          "entity": "equipamento",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.equipamento",
+        "mode": "read",
+        "name": "searchEquipamento",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent equipamentos.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches pacotes de serviços and returns matching records with their fields. Use this to answer questions about a specific pacote de serviços or to count them.",
+        "execution": {
+          "entity": "pacote-de-serviços",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.pacote-de-serviços",
+        "mode": "read",
+        "name": "searchPacoteDeServicos",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent pacotes de serviços.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches serviços do pacote and returns matching records with their fields. Use this to answer questions about a specific serviço do pacote or to count them.",
+        "execution": {
+          "entity": "serviço-do-pacote",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.serviço-do-pacote",
+        "mode": "read",
+        "name": "searchServicoDoPacote",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent serviços do pacote.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches produtos padrão dos serviços and returns matching records with their fields. Use this to answer questions about a specific produto padrão do serviço or to count them.",
+        "execution": {
+          "entity": "produto-padrão-do-serviço",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.produto-padrão-do-serviço",
+        "mode": "read",
+        "name": "searchProdutoPadraoDoServico",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent produtos padrão dos serviços.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches tabelas de preços and returns matching records with their fields. Use this to answer questions about a specific tabela de preços or to count them.",
+        "execution": {
+          "entity": "tabela-de-preços",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.tabela-de-preços",
+        "mode": "read",
+        "name": "searchTabelaDePrecos",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent tabelas de preços.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches preços de serviços and returns matching records with their fields. Use this to answer questions about a specific preço de serviço or to count them.",
+        "execution": {
+          "entity": "preço-de-serviço",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.preço-de-serviço",
+        "mode": "read",
+        "name": "searchPrecoDeServico",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent preços de serviços.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "Searches variações de preço and returns matching records with their fields. Use this to answer questions about a specific variação de preço or to count them.",
+        "execution": {
+          "entity": "variação-de-preço",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "entity.variação-de-preço",
+        "mode": "read",
+        "name": "searchVariacaoDePreco",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to match. Omit to list recent variações de preço.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "category": "Agenda",
+        "description": "Lists all holidays for the current business.",
+        "execution": {
+          "entity": "agenda:holidays",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "agenda.list-holidays",
+        "mode": "read",
+        "name": "listAgendaHolidays",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "agenda"
+      },
+      {
+        "category": "Agenda",
+        "description": "Lists all motivos de cancelamento for the current business.",
+        "execution": {
+          "entity": "agenda:cancellation-reasons",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "agenda.list-cancellation-reasons",
+        "mode": "read",
+        "name": "listAgendaCancellationReasons",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "agenda"
+      },
+      {
+        "category": "Agenda",
+        "description": "Lists all canais de confirmação for the current business.",
+        "execution": {
+          "entity": "agenda:confirmation-channels",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "agenda.list-confirmation-channels",
+        "mode": "read",
+        "name": "listAgendaConfirmationChannels",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "agenda"
+      },
+      {
+        "category": "Agenda",
+        "description": "Lists all regras de agenda for the current business.",
+        "execution": {
+          "entity": "agenda:schedule-rules",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "agenda.list-schedule-rules",
+        "mode": "read",
+        "name": "listAgendaScheduleRules",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "agenda"
+      },
+      {
+        "category": "Financial",
+        "description": "Lists all payment methods for the current business.",
+        "execution": {
+          "entity": "financial:payment-methods",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "financial.list-payment-methods",
+        "mode": "read",
+        "name": "listFinancialPaymentMethods",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "financial"
+      },
+      {
+        "category": "Financial",
+        "description": "Lists all chart of accounts for the current business.",
+        "execution": {
+          "entity": "financial:chart-of-accounts",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "financial.list-chart-of-accounts",
+        "mode": "read",
+        "name": "listFinancialChartOfAccounts",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "financial"
+      },
+      {
+        "category": "Financial",
+        "description": "Lists all cost centers for the current business.",
+        "execution": {
+          "entity": "financial:cost-centers",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "financial.list-cost-centers",
+        "mode": "read",
+        "name": "listFinancialCostCenters",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "financial"
+      },
+      {
+        "category": "Financial",
+        "description": "Lists all bank accounts for the current business.",
+        "execution": {
+          "entity": "financial:bank-accounts",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "financial.list-bank-accounts",
+        "mode": "read",
+        "name": "listFinancialBankAccounts",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "financial"
+      },
+      {
+        "category": "Financial",
+        "description": "Lists all commission rules for the current business.",
+        "execution": {
+          "entity": "financial:commission-rules",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "financial.list-commission-rules",
+        "mode": "read",
+        "name": "listFinancialCommissionRules",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "financial"
+      },
+      {
+        "category": "Financial",
+        "description": "Lists all price tables for the current business.",
+        "execution": {
+          "entity": "financial:price-tables",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "financial.list-price-tables",
+        "mode": "read",
+        "name": "listFinancialPriceTables",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "financial"
+      },
+      {
+        "category": "Financial",
+        "description": "Lists all price variations for the current business.",
+        "execution": {
+          "entity": "financial:price-variations",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "financial.list-price-variations",
+        "mode": "read",
+        "name": "listFinancialPriceVariations",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "financial"
+      },
+      {
+        "category": "Inventory",
+        "description": "Lists all suppliers for the current business.",
+        "execution": {
+          "entity": "inventory:suppliers",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "inventory.list-suppliers",
+        "mode": "read",
+        "name": "listInventorySuppliers",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "inventory"
+      },
+      {
+        "category": "Inventory",
+        "description": "Lists all product categories for the current business.",
+        "execution": {
+          "entity": "inventory:product-categories",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "inventory.list-product-categories",
+        "mode": "read",
+        "name": "listInventoryProductCategories",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "inventory"
+      },
+      {
+        "category": "Inventory",
+        "description": "Lists all stock locations for the current business.",
+        "execution": {
+          "entity": "inventory:stock-locations",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "inventory.list-stock-locations",
+        "mode": "read",
+        "name": "listInventoryStockLocations",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "inventory"
+      },
+      {
+        "category": "Crm",
+        "description": "Lists all stages for the current business.",
+        "execution": {
+          "entity": "crm:stages",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "crm.list-stages",
+        "mode": "read",
+        "name": "listCrmStages",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "crm"
+      },
+      {
+        "category": "Crm",
+        "description": "Lists all lead sources for the current business.",
+        "execution": {
+          "entity": "crm:lead-sources",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "crm.list-lead-sources",
+        "mode": "read",
+        "name": "listCrmLeadSources",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "crm"
+      },
+      {
+        "category": "Crm",
+        "description": "Lists all tags for the current business.",
+        "execution": {
+          "entity": "crm:tags",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "crm.list-tags",
+        "mode": "read",
+        "name": "listCrmTags",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "crm"
+      },
+      {
+        "category": "Marketing",
+        "description": "Lists all origens for the current business.",
+        "execution": {
+          "entity": "marketing:origins",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "marketing.list-origins",
+        "mode": "read",
+        "name": "listMarketingOrigins",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "marketing"
+      },
+      {
+        "category": "Custom_forms",
+        "description": "Lists all categories for the current business.",
+        "execution": {
+          "entity": "custom_forms:form-categories",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "custom_forms.list-form-categories",
+        "mode": "read",
+        "name": "listCustomFormsFormCategories",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "custom_forms"
+      },
+      {
+        "category": "Custom_forms",
+        "description": "Lists all formulários/contratos padrão dos serviços for the current business.",
+        "execution": {
+          "entity": "custom_forms:service-default-forms",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "custom_forms.list-service-default-forms",
+        "mode": "read",
+        "name": "listCustomFormsServiceDefaultForms",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "custom_forms"
+      },
+      {
+        "category": "Tasks",
+        "description": "Lists all task labels for the current business.",
+        "execution": {
+          "entity": "tasks:task-labels",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "tasks.list-task-labels",
+        "mode": "read",
+        "name": "listTasksTaskLabels",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Search text",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "tasks"
+      },
+      {
+        "category": "Dashboard",
+        "description": "Returns a summary of all KPI metrics for the current dashboard, including trends and comparisons.",
+        "id": "dashboard.kpi-summary",
+        "mode": "read",
+        "name": "getKpiSummary",
+        "parameters": {
+          "properties": {
+            "category": {
+              "description": "Filter by metric category",
+              "enum": [
+                "revenue",
+                "operations",
+                "clients",
+                "custom",
+                "all"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "dashboard"
+      },
+      {
+        "category": "Scheduling",
+        "description": "Lists upcoming appointments for a given date or date range, optionally filtered by professional.",
+        "id": "agenda.list-appointments",
+        "mode": "read",
+        "name": "listAppointments",
+        "parameters": {
+          "properties": {
+            "date": {
+              "description": "Date (YYYY-MM-DD) or \"today\", \"tomorrow\", \"this week\"",
+              "type": "string"
+            },
+            "professional": {
+              "description": "Professional name to filter by",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "permission": {
+          "action": "read",
+          "feature": "appointments"
+        },
+        "pluginId": "agenda"
+      },
+      {
+        "category": "Scheduling",
+        "description": "Creates a new appointment for a client with a specific professional and service.",
+        "id": "agenda.create-appointment",
+        "limitKey": "bookings_month",
+        "mode": "persist",
+        "name": "createAppointment",
+        "parameters": {
+          "properties": {
+            "client": {
+              "description": "Client name",
+              "type": "string"
+            },
+            "date": {
+              "description": "Date (YYYY-MM-DD)",
+              "type": "string"
+            },
+            "professional": {
+              "description": "Professional name",
+              "type": "string"
+            },
+            "service": {
+              "description": "Service name",
+              "type": "string"
+            },
+            "time": {
+              "description": "Time (HH:MM)",
+              "type": "string"
+            }
+          },
+          "required": [
+            "client",
+            "professional",
+            "service",
+            "date",
+            "time"
+          ],
+          "type": "object"
+        },
+        "permission": {
+          "action": "create",
+          "feature": "appointments"
+        },
+        "pluginId": "agenda",
+        "requiresConfirmation": true
+      },
+      {
+        "category": "Scheduling",
+        "description": "Checks available time slots for a professional on a given date.",
+        "id": "agenda.check-availability",
+        "mode": "read",
+        "name": "checkAvailability",
+        "parameters": {
+          "properties": {
+            "date": {
+              "description": "Date (YYYY-MM-DD) or \"today\", \"tomorrow\"",
+              "type": "string"
+            },
+            "duration": {
+              "description": "Required duration in minutes",
+              "type": "number"
+            },
+            "professional": {
+              "description": "Professional name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "professional",
+            "date"
+          ],
+          "type": "object"
+        },
+        "permission": {
+          "action": "read",
+          "feature": "appointments"
+        },
+        "pluginId": "agenda"
+      },
+      {
+        "category": "Finance",
+        "description": "Returns revenue for the business in a given period.",
+        "id": "financial.get-revenue",
+        "mode": "read",
+        "name": "getRevenue",
+        "parameters": {
+          "properties": {
+            "period": {
+              "description": "today, week, month, or custom date range",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "financial"
+      },
+      {
+        "category": "Finance",
+        "description": "Creates a new invoice/payable for a contact.",
+        "id": "financial.create-invoice",
+        "limitKey": "movements_month",
+        "mode": "persist",
+        "name": "createInvoice",
+        "parameters": {
+          "properties": {
+            "amount": {
+              "description": "Invoice amount",
+              "type": "number"
+            },
+            "contact": {
+              "description": "Contact/customer name",
+              "type": "string"
+            },
+            "description": {
+              "description": "Invoice description",
+              "type": "string"
+            }
+          },
+          "required": [
+            "contact",
+            "amount"
+          ],
+          "type": "object"
+        },
+        "permission": {
+          "action": "create",
+          "feature": "financial"
+        },
+        "pluginId": "financial",
+        "requiresConfirmation": true
+      },
+      {
+        "category": "Finance",
+        "description": "Lists outstanding payables/bills.",
+        "id": "financial.list-payables",
+        "mode": "read",
+        "name": "listPayables",
+        "parameters": {
+          "properties": {
+            "contact": {
+              "description": "Filter by contact name",
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "pending",
+                "overdue",
+                "paid"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "permission": {
+          "action": "read",
+          "feature": "financial"
+        },
+        "pluginId": "financial"
+      },
+      {
+        "category": "Inventory",
+        "description": "Lists products with stock below minimum threshold.",
+        "id": "inventory.low-stock",
+        "mode": "read",
+        "name": "getLowStock",
+        "parameters": {
+          "properties": {
+            "threshold": {
+              "description": "Custom stock threshold",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "permission": {
+          "action": "read",
+          "feature": "inventory"
+        },
+        "pluginId": "inventory"
+      },
+      {
+        "category": "Sales",
+        "description": "Returns the number of active customers/clients.",
+        "id": "crm.count-customers",
+        "mode": "read",
+        "name": "countCustomers",
+        "parameters": {
+          "properties": {
+            "status": {
+              "enum": [
+                "active",
+                "inactive",
+                "all"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "permission": {
+          "action": "read",
+          "feature": "sales"
+        },
+        "pluginId": "crm"
+      },
+      {
+        "category": "Sales",
+        "description": "Lists leads with optional filters.",
+        "id": "crm.list-leads",
+        "mode": "read",
+        "name": "listLeads",
+        "parameters": {
+          "properties": {
+            "source": {
+              "description": "Lead source filter",
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "new",
+                "contacted",
+                "qualified",
+                "lost"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "permission": {
+          "action": "read",
+          "feature": "sales"
+        },
+        "pluginId": "crm"
+      },
+      {
+        "category": "Marketing",
+        "description": "Returns acquisition performance per channel (reach, conversions, CVR, spend, CPA).",
+        "id": "marketing.channel-performance",
+        "mode": "read",
+        "name": "channelPerformance",
+        "parameters": {
+          "properties": {
+            "range": {
+              "enum": [
+                "7d",
+                "30d",
+                "90d"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "permission": {
+          "action": "read",
+          "feature": "marketing"
+        },
+        "pluginId": "marketing"
+      },
+      {
+        "category": "Marketing",
+        "description": "Returns the top acquisition channels ranked by conversions.",
+        "id": "marketing.top-channels",
+        "mode": "read",
+        "name": "topChannels",
+        "permission": {
+          "action": "read",
+          "feature": "marketing"
+        },
+        "pluginId": "marketing"
+      },
+      {
+        "category": "Marketing",
+        "description": "Lists campaigns with their conversion rate for a date range.",
+        "id": "marketing.campaign-cvr",
+        "mode": "read",
+        "name": "campaignCvr",
+        "parameters": {
+          "properties": {
+            "range": {
+              "enum": [
+                "7d",
+                "30d",
+                "90d"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "permission": {
+          "action": "read",
+          "feature": "marketing"
+        },
+        "pluginId": "marketing"
+      },
+      {
+        "category": "Marketing",
+        "description": "Creates an acquisition campaign on a channel.",
+        "id": "marketing.create-campaign",
+        "mode": "persist",
+        "name": "createCampaign",
+        "parameters": {
+          "properties": {
+            "channelId": {
+              "description": "Acquisition channel id",
+              "type": "string"
+            },
+            "name": {
+              "description": "Campaign name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "channelId"
+          ],
+          "type": "object"
+        },
+        "permission": {
+          "action": "create",
+          "feature": "marketing"
+        },
+        "pluginId": "marketing",
+        "requiresConfirmation": true
+      },
+      {
+        "category": "Forms",
+        "description": "Lists available form templates for the current tenant.",
+        "id": "custom_forms.list-templates",
+        "mode": "read",
+        "name": "listFormTemplates",
+        "parameters": {
+          "properties": {
+            "category": {
+              "description": "Filter by category: anamnesis, evolution, report, contract, general",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "permission": {
+          "action": "read",
+          "feature": "custom_forms"
+        },
+        "pluginId": "custom_forms"
+      },
+      {
+        "category": "Forms",
+        "description": "Lists filled documents, optionally filtered by person or status.",
+        "id": "custom_forms.list-documents",
+        "mode": "read",
+        "name": "listDocuments",
+        "parameters": {
+          "properties": {
+            "personId": {
+              "description": "Person UUID to filter by",
+              "type": "string"
+            },
+            "status": {
+              "description": "Status filter: draft, completed, signed, archived",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "permission": {
+          "action": "read",
+          "feature": "custom_forms"
+        },
+        "pluginId": "custom_forms"
+      },
+      {
+        "category": "Tasks",
+        "description": "Returns a summary of pending tasks: total, overdue, due today, by status and priority.",
+        "id": "tasks.summary",
+        "mode": "read",
+        "name": "getTasksSummary",
+        "parameters": {
+          "properties": {
+            "status": {
+              "description": "Filter by task status",
+              "enum": [
+                "todo",
+                "in_progress",
+                "done",
+                "cancelled",
+                "all"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "pluginId": "tasks"
+      }
+    ]
   },
-  "locale": { "default": "pt-BR", "supported": ["pt-BR", "en"] },
-  "entities": [
-    { "id": "clients", "label": "Clients" },
-    { "id": "appointments", "label": "Appointments" },
-    { "id": "services", "label": "Services" },
-    { "id": "staff", "label": "Staff" },
-    { "id": "products", "label": "Products" },
-    { "id": "invoices", "label": "Invoices" }
+  "backend": {
+    "options": {
+      "pool": "cluster-salon-br-01",
+      "tenantId": ""
+    },
+    "projectRef": "gphxclpkbtbucoqclbco",
+    "provider": "supabase",
+    "url": "https://gphxclpkbtbucoqclbco.supabase.co"
+  },
+  "billing": {
+    "plans": [
+      {
+        "description": "Para estilistas independentes",
+        "entitlements": {
+          "features": {
+            "fin_reconciliation": false,
+            "marketing": false,
+            "reports": false
+          },
+          "limits": {
+            "bookings_month": 150,
+            "clients": 100,
+            "locations": 1,
+            "products": 25,
+            "users": 2
+          }
+        },
+        "features": [
+          "Até 2 profissionais",
+          "Até 100 clientes",
+          "Até 25 produtos",
+          "Relatórios básicos",
+          "Suporte por e-mail"
+        ],
+        "id": "starter",
+        "name": "Inicial",
+        "prices": {
+          "monthly": 29,
+          "yearly": 279
+        }
+      },
+      {
+        "description": "Para salões em crescimento",
+        "entitlements": {
+          "features": {
+            "fin_reconciliation": true,
+            "marketing": true,
+            "reports": true
+          },
+          "limits": {
+            "bookings_month": -1,
+            "clients": -1,
+            "locations": 1,
+            "products": -1,
+            "users": 10
+          }
+        },
+        "features": [
+          "Até 10 profissionais",
+          "Agendamentos ilimitados",
+          "Análises avançadas",
+          "Lembretes por SMS",
+          "Página de agendamento online",
+          "Suporte prioritário"
+        ],
+        "id": "professional",
+        "name": "Profissional",
+        "popular": true,
+        "prices": {
+          "monthly": 79,
+          "yearly": 759
+        }
+      },
+      {
+        "description": "Para negócios multi-unidades",
+        "entitlements": {
+          "features": {
+            "fin_reconciliation": true,
+            "marketing": true,
+            "reports": true
+          },
+          "limits": {
+            "bookings_month": -1,
+            "clients": -1,
+            "locations": -1,
+            "products": -1,
+            "users": -1
+          }
+        },
+        "features": [
+          "Profissionais ilimitados",
+          "Multi-unidades",
+          "Marca personalizada",
+          "Acesso à API",
+          "Gerente de conta dedicado",
+          "Integrações personalizadas"
+        ],
+        "id": "enterprise",
+        "name": "Empresarial",
+        "prices": {
+          "monthly": 199,
+          "yearly": 1909
+        }
+      }
+    ]
+  },
+  "contractHash": "41a5ca32bd5f83c01c4b9d993ca339dfa1734a89df59bf6fca19d0fdae029ffb",
+  "id": "beauty-saas",
+  "limitDeclarations": [
+    {
+      "key": "users",
+      "label": "Users",
+      "table": "tenant_members"
+    },
+    {
+      "key": "locations",
+      "label": "Locations",
+      "table": "locations"
+    },
+    {
+      "key": "clients",
+      "kindFilter": "customer",
+      "label": "Cliente",
+      "table": "clients"
+    },
+    {
+      "key": "bookings_month",
+      "label": "Appointments this month",
+      "period": "month",
+      "table": "appointments"
+    },
+    {
+      "key": "movements_month",
+      "label": "Financial movements this month",
+      "period": "month",
+      "table": "plg_financial_movements"
+    },
+    {
+      "key": "products",
+      "label": "Products",
+      "table": "products"
+    },
+    {
+      "key": "leads",
+      "kindFilter": "lead",
+      "label": "Leads",
+      "table": "people"
+    },
+    {
+      "key": "deals",
+      "kindFilter": "deal",
+      "label": "Deals",
+      "table": "orders"
+    },
+    {
+      "key": "quotes",
+      "kindFilter": "quote",
+      "label": "Quotes",
+      "table": "orders"
+    },
+    {
+      "key": "content_posts_month",
+      "label": "Content posts / month",
+      "period": "month",
+      "table": "plg_marketing_content_posts"
+    },
+    {
+      "key": "blog_posts",
+      "label": "Blog posts",
+      "table": "plg_blog_posts"
+    },
+    {
+      "key": "form_templates",
+      "label": "Form templates",
+      "table": "plg_forms_templates"
+    },
+    {
+      "key": "documents_month",
+      "label": "Documents / month",
+      "period": "month",
+      "table": "documents"
+    }
   ],
+  "locale": {
+    "default": "pt-BR",
+    "supported": [
+      "en",
+      "pt-BR"
+    ],
+    "translations": {
+      "en": {
+        "app.chat.title": "Glow Assistant",
+        "app.dashboard.title": "Dashboard",
+        "app.marketing.subtitle": "Campaigns and outreach",
+        "app.marketing.title": "Marketing",
+        "app.nav.accounts": "Accounts",
+        "app.nav.categories": "Categories",
+        "app.nav.clients": "Clients",
+        "app.nav.clientsAdd": "Add",
+        "app.nav.clientsList": "List",
+        "app.nav.contacts": "Contacts",
+        "app.nav.dashboard": "Dashboard",
+        "app.nav.equipment": "Equipment",
+        "app.nav.marketing": "Marketing",
+        "app.nav.origins": "Origins",
+        "app.nav.partnerships": "Partnerships",
+        "app.nav.registry": "Registry",
+        "app.nav.reports": "Reports",
+        "app.nav.services": "Services",
+        "app.nav.staff": "Staff",
+        "app.nav.suppliers": "Suppliers",
+        "app.reports.subtitle": "Analytics and business intelligence",
+        "app.reports.title": "Reports"
+      },
+      "pt-BR": {
+        "app.agenda.confirmPhone": "Telefone",
+        "app.agenda.confirmWhatsapp": "WhatsApp",
+        "app.chat.title": "Assistente Glow",
+        "app.crm.product": "Produto",
+        "app.crm.service": "Serviço",
+        "app.dashboard.title": "Painel",
+        "app.inventory.professionalSupply": "Insumo Profissional",
+        "app.inventory.retailProduct": "Produto de Varejo",
+        "app.marketing.subtitle": "Campanhas e divulgação",
+        "app.marketing.title": "Marketing",
+        "app.nav.accounts": "Contas",
+        "app.nav.categories": "Categorias",
+        "app.nav.clients": "Clientes",
+        "app.nav.clientsAdd": "Adicionar",
+        "app.nav.clientsList": "Lista",
+        "app.nav.contacts": "Contatos",
+        "app.nav.dashboard": "Painel",
+        "app.nav.equipment": "Equipamentos",
+        "app.nav.marketing": "Marketing",
+        "app.nav.origins": "Origens",
+        "app.nav.partnerships": "Parcerias",
+        "app.nav.registry": "Cadastros",
+        "app.nav.reports": "Relatórios",
+        "app.nav.services": "Serviços",
+        "app.nav.staff": "Equipe",
+        "app.nav.suppliers": "Fornecedores",
+        "app.permissions.appointments": "Agenda",
+        "app.permissions.clients": "Clientes",
+        "app.permissions.dashboard": "Painel",
+        "app.permissions.financial": "Financeiro",
+        "app.permissions.inventory": "Estoque",
+        "app.permissions.marketing": "Marketing",
+        "app.permissions.reports": "Relatórios",
+        "app.permissions.sales": "Vendas",
+        "app.permissions.services": "Serviços",
+        "app.plan.enterprise": "Empresarial",
+        "app.plan.enterpriseDescription": "Para negócios multi-unidades",
+        "app.plan.professional": "Profissional",
+        "app.plan.professionalDescription": "Para salões em crescimento",
+        "app.plan.starter": "Inicial",
+        "app.plan.starterDescription": "Para estilistas independentes",
+        "app.profile.owner": "Proprietário",
+        "app.profile.receptionist": "Recepcionista",
+        "app.profile.stylist": "Estilista",
+        "app.registry.subtitle": "Gerencie seus registros de negócios",
+        "app.registry.title": "Cadastros",
+        "app.reports.subtitle": "Análises e inteligência de negócios",
+        "app.reports.title": "Relatórios",
+        "app.sales.title": "Vendas",
+        "auth.login.socialProof": "Junte-se a milhares de salões que já usam {{appName}}"
+      }
+    }
+  },
+  "manifestVersion": 3,
+  "name": "BeautySoft",
+  "permissions": {
+    "defaultProfiles": [
+      {
+        "description": "Acesso total, incluindo cobrança.",
+        "grants": {
+          "agenda_schedules": [
+            "read",
+            "edit"
+          ],
+          "agenda_settings": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "agenda_waitlist": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "appointments": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "clients": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "crm_activities": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "crm_leads": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "crm_pipeline": [
+            "read",
+            "edit"
+          ],
+          "crm_quotes": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "dashboard": [
+            "read"
+          ],
+          "fin_cards": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "fin_cashbox": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "fin_commissions": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "fin_payables": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "fin_receivables": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "fin_reconciliation": [
+            "read",
+            "edit"
+          ],
+          "fin_settings": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "fin_statements": [
+            "read"
+          ],
+          "financial": [
+            "read"
+          ],
+          "inv_products": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "inv_settings": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "inv_stock": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "inventory": [
+            "read"
+          ],
+          "marketing": [
+            "read"
+          ],
+          "mkt_campaigns": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "mkt_channels": [
+            "read",
+            "edit"
+          ],
+          "mkt_funnel": [
+            "read"
+          ],
+          "reports": [
+            "read"
+          ],
+          "reports_clients": [
+            "read"
+          ],
+          "reports_financial": [
+            "read"
+          ],
+          "reports_operations": [
+            "read"
+          ],
+          "sales": [
+            "read"
+          ],
+          "services": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ]
+        },
+        "id": "owner",
+        "isSystem": true,
+        "name": "Proprietário",
+        "systemPermissions": [
+          "manage_team",
+          "manage_billing",
+          "manage_settings",
+          "manage_permissions"
+        ]
+      },
+      {
+        "description": "Gerencia o salão no dia a dia — todos os módulos, equipe e configurações.",
+        "grants": {
+          "agenda_schedules": [
+            "read",
+            "edit"
+          ],
+          "agenda_settings": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "agenda_waitlist": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "appointments": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "clients": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "crm_activities": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "crm_leads": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "crm_pipeline": [
+            "read",
+            "edit"
+          ],
+          "crm_quotes": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "dashboard": [
+            "read"
+          ],
+          "fin_cards": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "fin_cashbox": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "fin_commissions": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "fin_payables": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "fin_receivables": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "fin_reconciliation": [
+            "read",
+            "edit"
+          ],
+          "fin_settings": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "fin_statements": [
+            "read"
+          ],
+          "financial": [
+            "read"
+          ],
+          "inv_products": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "inv_settings": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "inv_stock": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "inventory": [
+            "read"
+          ],
+          "marketing": [
+            "read"
+          ],
+          "mkt_campaigns": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "mkt_channels": [
+            "read",
+            "edit"
+          ],
+          "mkt_funnel": [
+            "read"
+          ],
+          "reports": [
+            "read"
+          ],
+          "reports_clients": [
+            "read"
+          ],
+          "reports_financial": [
+            "read"
+          ],
+          "reports_operations": [
+            "read"
+          ],
+          "sales": [
+            "read"
+          ],
+          "services": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ]
+        },
+        "id": "administrador",
+        "isSystem": true,
+        "name": "Administrador",
+        "systemPermissions": [
+          "manage_team",
+          "manage_settings",
+          "manage_permissions"
+        ]
+      },
+      {
+        "description": "Recepção — agenda, clientes, recebimentos e caixa.",
+        "grants": {
+          "agenda_schedules": [
+            "read"
+          ],
+          "agenda_settings": [
+            "read"
+          ],
+          "agenda_waitlist": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "appointments": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "clients": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "crm_leads": [
+            "read",
+            "create"
+          ],
+          "crm_quotes": [
+            "read",
+            "create"
+          ],
+          "dashboard": [
+            "read"
+          ],
+          "fin_cashbox": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "fin_receivables": [
+            "read",
+            "create"
+          ],
+          "fin_statements": [
+            "read"
+          ],
+          "financial": [
+            "read"
+          ],
+          "inv_products": [
+            "read"
+          ],
+          "inventory": [
+            "read"
+          ],
+          "reports": [
+            "read"
+          ],
+          "reports_operations": [
+            "read"
+          ],
+          "sales": [
+            "read"
+          ],
+          "services": [
+            "read"
+          ]
+        },
+        "id": "secretaria",
+        "isSystem": true,
+        "name": "Secretária",
+        "systemPermissions": []
+      },
+      {
+        "description": "Profissional — agenda própria e consulta de clientes e serviços.",
+        "grants": {
+          "appointments": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "clients": [
+            "read"
+          ],
+          "dashboard": [
+            "read"
+          ],
+          "services": [
+            "read"
+          ]
+        },
+        "id": "profissional",
+        "isSystem": true,
+        "name": "Profissional",
+        "systemPermissions": []
+      },
+      {
+        "description": "Campanhas, canais e relatórios de público.",
+        "grants": {
+          "appointments": [
+            "read"
+          ],
+          "clients": [
+            "read"
+          ],
+          "dashboard": [
+            "read"
+          ],
+          "marketing": [
+            "read"
+          ],
+          "mkt_campaigns": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "mkt_channels": [
+            "read",
+            "edit"
+          ],
+          "mkt_funnel": [
+            "read"
+          ],
+          "reports": [
+            "read"
+          ],
+          "reports_clients": [
+            "read"
+          ],
+          "reports_operations": [
+            "read"
+          ]
+        },
+        "id": "marketing",
+        "isSystem": true,
+        "name": "Marketing",
+        "systemPermissions": []
+      },
+      {
+        "description": "Responsável pelo módulo financeiro e relatórios financeiros.",
+        "grants": {
+          "clients": [
+            "read"
+          ],
+          "dashboard": [
+            "read"
+          ],
+          "fin_cards": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "fin_cashbox": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "fin_commissions": [
+            "read",
+            "create",
+            "edit"
+          ],
+          "fin_payables": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "fin_receivables": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
+          "fin_reconciliation": [
+            "read",
+            "edit"
+          ],
+          "fin_settings": [
+            "read",
+            "edit"
+          ],
+          "fin_statements": [
+            "read"
+          ],
+          "financial": [
+            "read"
+          ],
+          "reports": [
+            "read"
+          ],
+          "reports_financial": [
+            "read"
+          ],
+          "reports_operations": [
+            "read"
+          ]
+        },
+        "id": "financeiro",
+        "isSystem": true,
+        "name": "Financeiro",
+        "systemPermissions": []
+      }
+    ],
+    "features": [
+      {
+        "group": "Painel",
+        "id": "dashboard",
+        "label": "Painel"
+      },
+      {
+        "group": "Agenda",
+        "id": "appointments",
+        "label": "Agenda"
+      },
+      {
+        "group": "Agenda",
+        "id": "agenda_waitlist",
+        "label": "Lista de Espera"
+      },
+      {
+        "group": "Agenda",
+        "id": "agenda_schedules",
+        "label": "Horários de Trabalho"
+      },
+      {
+        "group": "Agenda",
+        "id": "agenda_settings",
+        "label": "Configurações da Agenda"
+      },
+      {
+        "group": "Clientes",
+        "id": "clients",
+        "label": "Clientes"
+      },
+      {
+        "group": "Cadastros",
+        "id": "services",
+        "label": "Serviços"
+      },
+      {
+        "group": "Estoque",
+        "id": "inventory",
+        "label": "Estoque (acesso)"
+      },
+      {
+        "group": "Estoque",
+        "id": "inv_products",
+        "label": "Produtos"
+      },
+      {
+        "group": "Estoque",
+        "id": "inv_stock",
+        "label": "Movimentações"
+      },
+      {
+        "group": "Estoque",
+        "id": "inv_settings",
+        "label": "Cadastros de Estoque"
+      },
+      {
+        "group": "Vendas",
+        "id": "sales",
+        "label": "Vendas (acesso)"
+      },
+      {
+        "group": "Vendas",
+        "id": "crm_pipeline",
+        "label": "Funil de Vendas"
+      },
+      {
+        "group": "Vendas",
+        "id": "crm_leads",
+        "label": "Leads"
+      },
+      {
+        "group": "Vendas",
+        "id": "crm_quotes",
+        "label": "Orçamentos"
+      },
+      {
+        "group": "Vendas",
+        "id": "crm_activities",
+        "label": "Atividades"
+      },
+      {
+        "group": "Financeiro",
+        "id": "financial",
+        "label": "Financeiro (acesso)"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_receivables",
+        "label": "Contas a Receber"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_payables",
+        "label": "Contas a Pagar"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_cashbox",
+        "label": "Caixa"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_statements",
+        "label": "Extrato"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_commissions",
+        "label": "Comissões"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_cards",
+        "label": "Cartões"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_reconciliation",
+        "label": "Conciliação"
+      },
+      {
+        "group": "Financeiro",
+        "id": "fin_settings",
+        "label": "Cadastros Financeiros"
+      },
+      {
+        "group": "Marketing",
+        "id": "marketing",
+        "label": "Marketing (acesso)"
+      },
+      {
+        "group": "Marketing",
+        "id": "mkt_campaigns",
+        "label": "Campanhas"
+      },
+      {
+        "group": "Marketing",
+        "id": "mkt_channels",
+        "label": "Canais"
+      },
+      {
+        "group": "Marketing",
+        "id": "mkt_funnel",
+        "label": "Funil"
+      },
+      {
+        "group": "Relatórios",
+        "id": "reports",
+        "label": "Relatórios (acesso)"
+      },
+      {
+        "group": "Relatórios",
+        "id": "reports_operations",
+        "label": "Relatórios Operacionais"
+      },
+      {
+        "group": "Relatórios",
+        "id": "reports_financial",
+        "label": "Relatórios Financeiros"
+      },
+      {
+        "group": "Relatórios",
+        "id": "reports_clients",
+        "label": "Relatórios de Clientes"
+      }
+    ]
+  },
   "surfaces": {
     "admin": {
-      "scaffold": "admin",
       "options": {
         "layout": "topbar",
-        "requireAuth": true,
-        "title": "BeautySoft",
-        "description": "Salon management — scheduling, clients, inventory, financial and marketing for beauty professionals."
+        "requireAuth": true
       },
       "plugins": [
-        { "id": "dashboard", "enabled": true, "config": { "label": "Dashboard", "navPosition": 1 } },
-        { "id": "agenda", "enabled": true, "config": { "label": "Agenda", "description": "Scheduling and appointments.", "navPosition": 2, "navSection": "main" } },
-        { "id": "crm", "enabled": true, "config": { "label": "Clients", "description": "Clients and relationships.", "navPosition": 6, "currency": { "code": "BRL", "locale": "pt-BR", "symbol": "R$" } } },
-        { "id": "inventory", "enabled": true, "config": { "label": "Inventory", "description": "Products and stock.", "navPosition": 4, "currency": { "code": "BRL", "locale": "pt-BR", "symbol": "R$" }, "modules": { "recipes": false, "batchTracking": false } } },
-        { "id": "financial", "enabled": true, "config": { "label": "Financial", "description": "Payments and invoices.", "navPosition": 7, "currency": { "code": "BRL", "locale": "pt-BR", "symbol": "R$" } } },
-        { "id": "marketing", "enabled": true, "config": { "label": "Marketing", "description": "Campaigns and channels.", "navPosition": 5, "domain": "beauty", "currency": { "code": "BRL", "locale": "pt-BR", "symbol": "R$" }, "modules": { "contentPlanner": true } } },
-        { "id": "forms", "enabled": true, "config": { "label": "Forms", "description": "Custom forms and documents.", "scope": "universal", "navSection": "settings" } },
-        { "id": "tasks", "enabled": true, "config": { "label": "Tasks" } },
-        { "id": "reports", "enabled": true, "config": { "label": "Reports", "navPosition": 10, "currency": { "code": "BRL", "locale": "pt-BR", "symbol": "R$" } } },
-        { "id": "admin", "enabled": true, "config": { "label": "Admin" } }
-      ]
+        {
+          "id": "dashboard"
+        },
+        {
+          "id": "agenda"
+        },
+        {
+          "id": "financial"
+        },
+        {
+          "id": "openbanking"
+        },
+        {
+          "id": "google-calendar"
+        },
+        {
+          "id": "inventory"
+        },
+        {
+          "id": "crm"
+        },
+        {
+          "id": "reports"
+        },
+        {
+          "id": "marketing"
+        },
+        {
+          "id": "custom_forms"
+        },
+        {
+          "id": "tasks"
+        }
+      ],
+      "scaffold": "admin"
+    }
+  },
+  "theme": {
+    "brand": "260 30% 45%",
+    "colors": {
+      "border": "260 12% 90%",
+      "card": "0 0% 100%",
+      "cardForeground": "240 30% 12%",
+      "input": "260 12% 90%",
+      "muted": "260 12% 93%",
+      "mutedForeground": "260 8% 45%",
+      "secondary": "260 18% 95%",
+      "secondaryForeground": "240 30% 18%"
+    },
+    "content": {
+      "background": "260 12% 97%"
+    },
+    "font": "outfit",
+    "name": "BeautySoft",
+    "preset": "classic_admin",
+    "radius": "round",
+    "shadow": "subtle",
+    "sidebar": {
+      "accent": "260 25% 28%",
+      "accentForeground": "0 0% 100%",
+      "background": "240 30% 16%",
+      "border": "240 25% 22%",
+      "foreground": "260 15% 88%",
+      "muted": "260 12% 55%"
     }
   }
 }
