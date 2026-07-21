@@ -2658,6 +2658,30 @@
       },
       {
         "category": "Data",
+        "description": "Global search (like the app command center): looks a name/text up across ALL record types the user may see at once and returns grouped matches. Use this FIRST whenever you do not know what kind of record a name refers to (\"quem é X?\", \"o que é Y?\") — then drill down with searchRecords.",
+        "execution": {
+          "entity": "*",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "data.find-anything",
+        "mode": "read",
+        "name": "findAnything",
+        "parameters": {
+          "properties": {
+            "search": {
+              "description": "Name or text to look up everywhere.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "search"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
         "description": "Searches or lists records of ONE entity and returns matching rows with their fields. Use for questions about specific records or small lists. Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:staff (profissionais), contato (contatos), fornecedor (fornecedores), parceria (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), serviço-do-pacote (serviços do pacote), produto-padrão-do-serviço (produtos padrão dos serviços), tabela-de-preços (tabelas de preços), preço-de-serviço (preços de serviços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:movements (financial movements).",
         "execution": {
           "entity": "*",
@@ -3440,7 +3464,7 @@
       }
     ]
   },
-  "contractHash": "c0d6d5d8fbd3397b9e9ba3089791391255b65afa9e4724872d5f1ad66bda74b8",
+  "contractHash": "0a7f4bd0b18504444dda668149b316ef0b6843f28d515ddd07c02242f4c84698",
   "id": "beauty-saas",
   "limitDeclarations": [
     {
