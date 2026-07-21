@@ -18,6 +18,7 @@ export const beautyBilling: BeautyBilling = {
         tl('Email support', 'Suporte por e-mail'),
       ],
       prices: { monthly: 0, yearly: 0 },
+      currency: 'BRL',
       // Freemium base + products cap (25). Premium (Pro+): marketing, advanced
       // reports and financial reconciliation. 'forms avançado' / blog have no
       // feature id in this app's permissions.ts, so they are not feature-gated.
@@ -39,6 +40,7 @@ export const beautyBilling: BeautyBilling = {
         tl('Priority support', 'Suporte prioritário'),
       ],
       prices: { monthly: 79, yearly: 759 },
+      currency: 'BRL',
       popular: true,
       entitlements: {
         features: { marketing: true, reports: true, fin_reconciliation: true },
@@ -58,6 +60,7 @@ export const beautyBilling: BeautyBilling = {
         tl('Custom integrations', 'Integrações personalizadas'),
       ],
       prices: { monthly: 199, yearly: 1909 },
+      currency: 'BRL',
       entitlements: {
         features: { marketing: true, reports: true, fin_reconciliation: true },
         limits: { users: -1, locations: -1, clients: -1, bookings_month: -1, products: -1 },
