@@ -1,11 +1,15 @@
--- Seed for saas_core platform tables (plans + RBAC catalog).
+-- Seed for the core platform tables (plans + RBAC catalog).
+--
+-- Schema note: the legacy saas_core schema was dissolved into public by
+-- @fayz-ai/db; all references here target public (verified against the live
+-- pool 2026-07-21).
 --
 -- These tables are CREATED by @fayz-ai/db migrations but were never seeded,
 -- so plans/permissions/role_permissions ship empty. This file backfills the
 -- canonical catalog the SDK shell consumes:
---   * saas_core.plans            -> billing plan tiers (useBilling.fetchPlans)
---   * saas_core.permissions      -> RBAC permission catalog (category.action ids)
---   * saas_core.role_permissions -> default grants per role (owner is implicit)
+--   * public.plans            -> billing plan tiers (useBilling.fetchPlans)
+--   * public.permissions      -> RBAC permission catalog (category.action ids)
+--   * public.role_permissions -> default grants per role (owner is implicit)
 --
 -- Permission ids use the `category.action` form that buildPermissionProfiles()
 -- parses (org adapter). Supported actions: read, create, update, manage,
@@ -16,18 +20,35 @@
 
 -- ---------------------------------------------------------------------------
 -- Plans (whole-currency units; rendered directly in the UI)
+--
+-- MIRROR of src/config/billing.ts (the source of truth): same ids
+-- (free/pro/business — the vocabulary tenants.plan uses), same prices, and the
+-- same `entitlements` structure the client resolves (PlanEntitlements:
+-- {features: {id: bool}, limits: {key: number}}, -1 = unlimited). The pool copy
+-- exists for SERVER-side enforcement (agent RPC guard reads
+-- tenants.plan → plans.entitlements). TRANSITIONAL writer: once the Fayz
+-- platform upserts this catalog on `fayz manifest sync`, drop this block.
 -- ---------------------------------------------------------------------------
-INSERT INTO saas_core.plans (id, name, description, vertical_id, price_monthly, price_yearly, features, is_popular, sort_order)
+ALTER TABLE public.plans ADD COLUMN IF NOT EXISTS entitlements jsonb NOT NULL DEFAULT '{}'::jsonb;
+ALTER TABLE public.plans ADD COLUMN IF NOT EXISTS hidden boolean NOT NULL DEFAULT false;
+
+INSERT INTO public.plans (id, name, description, vertical_id, price_monthly, price_yearly, features, is_popular, sort_order, entitlements)
 VALUES
-  ('free', 'Free', 'Get started — single location, core scheduling and clients.', NULL, 0, 0,
-   '["Up to 1 location","Up to 3 team members","Scheduling & clients","Basic reports"]'::jsonb,
-   false, 0),
-  ('pro', 'Pro', 'For growing salons — inventory, financial and marketing.', NULL, 99, 990,
-   '["Everything in Free","Up to 3 locations","Up to 15 team members","Inventory & financial","Marketing campaigns","Advanced reports"]'::jsonb,
-   true, 1),
-  ('business', 'Business', 'For multi-location businesses — unlimited scale and API access.', NULL, 249, 2490,
-   '["Everything in Pro","Unlimited locations","Unlimited team members","Forms & documents","Priority support","API access"]'::jsonb,
-   false, 2)
+  ('free', 'Grátis', 'Comece grátis — sem cartão.', NULL, 0, 0,
+   '["Até 2 profissionais","Até 100 clientes","Até 25 produtos","Relatórios básicos","Suporte por e-mail"]'::jsonb,
+   false, 0,
+   '{"features": {"marketing": false, "reports": false, "fin_reconciliation": false},
+     "limits": {"users": 2, "locations": 1, "clients": 100, "bookings_month": 150, "products": 25}}'::jsonb),
+  ('pro', 'Profissional', 'Para salões em crescimento.', NULL, 79, 759,
+   '["Até 10 profissionais","Agendamentos ilimitados","Análises avançadas","Lembretes por SMS","Página de agendamento online","Suporte prioritário"]'::jsonb,
+   true, 1,
+   '{"features": {"marketing": true, "reports": true, "fin_reconciliation": true},
+     "limits": {"users": 10, "locations": 1, "clients": -1, "bookings_month": -1, "products": -1}}'::jsonb),
+  ('business', 'Empresarial', 'Para negócios multi-unidades.', NULL, 199, 1909,
+   '["Profissionais ilimitados","Multi-unidades","Marca personalizada","Acesso à API","Gerente de conta dedicado","Integrações personalizadas"]'::jsonb,
+   false, 2,
+   '{"features": {"marketing": true, "reports": true, "fin_reconciliation": true},
+     "limits": {"users": -1, "locations": -1, "clients": -1, "bookings_month": -1, "products": -1}}'::jsonb)
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   description = EXCLUDED.description,
@@ -36,12 +57,13 @@ ON CONFLICT (id) DO UPDATE SET
   price_yearly = EXCLUDED.price_yearly,
   features = EXCLUDED.features,
   is_popular = EXCLUDED.is_popular,
-  sort_order = EXCLUDED.sort_order;
+  sort_order = EXCLUDED.sort_order,
+  entitlements = EXCLUDED.entitlements;
 
 -- ---------------------------------------------------------------------------
 -- Permissions catalog (id = category.action)
 -- ---------------------------------------------------------------------------
-INSERT INTO saas_core.permissions (id, category, description)
+INSERT INTO public.permissions (id, category, description)
 VALUES
   ('tenant.manage',        'tenant',    'Manage organization profile and settings'),
   ('team.read',            'team',      'View team members'),
@@ -70,7 +92,7 @@ ON CONFLICT (id) DO UPDATE SET
 -- actions[] mirrors the action in the permission id (not used by grant builder,
 -- but kept consistent for clarity / future use).
 -- ---------------------------------------------------------------------------
-INSERT INTO saas_core.role_permissions (role, permission_id, actions)
+INSERT INTO public.role_permissions (role, permission_id, actions)
 VALUES
   -- admin: everything
   ('admin', 'tenant.manage',     '{manage}'),
@@ -117,7 +139,7 @@ ON CONFLICT (role, permission_id) DO UPDATE SET
 -- to permissions.id — a missing id would fail the save). Role DEFAULTS below
 -- grant only the sensible subset per role.
 -- ===========================================================================
-INSERT INTO saas_core.permissions (id, category, description)
+INSERT INTO public.permissions (id, category, description)
 SELECT c.category || '.' || a.action, c.category, c.label || ' — ' || a.action
 FROM (VALUES
   ('dashboard',          'Dashboard'),
@@ -162,9 +184,9 @@ ON CONFLICT (id) DO UPDATE SET category = EXCLUDED.category, description = EXCLU
 -- locations/plugins/audit). NOT the billing owner (owner keeps billing).
 -- Generated from the catalog so it always covers every business permission.
 -- ---------------------------------------------------------------------------
-INSERT INTO saas_core.role_permissions (role, permission_id, actions)
+INSERT INTO public.role_permissions (role, permission_id, actions)
 SELECT 'administrador', id, ARRAY[split_part(id, '.', 2)]
-FROM saas_core.permissions
+FROM public.permissions
 WHERE category NOT IN ('tenant', 'billing')
 ON CONFLICT (role, permission_id) DO UPDATE SET actions = EXCLUDED.actions;
 
@@ -172,7 +194,7 @@ ON CONFLICT (role, permission_id) DO UPDATE SET actions = EXCLUDED.actions;
 -- Limited domain roles. permission_id already encodes the action; actions[] is
 -- cosmetic (the grant builder keys off permission_id only).
 -- ---------------------------------------------------------------------------
-INSERT INTO saas_core.role_permissions (role, permission_id, actions)
+INSERT INTO public.role_permissions (role, permission_id, actions)
 VALUES
   -- secretária — front desk: agenda + clients (full), checkout + caixa, capture
   ('secretaria', 'dashboard.read',          '{read}'),
@@ -267,10 +289,10 @@ ON CONFLICT (role, permission_id) DO UPDATE SET actions = EXCLUDED.actions;
 -- hardcoded to ('owner','admin'); our admin role is 'administrador'. Override
 -- idempotently so administrador retains org-management RLS rights.
 -- ---------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION saas_core.is_tenant_admin(p_tenant_id uuid)
+CREATE OR REPLACE FUNCTION public.is_tenant_admin(p_tenant_id uuid)
 RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER AS $$
   SELECT EXISTS (
-    SELECT 1 FROM saas_core.tenant_members
+    SELECT 1 FROM public.tenant_members
     WHERE tenant_id = p_tenant_id AND user_id = auth.uid()
       AND role IN ('owner', 'admin', 'administrador')
   );
@@ -281,49 +303,49 @@ $$;
 -- new role's identity (key/name/description) lives here; its grants live in
 -- tenant_role_overrides (keyed by role = key). System roles are NOT stored here.
 -- ---------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS saas_core.tenant_roles (
+CREATE TABLE IF NOT EXISTS public.tenant_roles (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  tenant_id uuid NOT NULL REFERENCES saas_core.tenants(id) ON DELETE CASCADE,
+  tenant_id uuid NOT NULL REFERENCES public.tenants(id) ON DELETE CASCADE,
   key text NOT NULL,
   name text NOT NULL,
   description text,
   created_at timestamptz NOT NULL DEFAULT now(),
   UNIQUE (tenant_id, key)
 );
-ALTER TABLE saas_core.tenant_roles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.tenant_roles ENABLE ROW LEVEL SECURITY;
 
-DROP POLICY IF EXISTS tenant_roles_read ON saas_core.tenant_roles;
-CREATE POLICY tenant_roles_read ON saas_core.tenant_roles FOR SELECT USING (
+DROP POLICY IF EXISTS tenant_roles_read ON public.tenant_roles;
+CREATE POLICY tenant_roles_read ON public.tenant_roles FOR SELECT USING (
   EXISTS (
-    SELECT 1 FROM saas_core.tenant_members m
+    SELECT 1 FROM public.tenant_members m
     WHERE m.tenant_id = tenant_roles.tenant_id AND m.user_id = auth.uid()
   )
 );
 
-DROP POLICY IF EXISTS tenant_roles_manage ON saas_core.tenant_roles;
-CREATE POLICY tenant_roles_manage ON saas_core.tenant_roles FOR ALL
-  USING (saas_core.is_tenant_admin(tenant_roles.tenant_id))
-  WITH CHECK (saas_core.is_tenant_admin(tenant_roles.tenant_id));
+DROP POLICY IF EXISTS tenant_roles_manage ON public.tenant_roles;
+CREATE POLICY tenant_roles_manage ON public.tenant_roles FOR ALL
+  USING (public.is_tenant_admin(tenant_roles.tenant_id))
+  WITH CHECK (public.is_tenant_admin(tenant_roles.tenant_id));
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON saas_core.tenant_roles TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.tenant_roles TO authenticated;
 
 -- ---------------------------------------------------------------------------
 -- Invite acceptance — provision membership from the TRUSTED invitations table.
--- Flow: an admin creates a saas_core.invitations row (RLS: admins only) and the
+-- Flow: an admin creates a public.invitations row (RLS: admins only) and the
 -- app fires a native magic-link (auth.signInWithOtp) to the invitee. When the
 -- invitee confirms (clicks the link), this trigger matches a pending invite by
 -- e-mail and inserts tenant_members with the invited role. It deliberately does
 -- NOT read auth metadata (a client could forge tenant_id/role) — the invitations
 -- row, written under RLS by a verified admin, is the only source of truth.
--- Also backfills saas_core.profiles so Team/members show a real identity.
+-- Also backfills public.profiles so Team/members show a real identity.
 -- ---------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION saas_core.handle_invited_user()
+CREATE OR REPLACE FUNCTION public.handle_invited_user()
 RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = saas_core, public AS $$
 DECLARE
   inv record;
 BEGIN
   -- Always keep a profile row so members render with name/e-mail.
-  INSERT INTO saas_core.profiles (id, email, full_name)
+  INSERT INTO public.profiles (id, email, full_name)
   VALUES (
     NEW.id,
     NEW.email,
@@ -331,7 +353,7 @@ BEGIN
   )
   ON CONFLICT (id) DO UPDATE
     SET email = EXCLUDED.email,
-        full_name = COALESCE(saas_core.profiles.full_name, EXCLUDED.full_name);
+        full_name = COALESCE(public.profiles.full_name, EXCLUDED.full_name);
 
   -- Only grant membership once the e-mail is confirmed (i.e. the invite accepted).
   IF NEW.email_confirmed_at IS NULL THEN
@@ -340,16 +362,16 @@ BEGIN
 
   FOR inv IN
     SELECT id, tenant_id, role
-    FROM saas_core.invitations
+    FROM public.invitations
     WHERE lower(email) = lower(NEW.email)
       AND status = 'pending'
       AND (expires_at IS NULL OR expires_at > now())
   LOOP
-    INSERT INTO saas_core.tenant_members (tenant_id, user_id, role)
+    INSERT INTO public.tenant_members (tenant_id, user_id, role)
     VALUES (inv.tenant_id, NEW.id, inv.role)
     ON CONFLICT (tenant_id, user_id) DO UPDATE SET role = EXCLUDED.role;
 
-    UPDATE saas_core.invitations
+    UPDATE public.invitations
     SET status = 'accepted', accepted_at = now()
     WHERE id = inv.id;
   END LOOP;
@@ -361,7 +383,7 @@ $$;
 DROP TRIGGER IF EXISTS on_auth_user_invited ON auth.users;
 CREATE TRIGGER on_auth_user_invited
 AFTER INSERT OR UPDATE OF email_confirmed_at ON auth.users
-FOR EACH ROW EXECUTE FUNCTION saas_core.handle_invited_user();
+FOR EACH ROW EXECUTE FUNCTION public.handle_invited_user();
 
 -- Backfill: an invitee who confirmed BEFORE this trigger existed won't get the
 -- trigger retroactively (email_confirmed_at is already set). Provision any pending
@@ -373,7 +395,7 @@ DECLARE
   u   record;
 BEGIN
   FOR inv IN
-    SELECT id, tenant_id, role, email FROM saas_core.invitations
+    SELECT id, tenant_id, role, email FROM public.invitations
     WHERE status = 'pending' AND (expires_at IS NULL OR expires_at > now())
   LOOP
     SELECT id, email, raw_user_meta_data INTO u
@@ -382,15 +404,15 @@ BEGIN
     LIMIT 1;
 
     IF u.id IS NOT NULL THEN
-      INSERT INTO saas_core.profiles (id, email, full_name)
+      INSERT INTO public.profiles (id, email, full_name)
       VALUES (u.id, u.email, COALESCE(u.raw_user_meta_data->>'full_name', u.raw_user_meta_data->>'name'))
       ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email;
 
-      INSERT INTO saas_core.tenant_members (tenant_id, user_id, role)
+      INSERT INTO public.tenant_members (tenant_id, user_id, role)
       VALUES (inv.tenant_id, u.id, inv.role)
       ON CONFLICT (tenant_id, user_id) DO UPDATE SET role = EXCLUDED.role;
 
-      UPDATE saas_core.invitations SET status = 'accepted', accepted_at = now() WHERE id = inv.id;
+      UPDATE public.invitations SET status = 'accepted', accepted_at = now() WHERE id = inv.id;
     END IF;
   END LOOP;
 END $$;

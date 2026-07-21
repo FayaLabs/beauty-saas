@@ -3804,7 +3804,7 @@
   "billing": {
     "plans": [
       {
-        "description": "Para estilistas independentes",
+        "description": "Comece grátis — sem cartão",
         "entitlements": {
           "features": {
             "fin_reconciliation": false,
@@ -3826,11 +3826,11 @@
           "Relatórios básicos",
           "Suporte por e-mail"
         ],
-        "id": "starter",
-        "name": "Inicial",
+        "id": "free",
+        "name": "Grátis",
         "prices": {
-          "monthly": 29,
-          "yearly": 279
+          "monthly": 0,
+          "yearly": 0
         }
       },
       {
@@ -3857,7 +3857,7 @@
           "Página de agendamento online",
           "Suporte prioritário"
         ],
-        "id": "professional",
+        "id": "pro",
         "name": "Profissional",
         "popular": true,
         "prices": {
@@ -3889,7 +3889,7 @@
           "Gerente de conta dedicado",
           "Integrações personalizadas"
         ],
-        "id": "enterprise",
+        "id": "business",
         "name": "Empresarial",
         "prices": {
           "monthly": 199,
@@ -3898,7 +3898,7 @@
       }
     ]
   },
-  "contractHash": "41a5ca32bd5f83c01c4b9d993ca339dfa1734a89df59bf6fca19d0fdae029ffb",
+  "contractHash": "d43d900423344c35376216fd38ab59553de4383b35a8fc5889ed2f1f12919bc9",
   "id": "beauty-saas",
   "limitDeclarations": [
     {
