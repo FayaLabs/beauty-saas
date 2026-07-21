@@ -1517,12 +1517,12 @@
         },
         "fields": [
           {
-            "key": "starts_at",
+            "key": "startsAt",
             "label": "Starts at",
             "type": "text"
           },
           {
-            "key": "ends_at",
+            "key": "endsAt",
             "label": "Ends at",
             "type": "text"
           },
@@ -1532,29 +1532,29 @@
             "type": "text"
           },
           {
-            "key": "client_name",
+            "key": "clientName",
             "label": "Client",
             "searchable": true,
             "type": "text"
           },
           {
-            "key": "professional_name",
+            "key": "professionalName",
             "label": "Professional",
             "searchable": true,
             "type": "text"
           },
           {
-            "key": "order_total",
+            "key": "orderTotal",
             "label": "Order total",
             "type": "number"
           },
           {
-            "key": "total_duration_minutes",
+            "key": "totalDurationMinutes",
             "label": "Duration (min)",
             "type": "number"
           },
           {
-            "key": "created_at",
+            "key": "createdAt",
             "label": "Created at",
             "type": "text"
           }
@@ -1961,6 +1961,60 @@
       },
       {
         "data": {
+          "searchColumns": [
+            "reference_number"
+          ],
+          "table": "v_invoice_balances",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "referenceNumber",
+            "label": "Reference (REC-/PAG-)",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "flow",
+            "label": "Flow (receivable/payable)",
+            "type": "text"
+          },
+          {
+            "key": "amount",
+            "label": "Amount",
+            "type": "number"
+          },
+          {
+            "key": "paid",
+            "label": "Paid",
+            "type": "number"
+          },
+          {
+            "key": "balance",
+            "label": "Balance",
+            "type": "number"
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "type": "text"
+          },
+          {
+            "key": "createdAt",
+            "label": "Created at",
+            "type": "text"
+          }
+        ],
+        "key": "financial:invoices",
+        "label": "Invoice",
+        "labelPlural": "Invoices (receipts REC- / payables PAG-)",
+        "permission": {
+          "action": "read",
+          "feature": "financial"
+        }
+      },
+      {
+        "data": {
           "table": "plg_financial_movements",
           "tenantScoped": true
         },
@@ -1971,8 +2025,8 @@
             "type": "text"
           },
           {
-            "key": "movement_kind",
-            "label": "Kind",
+            "key": "movementKind",
+            "label": "Kind (bill/payment)",
             "type": "text"
           },
           {
@@ -1981,7 +2035,7 @@
             "type": "number"
           },
           {
-            "key": "paid_amount",
+            "key": "paidAmount",
             "label": "Paid amount",
             "type": "number"
           },
@@ -1991,34 +2045,34 @@
             "type": "text"
           },
           {
-            "key": "due_date",
+            "key": "dueDate",
             "label": "Due date",
             "type": "text"
           },
           {
-            "key": "payment_date",
+            "key": "paymentDate",
             "label": "Payment date",
             "type": "text"
           },
           {
-            "key": "installment_number",
+            "key": "installmentNumber",
             "label": "Installment",
             "type": "number"
           },
           {
-            "key": "card_installments",
+            "key": "cardInstallments",
             "label": "Card installments",
             "type": "number"
           },
           {
-            "key": "created_at",
+            "key": "createdAt",
             "label": "Created at",
             "type": "text"
           }
         ],
         "key": "financial:movements",
         "label": "Financial movement",
-        "labelPlural": "Financial movements",
+        "labelPlural": "Financial movements (installment ledger)",
         "permission": {
           "action": "read",
           "feature": "financial"
@@ -2682,7 +2736,7 @@
       },
       {
         "category": "Data",
-        "description": "Searches or lists records of ONE entity and returns matching rows with their fields. Use for questions about specific records or small lists. Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:staff (profissionais), contato (contatos), fornecedor (fornecedores), parceria (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), serviço-do-pacote (serviços do pacote), produto-padrão-do-serviço (produtos padrão dos serviços), tabela-de-preços (tabelas de preços), preço-de-serviço (preços de serviços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:movements (financial movements).",
+        "description": "Searches or lists records of ONE entity and returns matching rows with their fields. Use for questions about specific records or small lists. Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:staff (profissionais), contato (contatos), fornecedor (fornecedores), parceria (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), serviço-do-pacote (serviços do pacote), produto-padrão-do-serviço (produtos padrão dos serviços), tabela-de-preços (tabelas de preços), preço-de-serviço (preços de serviços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)).",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -2736,6 +2790,7 @@
                 "custom_forms:service-default-forms",
                 "tasks:task-labels",
                 "agenda:appointments",
+                "financial:invoices",
                 "financial:movements"
               ],
               "type": "string"
@@ -2753,7 +2808,7 @@
       },
       {
         "category": "Data",
-        "description": "Aggregates over ONE entity: count, sum or avg of a field, with optional date range, equality filters and a group-by. Use for analytical questions (revenue this week, new clients this month, busiest professional). Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:staff (profissionais), contato (contatos), fornecedor (fornecedores), parceria (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), serviço-do-pacote (serviços do pacote), produto-padrão-do-serviço (produtos padrão dos serviços), tabela-de-preços (tabelas de preços), preço-de-serviço (preços de serviços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:movements (financial movements).",
+        "description": "Aggregates over ONE entity: count, sum or avg of a field, with optional date range, equality filters and a group-by. Use for analytical questions (revenue this week, new clients this month, busiest professional). Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:staff (profissionais), contato (contatos), fornecedor (fornecedores), parceria (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), serviço-do-pacote (serviços do pacote), produto-padrão-do-serviço (produtos padrão dos serviços), tabela-de-preços (tabelas de preços), preço-de-serviço (preços de serviços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)).",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -2811,6 +2866,7 @@
                 "custom_forms:service-default-forms",
                 "tasks:task-labels",
                 "agenda:appointments",
+                "financial:invoices",
                 "financial:movements"
               ],
               "type": "string"
@@ -3464,7 +3520,7 @@
       }
     ]
   },
-  "contractHash": "0a7f4bd0b18504444dda668149b316ef0b6843f28d515ddd07c02242f4c84698",
+  "contractHash": "045ba69bed463b5cc84762d21c028912bba4f935b853bc3dba417b629afb611a",
   "id": "beauty-saas",
   "limitDeclarations": [
     {
