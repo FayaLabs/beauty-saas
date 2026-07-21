@@ -123,7 +123,7 @@ export const beautyPages: BeautyCustomPage[] = [
     path: '/agenda/waitlist/entries',
     label: '',
     icon: 'ListPlus',
-    component: createCrudPage(appointmentWaitlistEntryEntity),
+    component: createCrudPage(appointmentWaitlistEntryEntity, { feature: 'agenda_waitlist' }),
     permission: { feature: 'appointments', action: 'read' },
   },
   {
@@ -141,10 +141,19 @@ export const beautyPages: BeautyCustomPage[] = [
     position: 8,
     component: createPlaceholder(tl('Registry', 'Cadastros'), tl('Manage your business records', 'Gerencie seus registros de negócios')),
     children: [
-      { path: '/registry/services', label: tl('Services', 'Serviços'), icon: 'Briefcase', component: createCrudPage(serviceEntity) },
-      { path: '/registry/categories', label: tl('Categories', 'Categorias'), icon: 'Tag', component: createCrudPage(serviceCategoryEntity) },
-      { path: '/registry/locations', label: tl('Service Locations', 'Locais de Atendimento'), icon: 'MapPin', component: createCrudPage(serviceLocationEntity) },
-      { path: '/registry/location-groups', label: tl('Location Groups', 'Grupos de Locais'), icon: 'Map', component: createCrudPage(locationGroupEntity) },
+      // The service catalog (services + their categories + delivery locations) is
+      // gated by the `services` registry feature — passing it here arms the central
+      // PermissionGate so create/edit/delete honor the role's action grants
+      // (e.g. Secretária/Profissional hold services:read only → no "+ Adicionar Serviço").
+      { path: '/registry/services', label: tl('Services', 'Serviços'), icon: 'Briefcase', component: createCrudPage(serviceEntity, { feature: 'services' }) },
+      { path: '/registry/categories', label: tl('Categories', 'Categorias'), icon: 'Tag', component: createCrudPage(serviceCategoryEntity, { feature: 'services' }) },
+      { path: '/registry/locations', label: tl('Service Locations', 'Locais de Atendimento'), icon: 'MapPin', component: createCrudPage(serviceLocationEntity, { feature: 'services' }) },
+      { path: '/registry/location-groups', label: tl('Location Groups', 'Grupos de Locais'), icon: 'Map', component: createCrudPage(locationGroupEntity, { feature: 'services' }) },
+      // NOTE (QA): the entities below have NO feature declared in permissions.ts —
+      // there is no `staff`, `contacts`, `suppliers`, `partnerships` or `equipment`
+      // registry feature (staff is governed by the `manage_team` system permission,
+      // not a CRUD feature). Not gated here to avoid inventing features; flagged so a
+      // follow-up can decide whether to add the missing taxonomy entries.
       { path: '/registry/staff', label: tl('Staff', 'Equipe'), icon: 'UserCog', component: createCrudPage(staffEntity) },
       { path: '/registry/contacts', label: tl('Contacts', 'Contatos'), icon: 'Contact', component: createCrudPage(contactEntity) },
       { path: '/registry/suppliers', label: tl('Suppliers', 'Fornecedores'), icon: 'Building2', component: createCrudPage(supplierEntity) },
@@ -163,42 +172,42 @@ export const beautyPages: BeautyCustomPage[] = [
     path: '/settings/services/_properties/service-packages',
     label: '',
     icon: 'Package',
-    component: createCrudPage(servicePackageEntity),
+    component: createCrudPage(servicePackageEntity, { feature: 'services' }),
     permission: { feature: 'settings', action: 'read' },
   },
   {
     path: '/settings/services/_properties/service-package-items',
     label: '',
     icon: 'ListChecks',
-    component: createCrudPage(servicePackageItemEntity),
+    component: createCrudPage(servicePackageItemEntity, { feature: 'services' }),
     permission: { feature: 'settings', action: 'read' },
   },
   {
     path: '/settings/services/_properties/default-products',
     label: '',
     icon: 'Boxes',
-    component: createCrudPage(serviceDefaultProductEntity),
+    component: createCrudPage(serviceDefaultProductEntity, { feature: 'services' }),
     permission: { feature: 'settings', action: 'read' },
   },
   {
     path: '/settings/services/_properties/price-tables',
     label: '',
     icon: 'BadgeDollarSign',
-    component: createCrudPage(servicePriceTableEntity),
+    component: createCrudPage(servicePriceTableEntity, { feature: 'services' }),
     permission: { feature: 'settings', action: 'read' },
   },
   {
     path: '/settings/services/_properties/price-table-items',
     label: '',
     icon: 'CircleDollarSign',
-    component: createCrudPage(servicePriceTableItemEntity),
+    component: createCrudPage(servicePriceTableItemEntity, { feature: 'services' }),
     permission: { feature: 'settings', action: 'read' },
   },
   {
     path: '/settings/services/_properties/price-variations',
     label: '',
     icon: 'Tags',
-    component: createCrudPage(servicePriceVariationEntity),
+    component: createCrudPage(servicePriceVariationEntity, { feature: 'services' }),
     permission: { feature: 'settings', action: 'read' },
   },
   {

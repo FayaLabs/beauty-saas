@@ -5,3 +5,8 @@ dist/
 .DS_Store
 *.png
 .playwright-mcp/
+
+# Playwright / QA e2e
+test-results/
+playwright-report/
+e2e/.auth/
