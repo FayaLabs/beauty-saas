@@ -2736,6 +2736,77 @@
       },
       {
         "category": "Data",
+        "description": "Creates ONE new record of an entity (client, service, supplier, …). ALWAYS search first to avoid duplicates. Field keys and required fields come from the entity — on a field error the response lists the valid fields; fix and retry. The user will confirm before anything is written.",
+        "execution": {
+          "entity": "*",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "data.create-record",
+        "mode": "persist",
+        "name": "createRecord",
+        "parameters": {
+          "properties": {
+            "entity": {
+              "description": "Which entity to create",
+              "enum": [
+                "location",
+                "person:customer",
+                "entrada-da-lista-de-espera",
+                "serviço",
+                "categoria-de-serviço",
+                "local-de-atendimento",
+                "grupo-de-locais",
+                "person:staff",
+                "contato",
+                "fornecedor",
+                "parceria",
+                "equipamento",
+                "pacote-de-serviços",
+                "serviço-do-pacote",
+                "produto-padrão-do-serviço",
+                "tabela-de-preços",
+                "preço-de-serviço",
+                "variação-de-preço",
+                "agenda:holidays",
+                "agenda:cancellation-reasons",
+                "agenda:confirmation-channels",
+                "agenda:schedule-rules",
+                "financial:payment-methods",
+                "financial:chart-of-accounts",
+                "financial:cost-centers",
+                "financial:bank-accounts",
+                "financial:commission-rules",
+                "financial:price-tables",
+                "financial:price-variations",
+                "inventory:suppliers",
+                "inventory:product-categories",
+                "inventory:stock-locations",
+                "crm:stages",
+                "crm:lead-sources",
+                "crm:tags",
+                "marketing:origins",
+                "custom_forms:form-categories",
+                "custom_forms:service-default-forms",
+                "tasks:task-labels"
+              ],
+              "type": "string"
+            },
+            "values": {
+              "description": "Field values for the new record, e.g. {\"name\":\"…\",\"phone\":\"…\"}",
+              "type": "object"
+            }
+          },
+          "required": [
+            "entity",
+            "values"
+          ],
+          "type": "object"
+        },
+        "requiresConfirmation": false
+      },
+      {
+        "category": "Data",
         "description": "Searches or lists records of ONE entity and returns matching rows with their fields. Use for questions about specific records or small lists. Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:staff (profissionais), contato (contatos), fornecedor (fornecedores), parceria (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), serviço-do-pacote (serviços do pacote), produto-padrão-do-serviço (produtos padrão dos serviços), tabela-de-preços (tabelas de preços), preço-de-serviço (preços de serviços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)).",
         "execution": {
           "entity": "*",
@@ -2959,7 +3030,7 @@
       },
       {
         "category": "Scheduling",
-        "description": "Creates a new appointment for a client with a specific professional and service.",
+        "description": "Creates a new appointment. Takes IDS, not names: resolve the client/service/professional ids first via findAnything/searchRecords, then call this with an ISO start time in the tenant timezone. The user confirms before booking.",
         "execution": {
           "kind": "rpc",
           "plane": "server",
@@ -2971,33 +3042,31 @@
         "name": "createAppointment",
         "parameters": {
           "properties": {
-            "client": {
-              "description": "Client name",
+            "client_id": {
+              "description": "Client id (from a search)",
               "type": "string"
             },
-            "date": {
-              "description": "Date (YYYY-MM-DD)",
+            "notes": {
+              "description": "Optional notes",
               "type": "string"
             },
-            "professional": {
-              "description": "Professional name",
+            "professional_id": {
+              "description": "Professional id (optional — auto-assigned when omitted)",
               "type": "string"
             },
-            "service": {
-              "description": "Service name",
+            "service_id": {
+              "description": "Service id (from a search)",
               "type": "string"
             },
-            "time": {
-              "description": "Time (HH:MM)",
+            "starts_at": {
+              "description": "Start datetime, ISO 8601 with timezone (e.g. 2026-07-27T13:00:00Z)",
               "type": "string"
             }
           },
           "required": [
-            "client",
-            "professional",
-            "service",
-            "date",
-            "time"
+            "client_id",
+            "service_id",
+            "starts_at"
           ],
           "type": "object"
         },
@@ -3520,7 +3589,7 @@
       }
     ]
   },
-  "contractHash": "045ba69bed463b5cc84762d21c028912bba4f935b853bc3dba417b629afb611a",
+  "contractHash": "6963425d64545f4d697a210771970fe60c32662d24cde0e083e47c2bcb270cba",
   "id": "beauty-saas",
   "limitDeclarations": [
     {
