@@ -391,6 +391,13 @@ export const beautyAppConfig: FayzAppConfig = {
       'Scheduling, client management, financial tracking, and marketing — all in one beautiful platform built for beauty professionals.',
       'Agendamento, gestão de clientes, controle financeiro e marketing — tudo em uma plataforma feita para profissionais de beleza.',
     ),
+    loginAmbassadors: [
+      { name: 'Ana Hickmann', role: tl('Ambassador', 'Embaixadora'), image: '/ambassadors/ana-hickmann.jpg' },
+      { name: 'Camila Duarte', role: tl('Hairstylist', 'Cabeleireira'), image: '/ambassadors/pro-1.jpg' },
+      { name: 'Renata Alves', role: tl('Esthetician', 'Esteticista'), image: '/ambassadors/pro-2.jpg' },
+      // Espaço para mais embaixadoras: adicione novas entradas aqui.
+    ],
+    loginAmbassadorsLabel: tl('+2k beauty pros', '+2 mil profissionais de beleza'),
     showOAuth: true,
     oauthProviders: ['google'],
   },
@@ -616,8 +623,10 @@ export const beautyAppConfig: FayzAppConfig = {
           landingPages: tl('Landing pages', 'Páginas'),
           content: tl('Content', 'Conteúdo'),
           settings: tl('Settings', 'Configurações'),
+          blog: tl('Blog', 'Blog'),
+          blogCategories: tl('Categories', 'Categorias'),
         },
-        modules: { contentPlanner: true },
+        modules: { contentPlanner: true, blog: true },
         settingsRegistries: [
           {
             id: 'origins',
