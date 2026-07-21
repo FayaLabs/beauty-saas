@@ -1508,6 +1508,67 @@
       },
       {
         "data": {
+          "searchColumns": [
+            "client_name",
+            "professional_name"
+          ],
+          "table": "v_appointments",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "starts_at",
+            "label": "Starts at",
+            "type": "text"
+          },
+          {
+            "key": "ends_at",
+            "label": "Ends at",
+            "type": "text"
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "type": "text"
+          },
+          {
+            "key": "client_name",
+            "label": "Client",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "professional_name",
+            "label": "Professional",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "order_total",
+            "label": "Order total",
+            "type": "number"
+          },
+          {
+            "key": "total_duration_minutes",
+            "label": "Duration (min)",
+            "type": "number"
+          },
+          {
+            "key": "created_at",
+            "label": "Created at",
+            "type": "text"
+          }
+        ],
+        "key": "agenda:appointments",
+        "label": "Appointment",
+        "labelPlural": "Appointments",
+        "permission": {
+          "action": "read",
+          "feature": "appointments"
+        }
+      },
+      {
+        "data": {
           "table": "plg_financial_payment_methods",
           "tenantScoped": true
         },
@@ -1897,6 +1958,71 @@
         "key": "financial:card-brands",
         "label": "Card Brand",
         "labelPlural": "Card Brands"
+      },
+      {
+        "data": {
+          "table": "plg_financial_movements",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "direction",
+            "label": "Direction",
+            "type": "text"
+          },
+          {
+            "key": "movement_kind",
+            "label": "Kind",
+            "type": "text"
+          },
+          {
+            "key": "amount",
+            "label": "Amount",
+            "type": "number"
+          },
+          {
+            "key": "paid_amount",
+            "label": "Paid amount",
+            "type": "number"
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "type": "text"
+          },
+          {
+            "key": "due_date",
+            "label": "Due date",
+            "type": "text"
+          },
+          {
+            "key": "payment_date",
+            "label": "Payment date",
+            "type": "text"
+          },
+          {
+            "key": "installment_number",
+            "label": "Installment",
+            "type": "number"
+          },
+          {
+            "key": "card_installments",
+            "label": "Card installments",
+            "type": "number"
+          },
+          {
+            "key": "created_at",
+            "label": "Created at",
+            "type": "text"
+          }
+        ],
+        "key": "financial:movements",
+        "label": "Financial movement",
+        "labelPlural": "Financial movements",
+        "permission": {
+          "action": "read",
+          "feature": "financial"
+        }
       },
       {
         "data": {
@@ -2487,7 +2613,7 @@
       },
       {
         "category": "Core",
-        "description": "Lists team members for the current tenant with their roles and status.",
+        "description": "Lists the WORKSPACE USERS (people with a login) and their roles. This is NOT the professionals/staff registry — for professionals, stylists or other staff the business manages as records, use the staff/people search tools instead.",
         "execution": {
           "plane": "client"
         },
@@ -2532,843 +2658,175 @@
       },
       {
         "category": "Data",
-        "description": "Searches locations and returns matching records with their fields. Use this to answer questions about a specific location or to count them.",
+        "description": "Searches or lists records of ONE entity and returns matching rows with their fields. Use for questions about specific records or small lists. Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:staff (profissionais), contato (contatos), fornecedor (fornecedores), parceria (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), serviço-do-pacote (serviços do pacote), produto-padrão-do-serviço (produtos padrão dos serviços), tabela-de-preços (tabelas de preços), preço-de-serviço (preços de serviços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:movements (financial movements).",
         "execution": {
-          "entity": "location",
+          "entity": "*",
           "kind": "entity_read",
           "plane": "server"
         },
-        "id": "entity.location",
+        "id": "data.search-records",
         "mode": "read",
-        "name": "searchLocation",
+        "name": "searchRecords",
         "parameters": {
           "properties": {
+            "entity": {
+              "description": "Which entity to search",
+              "enum": [
+                "location",
+                "person:customer",
+                "entrada-da-lista-de-espera",
+                "serviço",
+                "categoria-de-serviço",
+                "local-de-atendimento",
+                "grupo-de-locais",
+                "person:staff",
+                "contato",
+                "fornecedor",
+                "parceria",
+                "equipamento",
+                "pacote-de-serviços",
+                "serviço-do-pacote",
+                "produto-padrão-do-serviço",
+                "tabela-de-preços",
+                "preço-de-serviço",
+                "variação-de-preço",
+                "agenda:holidays",
+                "agenda:cancellation-reasons",
+                "agenda:confirmation-channels",
+                "agenda:schedule-rules",
+                "financial:payment-methods",
+                "financial:chart-of-accounts",
+                "financial:cost-centers",
+                "financial:bank-accounts",
+                "financial:commission-rules",
+                "financial:price-tables",
+                "financial:price-variations",
+                "inventory:suppliers",
+                "inventory:product-categories",
+                "inventory:stock-locations",
+                "crm:stages",
+                "crm:lead-sources",
+                "crm:tags",
+                "marketing:origins",
+                "custom_forms:form-categories",
+                "custom_forms:service-default-forms",
+                "tasks:task-labels",
+                "agenda:appointments",
+                "financial:movements"
+              ],
+              "type": "string"
+            },
             "search": {
-              "description": "Name or text to match. Omit to list recent locations.",
+              "description": "Name or text to match. Omit to list recent records.",
               "type": "string"
             }
           },
+          "required": [
+            "entity"
+          ],
           "type": "object"
         }
       },
       {
         "category": "Data",
-        "description": "Searches cliente and returns matching records with their fields. Use this to answer questions about a specific cliente or to count them.",
+        "description": "Aggregates over ONE entity: count, sum or avg of a field, with optional date range, equality filters and a group-by. Use for analytical questions (revenue this week, new clients this month, busiest professional). Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:staff (profissionais), contato (contatos), fornecedor (fornecedores), parceria (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), serviço-do-pacote (serviços do pacote), produto-padrão-do-serviço (produtos padrão dos serviços), tabela-de-preços (tabelas de preços), preço-de-serviço (preços de serviços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:movements (financial movements).",
         "execution": {
-          "entity": "person:customer",
+          "entity": "*",
           "kind": "entity_read",
           "plane": "server"
         },
-        "id": "entity.person:customer",
+        "id": "data.query-data",
         "mode": "read",
-        "name": "searchPersonCustomer",
+        "name": "queryData",
         "parameters": {
           "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent cliente.",
+            "dateField": {
+              "description": "Date field to range-filter (default 'created_at').",
+              "type": "string"
+            },
+            "entity": {
+              "description": "Which entity to aggregate",
+              "enum": [
+                "location",
+                "person:customer",
+                "entrada-da-lista-de-espera",
+                "serviço",
+                "categoria-de-serviço",
+                "local-de-atendimento",
+                "grupo-de-locais",
+                "person:staff",
+                "contato",
+                "fornecedor",
+                "parceria",
+                "equipamento",
+                "pacote-de-serviços",
+                "serviço-do-pacote",
+                "produto-padrão-do-serviço",
+                "tabela-de-preços",
+                "preço-de-serviço",
+                "variação-de-preço",
+                "agenda:holidays",
+                "agenda:cancellation-reasons",
+                "agenda:confirmation-channels",
+                "agenda:schedule-rules",
+                "financial:payment-methods",
+                "financial:chart-of-accounts",
+                "financial:cost-centers",
+                "financial:bank-accounts",
+                "financial:commission-rules",
+                "financial:price-tables",
+                "financial:price-variations",
+                "inventory:suppliers",
+                "inventory:product-categories",
+                "inventory:stock-locations",
+                "crm:stages",
+                "crm:lead-sources",
+                "crm:tags",
+                "marketing:origins",
+                "custom_forms:form-categories",
+                "custom_forms:service-default-forms",
+                "tasks:task-labels",
+                "agenda:appointments",
+                "financial:movements"
+              ],
+              "type": "string"
+            },
+            "field": {
+              "description": "Field to sum/avg (record field name). Ignored for count.",
+              "type": "string"
+            },
+            "filters": {
+              "description": "Optional equality filters {field: value}.",
+              "type": "object"
+            },
+            "from": {
+              "description": "ISO date/datetime lower bound (inclusive).",
+              "type": "string"
+            },
+            "groupBy": {
+              "description": "Optional field to group results by.",
+              "type": "string"
+            },
+            "metric": {
+              "description": "Aggregation",
+              "enum": [
+                "count",
+                "sum",
+                "avg"
+              ],
+              "type": "string"
+            },
+            "to": {
+              "description": "ISO date/datetime upper bound (inclusive).",
               "type": "string"
             }
           },
+          "required": [
+            "entity",
+            "metric"
+          ],
           "type": "object"
         }
-      },
-      {
-        "category": "Data",
-        "description": "Searches lista de espera and returns matching records with their fields. Use this to answer questions about a specific entrada da lista de espera or to count them.",
-        "execution": {
-          "entity": "entrada-da-lista-de-espera",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.entrada-da-lista-de-espera",
-        "mode": "read",
-        "name": "searchEntradaDaListaDeEspera",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent lista de espera.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches serviço and returns matching records with their fields. Use this to answer questions about a specific serviço or to count them.",
-        "execution": {
-          "entity": "serviço",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.serviço",
-        "mode": "read",
-        "name": "searchServico",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent serviço.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches categorias de serviço and returns matching records with their fields. Use this to answer questions about a specific categoria de serviço or to count them.",
-        "execution": {
-          "entity": "categoria-de-serviço",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.categoria-de-serviço",
-        "mode": "read",
-        "name": "searchCategoriaDeServico",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent categorias de serviço.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches locais de atendimento and returns matching records with their fields. Use this to answer questions about a specific local de atendimento or to count them.",
-        "execution": {
-          "entity": "local-de-atendimento",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.local-de-atendimento",
-        "mode": "read",
-        "name": "searchLocalDeAtendimento",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent locais de atendimento.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches grupos de locais and returns matching records with their fields. Use this to answer questions about a specific grupo de locais or to count them.",
-        "execution": {
-          "entity": "grupo-de-locais",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.grupo-de-locais",
-        "mode": "read",
-        "name": "searchGrupoDeLocais",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent grupos de locais.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches profissionais and returns matching records with their fields. Use this to answer questions about a specific profissional or to count them.",
-        "execution": {
-          "entity": "person:staff",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.person:staff",
-        "mode": "read",
-        "name": "searchPersonStaff",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent profissionais.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches contatos and returns matching records with their fields. Use this to answer questions about a specific contato or to count them.",
-        "execution": {
-          "entity": "contato",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.contato",
-        "mode": "read",
-        "name": "searchContato",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent contatos.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches fornecedores and returns matching records with their fields. Use this to answer questions about a specific fornecedor or to count them.",
-        "execution": {
-          "entity": "fornecedor",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.fornecedor",
-        "mode": "read",
-        "name": "searchFornecedor",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent fornecedores.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches parcerias and returns matching records with their fields. Use this to answer questions about a specific parceria or to count them.",
-        "execution": {
-          "entity": "parceria",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.parceria",
-        "mode": "read",
-        "name": "searchParceria",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent parcerias.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches equipamentos and returns matching records with their fields. Use this to answer questions about a specific equipamento or to count them.",
-        "execution": {
-          "entity": "equipamento",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.equipamento",
-        "mode": "read",
-        "name": "searchEquipamento",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent equipamentos.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches pacotes de serviços and returns matching records with their fields. Use this to answer questions about a specific pacote de serviços or to count them.",
-        "execution": {
-          "entity": "pacote-de-serviços",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.pacote-de-serviços",
-        "mode": "read",
-        "name": "searchPacoteDeServicos",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent pacotes de serviços.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches serviços do pacote and returns matching records with their fields. Use this to answer questions about a specific serviço do pacote or to count them.",
-        "execution": {
-          "entity": "serviço-do-pacote",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.serviço-do-pacote",
-        "mode": "read",
-        "name": "searchServicoDoPacote",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent serviços do pacote.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches produtos padrão dos serviços and returns matching records with their fields. Use this to answer questions about a specific produto padrão do serviço or to count them.",
-        "execution": {
-          "entity": "produto-padrão-do-serviço",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.produto-padrão-do-serviço",
-        "mode": "read",
-        "name": "searchProdutoPadraoDoServico",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent produtos padrão dos serviços.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches tabelas de preços and returns matching records with their fields. Use this to answer questions about a specific tabela de preços or to count them.",
-        "execution": {
-          "entity": "tabela-de-preços",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.tabela-de-preços",
-        "mode": "read",
-        "name": "searchTabelaDePrecos",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent tabelas de preços.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches preços de serviços and returns matching records with their fields. Use this to answer questions about a specific preço de serviço or to count them.",
-        "execution": {
-          "entity": "preço-de-serviço",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.preço-de-serviço",
-        "mode": "read",
-        "name": "searchPrecoDeServico",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent preços de serviços.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Data",
-        "description": "Searches variações de preço and returns matching records with their fields. Use this to answer questions about a specific variação de preço or to count them.",
-        "execution": {
-          "entity": "variação-de-preço",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "entity.variação-de-preço",
-        "mode": "read",
-        "name": "searchVariacaoDePreco",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Name or text to match. Omit to list recent variações de preço.",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        }
-      },
-      {
-        "category": "Agenda",
-        "description": "Lists all holidays for the current business.",
-        "execution": {
-          "entity": "agenda:holidays",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "agenda.list-holidays",
-        "mode": "read",
-        "name": "listAgendaHolidays",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "agenda"
-      },
-      {
-        "category": "Agenda",
-        "description": "Lists all motivos de cancelamento for the current business.",
-        "execution": {
-          "entity": "agenda:cancellation-reasons",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "agenda.list-cancellation-reasons",
-        "mode": "read",
-        "name": "listAgendaCancellationReasons",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "agenda"
-      },
-      {
-        "category": "Agenda",
-        "description": "Lists all canais de confirmação for the current business.",
-        "execution": {
-          "entity": "agenda:confirmation-channels",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "agenda.list-confirmation-channels",
-        "mode": "read",
-        "name": "listAgendaConfirmationChannels",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "agenda"
-      },
-      {
-        "category": "Agenda",
-        "description": "Lists all regras de agenda for the current business.",
-        "execution": {
-          "entity": "agenda:schedule-rules",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "agenda.list-schedule-rules",
-        "mode": "read",
-        "name": "listAgendaScheduleRules",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "agenda"
-      },
-      {
-        "category": "Financial",
-        "description": "Lists all payment methods for the current business.",
-        "execution": {
-          "entity": "financial:payment-methods",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "financial.list-payment-methods",
-        "mode": "read",
-        "name": "listFinancialPaymentMethods",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "financial"
-      },
-      {
-        "category": "Financial",
-        "description": "Lists all chart of accounts for the current business.",
-        "execution": {
-          "entity": "financial:chart-of-accounts",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "financial.list-chart-of-accounts",
-        "mode": "read",
-        "name": "listFinancialChartOfAccounts",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "financial"
-      },
-      {
-        "category": "Financial",
-        "description": "Lists all cost centers for the current business.",
-        "execution": {
-          "entity": "financial:cost-centers",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "financial.list-cost-centers",
-        "mode": "read",
-        "name": "listFinancialCostCenters",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "financial"
-      },
-      {
-        "category": "Financial",
-        "description": "Lists all bank accounts for the current business.",
-        "execution": {
-          "entity": "financial:bank-accounts",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "financial.list-bank-accounts",
-        "mode": "read",
-        "name": "listFinancialBankAccounts",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "financial"
-      },
-      {
-        "category": "Financial",
-        "description": "Lists all commission rules for the current business.",
-        "execution": {
-          "entity": "financial:commission-rules",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "financial.list-commission-rules",
-        "mode": "read",
-        "name": "listFinancialCommissionRules",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "financial"
-      },
-      {
-        "category": "Financial",
-        "description": "Lists all price tables for the current business.",
-        "execution": {
-          "entity": "financial:price-tables",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "financial.list-price-tables",
-        "mode": "read",
-        "name": "listFinancialPriceTables",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "financial"
-      },
-      {
-        "category": "Financial",
-        "description": "Lists all price variations for the current business.",
-        "execution": {
-          "entity": "financial:price-variations",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "financial.list-price-variations",
-        "mode": "read",
-        "name": "listFinancialPriceVariations",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "financial"
-      },
-      {
-        "category": "Inventory",
-        "description": "Lists all suppliers for the current business.",
-        "execution": {
-          "entity": "inventory:suppliers",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "inventory.list-suppliers",
-        "mode": "read",
-        "name": "listInventorySuppliers",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "inventory"
-      },
-      {
-        "category": "Inventory",
-        "description": "Lists all product categories for the current business.",
-        "execution": {
-          "entity": "inventory:product-categories",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "inventory.list-product-categories",
-        "mode": "read",
-        "name": "listInventoryProductCategories",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "inventory"
-      },
-      {
-        "category": "Inventory",
-        "description": "Lists all stock locations for the current business.",
-        "execution": {
-          "entity": "inventory:stock-locations",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "inventory.list-stock-locations",
-        "mode": "read",
-        "name": "listInventoryStockLocations",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "inventory"
-      },
-      {
-        "category": "Crm",
-        "description": "Lists all stages for the current business.",
-        "execution": {
-          "entity": "crm:stages",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "crm.list-stages",
-        "mode": "read",
-        "name": "listCrmStages",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "crm"
-      },
-      {
-        "category": "Crm",
-        "description": "Lists all lead sources for the current business.",
-        "execution": {
-          "entity": "crm:lead-sources",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "crm.list-lead-sources",
-        "mode": "read",
-        "name": "listCrmLeadSources",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "crm"
-      },
-      {
-        "category": "Crm",
-        "description": "Lists all tags for the current business.",
-        "execution": {
-          "entity": "crm:tags",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "crm.list-tags",
-        "mode": "read",
-        "name": "listCrmTags",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "crm"
-      },
-      {
-        "category": "Marketing",
-        "description": "Lists all origens for the current business.",
-        "execution": {
-          "entity": "marketing:origins",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "marketing.list-origins",
-        "mode": "read",
-        "name": "listMarketingOrigins",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "marketing"
-      },
-      {
-        "category": "Custom_forms",
-        "description": "Lists all categories for the current business.",
-        "execution": {
-          "entity": "custom_forms:form-categories",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "custom_forms.list-form-categories",
-        "mode": "read",
-        "name": "listCustomFormsFormCategories",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "custom_forms"
-      },
-      {
-        "category": "Custom_forms",
-        "description": "Lists all formulários/contratos padrão dos serviços for the current business.",
-        "execution": {
-          "entity": "custom_forms:service-default-forms",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "custom_forms.list-service-default-forms",
-        "mode": "read",
-        "name": "listCustomFormsServiceDefaultForms",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "custom_forms"
-      },
-      {
-        "category": "Tasks",
-        "description": "Lists all task labels for the current business.",
-        "execution": {
-          "entity": "tasks:task-labels",
-          "kind": "entity_read",
-          "plane": "server"
-        },
-        "id": "tasks.list-task-labels",
-        "mode": "read",
-        "name": "listTasksTaskLabels",
-        "parameters": {
-          "properties": {
-            "search": {
-              "description": "Search text",
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "pluginId": "tasks"
       },
       {
         "category": "Dashboard",
@@ -3885,6 +3343,7 @@
   "billing": {
     "plans": [
       {
+        "currency": "BRL",
         "description": "Comece grátis — sem cartão",
         "entitlements": {
           "features": {
@@ -3915,6 +3374,7 @@
         }
       },
       {
+        "currency": "BRL",
         "description": "Para salões em crescimento",
         "entitlements": {
           "features": {
@@ -3947,6 +3407,7 @@
         }
       },
       {
+        "currency": "BRL",
         "description": "Para negócios multi-unidades",
         "entitlements": {
           "features": {
@@ -3979,7 +3440,7 @@
       }
     ]
   },
-  "contractHash": "dc92dd4d9e0bc3e06db242d7374fae45f1c50c771daea143b9f19074074c1f84",
+  "contractHash": "c0d6d5d8fbd3397b9e9ba3089791391255b65afa9e4724872d5f1ad66bda74b8",
   "id": "beauty-saas",
   "limitDeclarations": [
     {
