@@ -2907,6 +2907,79 @@
       },
       {
         "category": "Data",
+        "description": "Updates fields on an EXISTING record (add an email, fix a phone, change a name…). Use the record id already known from this conversation or from a search. Only send the fields being changed. The user confirms before anything is written.",
+        "execution": {
+          "entity": "*",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "data.update-record",
+        "mode": "persist",
+        "name": "updateRecord",
+        "parameters": {
+          "properties": {
+            "entity": {
+              "description": "Which entity the record belongs to",
+              "enum": [
+                "location",
+                "person:customer",
+                "entrada-da-lista-de-espera",
+                "serviço",
+                "categoria-de-serviço",
+                "local-de-atendimento",
+                "grupo-de-locais",
+                "contato",
+                "fornecedor",
+                "parceria",
+                "equipamento",
+                "pacote-de-serviços",
+                "tabela-de-preços",
+                "variação-de-preço",
+                "agenda:holidays",
+                "agenda:cancellation-reasons",
+                "agenda:confirmation-channels",
+                "agenda:schedule-rules",
+                "financial:payment-methods",
+                "financial:chart-of-accounts",
+                "financial:cost-centers",
+                "financial:bank-accounts",
+                "financial:commission-rules",
+                "financial:price-tables",
+                "financial:price-variations",
+                "inventory:suppliers",
+                "inventory:product-categories",
+                "inventory:stock-locations",
+                "crm:stages",
+                "crm:lead-sources",
+                "crm:tags",
+                "marketing:origins",
+                "custom_forms:form-categories",
+                "custom_forms:service-default-forms",
+                "tasks:task-labels",
+                "inventory:products"
+              ],
+              "type": "string"
+            },
+            "id": {
+              "description": "Id of the record to update",
+              "type": "string"
+            },
+            "values": {
+              "description": "Only the fields to change, e.g. {\"email\":\"…\"}",
+              "type": "object"
+            }
+          },
+          "required": [
+            "entity",
+            "id",
+            "values"
+          ],
+          "type": "object"
+        },
+        "requiresConfirmation": false
+      },
+      {
+        "category": "Data",
         "description": "Searches or lists records of ONE entity and returns matching rows with their fields. Use `search` for names/text and `filters` for exact field values (e.g. {\"status\":\"open\"}) — never put a status word in search. Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), contato (contatos), fornecedor (fornecedores), parceria (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), tabela-de-preços (tabelas de preços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)), inventory:products (products), beauty:professionals (profissionais).",
         "execution": {
           "entity": "*",
@@ -3701,7 +3774,7 @@
       }
     ]
   },
-  "contractHash": "a0bfb7c2e114be4796fccf805949a17230e1c4f898d9342dcae5fad7774a5264",
+  "contractHash": "b9ce2a2fb715eeda9a5243005d5dc097e480418018a7c50dca27932dd28dabab",
   "id": "beauty-saas",
   "limitDeclarations": [
     {

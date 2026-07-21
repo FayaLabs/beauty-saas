@@ -1,0 +1,18 @@
+[
+  {
+    "name": "update-contact-flow",
+    "user": "cria um contato Doguez da Paraiba 21998831239",
+    "answer": "O contato \"Doguez\" foi criado com o telefone \"21998831239\". Se precisar de mais alguma coisa, é só avisar!",
+    "tools": [
+      "createRecord"
+    ]
+  },
+  {
+    "name": "update-contact-email",
+    "user": "coloca o email dele tambem dog@ez.com",
+    "answer": "O email \"dog@ez.com\" foi adicionado ao contato \"Doguez\". Se precisar de mais alguma coisa, é só avisar!",
+    "tools": [
+      "updateRecord"
+    ]
+  }
+]

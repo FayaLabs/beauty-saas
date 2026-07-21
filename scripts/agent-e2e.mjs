@@ -235,10 +235,11 @@ try {
 
   // ── scenario battery ─────────────────────────────────────────────────────
   const scenarios = JSON.parse(readFileSync(resolve(APP_DIR, 'scripts', 'agent-e2e-scenarios.json'), 'utf8'))
-  const only = process.argv.includes('--scenario') ? process.argv[process.argv.indexOf('--scenario') + 1] : null
+  const onlyArg = process.argv.includes('--scenario') ? process.argv[process.argv.indexOf('--scenario') + 1] : null
+  const only = onlyArg ? new Set(onlyArg.split(',')) : null
   const results = []
   for (const sc of scenarios) {
-    if (only && sc.name !== only) continue
+    if (only && !only.has(sc.name)) continue
     if (sc.newConversation) conversationId = null
     console.log(`\n━━ [${sc.name}] USER: ${sc.user}`)
     try {

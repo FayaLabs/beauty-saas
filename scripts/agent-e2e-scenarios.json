@@ -89,5 +89,14 @@
     "name": "create-product",
     "newConversation": true,
     "user": "cria um produto chamado Preenchedores 2ml, preco 120 reais"
+  },
+  {
+    "name": "update-contact-flow",
+    "newConversation": true,
+    "user": "cria um contato Doguez da Paraiba 21998831239"
+  },
+  {
+    "name": "update-contact-email",
+    "user": "coloca o email dele tambem dog@ez.com"
   }
 ]
