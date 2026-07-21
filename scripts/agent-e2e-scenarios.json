@@ -84,5 +84,10 @@
   {
     "name": "navigation",
     "user": "onde eu configuro as formas de pagamento?"
+  },
+  {
+    "name": "create-product",
+    "newConversation": true,
+    "user": "cria um produto chamado Preenchedores 2ml, preco 120 reais"
   }
 ]
