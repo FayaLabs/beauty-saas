@@ -673,4 +673,24 @@ export const beautyAppConfig: FayzAppConfig = {
     systemPrompt:
       'You are the BeautySoft salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance.',
   },
+  agentContract: {
+    // App-owned pool RPCs (supabase/agent-rpcs.sql, applied by scripts/db-apply.mjs).
+    rpcs: [
+      {
+        name: 'agent_beauty_quote_service_price',
+        kind: 'read',
+        description:
+          'Quotes the real price of a service for a date/professional/unit: default price table + active variations (the pricing engine, server-side).',
+      },
+    ],
+    knowledge: {
+      businessRules: [
+        {
+          id: 'pricing-engine',
+          description:
+            'Nunca invente preço de serviço: use agent_beauty_quote_service_price (tabela de preços padrão + variações ativas por serviço/categoria/profissional/unidade).',
+        },
+      ],
+    },
+  },
 }

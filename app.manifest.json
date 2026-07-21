@@ -217,6 +217,14 @@
         "label": "Relatórios de Clientes"
       }
     ],
+    "domainKnowledge": {
+      "businessRules": [
+        {
+          "description": "Nunca invente preço de serviço: use agent_beauty_quote_service_price (tabela de preços padrão + variações ativas por serviço/categoria/profissional/unidade).",
+          "id": "pricing-engine"
+        }
+      ]
+    },
     "entities": [
       {
         "data": {
@@ -2442,6 +2450,25 @@
         "pluginId": "tasks"
       }
     ],
+    "rpcs": [
+      {
+        "audits": true,
+        "description": "Guarded appointment create: agent_guard (role→plan→bookings_month cap), working hours, race-safe conflict check, audited.",
+        "kind": "write",
+        "name": "agent_agenda_create_appointment"
+      },
+      {
+        "audits": true,
+        "description": "Guarded settle: invoices the order via fn_invoice_from_order (installments for credit card) and marks the receivable paid, audited with the acting user.",
+        "kind": "write",
+        "name": "agent_financial_mark_payment_received"
+      },
+      {
+        "description": "Quotes the real price of a service for a date/professional/unit: default price table + active variations (the pricing engine, server-side).",
+        "kind": "read",
+        "name": "agent_beauty_quote_service_price"
+      }
+    ],
     "tools": [
       {
         "category": "Core",
@@ -3395,6 +3422,11 @@
       {
         "category": "Scheduling",
         "description": "Creates a new appointment for a client with a specific professional and service.",
+        "execution": {
+          "kind": "rpc",
+          "plane": "server",
+          "rpc": "agent_agenda_create_appointment"
+        },
         "id": "agenda.create-appointment",
         "limitKey": "bookings_month",
         "mode": "persist",
@@ -3519,6 +3551,55 @@
         "permission": {
           "action": "create",
           "feature": "financial"
+        },
+        "pluginId": "financial",
+        "requiresConfirmation": true
+      },
+      {
+        "category": "Finance",
+        "description": "Marks an order/appointment as paid: invoices it (with installments for credit card, e.g. \"cartão 2x\") and settles the receivable. Resolve the booking or order id via search tools first.",
+        "execution": {
+          "kind": "rpc",
+          "plane": "server",
+          "rpc": "agent_financial_mark_payment_received"
+        },
+        "id": "financial.mark-payment-received",
+        "mode": "persist",
+        "name": "markPaymentReceived",
+        "parameters": {
+          "properties": {
+            "booking_id": {
+              "description": "Appointment id (alternative to order_id)",
+              "type": "string"
+            },
+            "installments": {
+              "description": "Credit-card installments (1-12), e.g. 2 for \"cartão 2x\"",
+              "type": "number"
+            },
+            "method": {
+              "description": "Payment method",
+              "enum": [
+                "cash",
+                "pix",
+                "credit_card",
+                "debit_card",
+                "transfer"
+              ],
+              "type": "string"
+            },
+            "order_id": {
+              "description": "Order id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "method"
+          ],
+          "type": "object"
+        },
+        "permission": {
+          "action": "update",
+          "feature": "financial.receivables"
         },
         "pluginId": "financial",
         "requiresConfirmation": true
@@ -3898,7 +3979,7 @@
       }
     ]
   },
-  "contractHash": "d43d900423344c35376216fd38ab59553de4383b35a8fc5889ed2f1f12919bc9",
+  "contractHash": "dc92dd4d9e0bc3e06db242d7374fae45f1c50c771daea143b9f19074074c1f84",
   "id": "beauty-saas",
   "limitDeclarations": [
     {
