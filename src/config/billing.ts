@@ -8,12 +8,20 @@ export const beautyBilling: BeautyBilling = {
       name: tl('Starter', 'Inicial'),
       description: tl('For independent stylists', 'Para estilistas independentes'),
       features: [
-        tl('Up to 3 staff members', 'Até 3 profissionais'),
-        tl('100 appointments/month', '100 agendamentos/mês'),
+        tl('Up to 2 staff members', 'Até 2 profissionais'),
+        tl('Up to 100 clients', 'Até 100 clientes'),
+        tl('Up to 25 products', 'Até 25 produtos'),
         tl('Basic reports', 'Relatórios básicos'),
         tl('Email support', 'Suporte por e-mail'),
       ],
       prices: { monthly: 29, yearly: 279 },
+      // Freemium base + products cap (25). Premium (Pro+): marketing, advanced
+      // reports and financial reconciliation. 'forms avançado' / blog have no
+      // feature id in this app's permissions.ts, so they are not feature-gated.
+      entitlements: {
+        features: { marketing: false, reports: false, fin_reconciliation: false },
+        limits: { users: 2, locations: 1, clients: 100, bookings_month: 150, products: 25 },
+      },
     },
     {
       id: 'professional',
@@ -29,6 +37,10 @@ export const beautyBilling: BeautyBilling = {
       ],
       prices: { monthly: 79, yearly: 759 },
       popular: true,
+      entitlements: {
+        features: { marketing: true, reports: true, fin_reconciliation: true },
+        limits: { users: 10, locations: 1, clients: -1, bookings_month: -1, products: -1 },
+      },
     },
     {
       id: 'enterprise',
@@ -43,6 +55,10 @@ export const beautyBilling: BeautyBilling = {
         tl('Custom integrations', 'Integrações personalizadas'),
       ],
       prices: { monthly: 199, yearly: 1909 },
+      entitlements: {
+        features: { marketing: true, reports: true, fin_reconciliation: true },
+        limits: { users: -1, locations: -1, clients: -1, bookings_month: -1, products: -1 },
+      },
     },
   ],
 }

@@ -74,6 +74,8 @@ export const clientEntity: EntityDef<BeautyClient> = {
   name: tl('Client', 'Cliente'),
   icon: 'Users',
   layout: 'person',
+  // Plan cap key — central CRUD chokepoint enforces the `clients` limit here.
+  limitKey: 'clients',
   displayField: 'name',
   subtitleField: 'email',
   defaultSort: 'name',

@@ -82,6 +82,16 @@ export interface BeautyBillingPlan {
     yearly: number
   }
   popular?: boolean
+  /**
+   * Structured plan entitlements (feature gates + quantity caps) — the source of
+   * truth the SDK access engine reads. Shape mirrors core's PlanEntitlements
+   * (kept inline to avoid pulling the SDK type into this app-local contract).
+   * `-1` in a limit = unlimited; an absent feature = allowed (plans are additive).
+   */
+  entitlements?: {
+    features?: Record<string, boolean>
+    limits?: Record<string, number>
+  }
 }
 
 export interface BeautyBilling {
