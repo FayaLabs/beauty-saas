@@ -9,6 +9,10 @@ export const staffEntity: EntityDef = {
   name: tl('Staff', 'Profissional'),
   namePlural: tl('Staff', 'Profissionais'),
   icon: 'UserCog',
+  // staff_members is an extension table (no name column) — useless to the
+  // agent's generic reader. The agent sees professionals through the
+  // beauty:professionals read-model (people kind='staff') instead.
+  agentHidden: true,
   layout: 'person',
   displayField: 'name',
   defaultSort: 'name',

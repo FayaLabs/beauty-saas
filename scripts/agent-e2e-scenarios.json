@@ -1,0 +1,88 @@
+[
+  {
+    "name": "who-is-client",
+    "newConversation": true,
+    "user": "quem eh a QA Cliente Um?"
+  },
+  {
+    "name": "who-is-unknown",
+    "user": "quem eh Rogerio Ceni?"
+  },
+  {
+    "name": "services",
+    "user": "quais servicos oferecemos e quanto custam?"
+  },
+  {
+    "name": "team-vs-staff",
+    "user": "quais profissionais atendem aqui?"
+  },
+  {
+    "name": "revenue-week",
+    "newConversation": true,
+    "user": "quanto faturamos essa semana?"
+  },
+  {
+    "name": "revenue-month",
+    "user": "e no mes, quanto ja recebemos de verdade (pago)?"
+  },
+  {
+    "name": "open-receivables",
+    "user": "quais contas a receber estao em aberto?"
+  },
+  {
+    "name": "next-appointment",
+    "newConversation": true,
+    "user": "quando eh o proximo agendamento?"
+  },
+  {
+    "name": "appointments-tomorrow",
+    "user": "quantos atendimentos temos amanha?"
+  },
+  {
+    "name": "busiest-professional",
+    "user": "qual profissional teve mais atendimentos esse mes?"
+  },
+  {
+    "name": "create-client",
+    "newConversation": true,
+    "user": "cria um cliente novo: Tim Bernardes, telefone 21998831231, email tim@bernardes.com"
+  },
+  {
+    "name": "find-created-client",
+    "user": "quem eh Tim Bernardes?"
+  },
+  {
+    "name": "create-duplicate-check",
+    "user": "cadastra a cliente QA Cliente Um de novo, telefone 11911111111"
+  },
+  {
+    "name": "book-appointment",
+    "newConversation": true,
+    "user": "agenda um corte feminino pro Tim Bernardes na proxima segunda as 10h"
+  },
+  {
+    "name": "mark-paid-2x",
+    "user": "marca esse atendimento do Tim como pago no cartao em 2x"
+  },
+  {
+    "name": "avg-ticket",
+    "newConversation": true,
+    "user": "qual o ticket medio dos nossos agendamentos?"
+  },
+  {
+    "name": "count-inactive-clients",
+    "user": "quantos clientes inativos temos?"
+  },
+  {
+    "name": "invoice-lookup",
+    "user": "qual o saldo do recibo REC-00001?"
+  },
+  {
+    "name": "cancel-question",
+    "user": "qual nossa politica pra cancelamentos?"
+  },
+  {
+    "name": "navigation",
+    "user": "onde eu configuro as formas de pagamento?"
+  }
+]

@@ -2486,6 +2486,51 @@
         "key": "tasks:task-labels",
         "label": "Task Label",
         "labelPlural": "Task Labels"
+      },
+      {
+        "data": {
+          "filters": {
+            "kind": "staff"
+          },
+          "searchColumns": [
+            "name",
+            "email"
+          ],
+          "table": "people",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Nome",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "email",
+            "label": "Email",
+            "type": "text"
+          },
+          {
+            "key": "phone",
+            "label": "Telefone",
+            "type": "text"
+          },
+          {
+            "key": "isActive",
+            "label": "Ativo",
+            "type": "boolean"
+          },
+          {
+            "key": "createdAt",
+            "label": "Criado em",
+            "type": "text"
+          }
+        ],
+        "key": "beauty:professionals",
+        "label": "Profissional",
+        "labelPlural": "Profissionais"
       }
     ],
     "executionPlane": "client",
@@ -2757,7 +2802,6 @@
                 "categoria-de-serviço",
                 "local-de-atendimento",
                 "grupo-de-locais",
-                "person:staff",
                 "contato",
                 "fornecedor",
                 "parceria",
@@ -2807,7 +2851,7 @@
       },
       {
         "category": "Data",
-        "description": "Searches or lists records of ONE entity and returns matching rows with their fields. Use for questions about specific records or small lists. Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:staff (profissionais), contato (contatos), fornecedor (fornecedores), parceria (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), serviço-do-pacote (serviços do pacote), produto-padrão-do-serviço (produtos padrão dos serviços), tabela-de-preços (tabelas de preços), preço-de-serviço (preços de serviços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)).",
+        "description": "Searches or lists records of ONE entity and returns matching rows with their fields. Use `search` for names/text and `filters` for exact field values (e.g. {\"status\":\"open\"}) — never put a status word in search. Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), contato (contatos), fornecedor (fornecedores), parceria (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), serviço-do-pacote (serviços do pacote), produto-padrão-do-serviço (produtos padrão dos serviços), tabela-de-preços (tabelas de preços), preço-de-serviço (preços de serviços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)), beauty:professionals (profissionais).",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -2818,6 +2862,14 @@
         "name": "searchRecords",
         "parameters": {
           "properties": {
+            "direction": {
+              "description": "Sort direction",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            },
             "entity": {
               "description": "Which entity to search",
               "enum": [
@@ -2828,7 +2880,6 @@
                 "categoria-de-serviço",
                 "local-de-atendimento",
                 "grupo-de-locais",
-                "person:staff",
                 "contato",
                 "fornecedor",
                 "parceria",
@@ -2862,8 +2913,17 @@
                 "tasks:task-labels",
                 "agenda:appointments",
                 "financial:invoices",
-                "financial:movements"
+                "financial:movements",
+                "beauty:professionals"
               ],
+              "type": "string"
+            },
+            "filters": {
+              "description": "Optional exact-value filters {field: value}, e.g. {\"status\":\"open\"}.",
+              "type": "object"
+            },
+            "orderBy": {
+              "description": "Field to sort by (e.g. startsAt for \"next/upcoming\" questions).",
               "type": "string"
             },
             "search": {
@@ -2879,7 +2939,7 @@
       },
       {
         "category": "Data",
-        "description": "Aggregates over ONE entity: count, sum or avg of a field, with optional date range, equality filters and a group-by. Use for analytical questions (revenue this week, new clients this month, busiest professional). Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:staff (profissionais), contato (contatos), fornecedor (fornecedores), parceria (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), serviço-do-pacote (serviços do pacote), produto-padrão-do-serviço (produtos padrão dos serviços), tabela-de-preços (tabelas de preços), preço-de-serviço (preços de serviços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)).",
+        "description": "Aggregates over ONE entity: count, sum or avg of a field, with optional date range, equality filters and a group-by. Use for analytical questions (revenue this week, new clients this month, busiest professional). Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), contato (contatos), fornecedor (fornecedores), parceria (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), serviço-do-pacote (serviços do pacote), produto-padrão-do-serviço (produtos padrão dos serviços), tabela-de-preços (tabelas de preços), preço-de-serviço (preços de serviços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)), beauty:professionals (profissionais).",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -2904,7 +2964,6 @@
                 "categoria-de-serviço",
                 "local-de-atendimento",
                 "grupo-de-locais",
-                "person:staff",
                 "contato",
                 "fornecedor",
                 "parceria",
@@ -2938,7 +2997,8 @@
                 "tasks:task-labels",
                 "agenda:appointments",
                 "financial:invoices",
-                "financial:movements"
+                "financial:movements",
+                "beauty:professionals"
               ],
               "type": "string"
             },
@@ -3059,7 +3119,7 @@
               "type": "string"
             },
             "starts_at": {
-              "description": "Start datetime, ISO 8601 with timezone (e.g. 2026-07-27T13:00:00Z)",
+              "description": "LOCAL date-time of the business, NO timezone suffix — e.g. '2026-07-27T10:00' for 10h. The system applies the tenant timezone.",
               "type": "string"
             }
           },
@@ -3589,7 +3649,7 @@
       }
     ]
   },
-  "contractHash": "6963425d64545f4d697a210771970fe60c32662d24cde0e083e47c2bcb270cba",
+  "contractHash": "e4a5639144be13e95288b62b6659a531d4bbcf75e9008b41d2100639f5b55e96",
   "id": "beauty-saas",
   "limitDeclarations": [
     {

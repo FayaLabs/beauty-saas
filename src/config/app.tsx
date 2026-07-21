@@ -674,6 +674,32 @@ export const beautyAppConfig: FayzAppConfig = {
       'You are the BeautySoft salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance.',
   },
   agentContract: {
+    // Agent read-models the CRUD entities can't serve: staff_members is an
+    // EXTENSION table (no name column) — professionals for the agent are
+    // people rows with kind='staff'.
+    queryEntities: [
+      {
+        key: 'beauty:professionals',
+        entity: {
+          name: tl('Professional', 'Profissional'),
+          namePlural: tl('Professionals', 'Profissionais'),
+          icon: 'Users',
+          fields: [
+            { key: 'name', label: 'Nome', type: 'text', required: true, searchable: true },
+            { key: 'email', label: 'Email', type: 'text' },
+            { key: 'phone', label: 'Telefone', type: 'text' },
+            { key: 'isActive', label: 'Ativo', type: 'boolean' },
+            { key: 'createdAt', label: 'Criado em', type: 'text' },
+          ],
+          data: {
+            table: 'people',
+            tenantScoped: true,
+            filters: { kind: 'staff' },
+            searchColumns: ['name', 'email'],
+          },
+        },
+      },
+    ],
     // App-owned pool RPCs (supabase/agent-rpcs.sql, applied by scripts/db-apply.mjs).
     rpcs: [
       {
