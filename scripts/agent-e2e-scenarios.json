@@ -98,5 +98,10 @@
   {
     "name": "update-contact-email",
     "user": "coloca o email dele tambem dog@ez.com"
+  },
+  {
+    "name": "create-supplier",
+    "newConversation": true,
+    "user": "cria um fornecedor chamado Roland"
   }
 ]
