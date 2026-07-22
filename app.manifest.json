@@ -2597,6 +2597,132 @@
         "key": "beauty:professionals",
         "label": "Profissional",
         "labelPlural": "Profissionais"
+      },
+      {
+        "data": {
+          "searchColumns": [
+            "label",
+            "street",
+            "district",
+            "city",
+            "postal_code",
+            "recipient"
+          ],
+          "table": "addresses",
+          "tenantIdColumn": "tenant_id",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "hint": "Id of the person (client, contact, supplier, staff…) this address belongs to.",
+            "key": "owner_id",
+            "label": "Owner record id",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "hint": "Defaults to 'person'. Only set it for an address that belongs to a business location or to the tenant itself.",
+            "key": "owner_type",
+            "label": "Owner kind",
+            "options": [
+              "person",
+              "location",
+              "tenant"
+            ],
+            "type": "select"
+          },
+          {
+            "hint": "Casa, Trabalho, Depósito…",
+            "key": "label",
+            "label": "Label",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "hint": "Defaults to 'both'.",
+            "key": "kind",
+            "label": "Use",
+            "options": [
+              "both",
+              "shipping",
+              "billing"
+            ],
+            "type": "select"
+          },
+          {
+            "hint": "CEP.",
+            "key": "postal_code",
+            "label": "Postal code",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "street",
+            "label": "Street",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "number",
+            "label": "Number",
+            "type": "text"
+          },
+          {
+            "key": "complement",
+            "label": "Complement",
+            "type": "text"
+          },
+          {
+            "hint": "Bairro.",
+            "key": "district",
+            "label": "District",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "city",
+            "label": "City",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "hint": "Two-letter UF.",
+            "key": "state",
+            "label": "State",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "hint": "Defaults to 'BR'.",
+            "key": "country",
+            "label": "Country",
+            "type": "text"
+          },
+          {
+            "hint": "Who receives, if not the owner.",
+            "key": "recipient",
+            "label": "Recipient",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "phone",
+            "label": "Phone",
+            "type": "text"
+          },
+          {
+            "hint": "Only one default per owner and kind — clear the previous one before setting this.",
+            "key": "is_default",
+            "label": "Default address",
+            "type": "boolean"
+          }
+        ],
+        "key": "address",
+        "label": "Address",
+        "labelPlural": "Addresses"
       }
     ],
     "executionPlane": "client",
@@ -2823,7 +2949,7 @@
       },
       {
         "category": "Data",
-        "description": "Global search (like the app command center): looks a name/text up across ALL record types the user may see at once and returns grouped matches. Use this FIRST whenever you do not know what kind of record a name refers to (\"quem é X?\", \"o que é Y?\") — then drill down with searchRecords.",
+        "description": "Global search (like the app command center): looks a name/text up across ALL record types the user may see at once and returns grouped matches. Use this FIRST whenever you do not know what kind of record a name refers to (\"quem é X?\", \"o que é Y?\") — then drill down with searchRecords. It matches TEXT INSIDE each record, so records attached to a person are never returned by that person's name — reaching them takes a second searchRecords call filtered by owner_id. Records that attach to another record: `address` holds the street address of a PERSON (client, contact, supplier, staff). A person record has NO street/city/postal_code fields of its own. To read where someone lives, search `address` with filters {\"owner_id\": <the person's id>} — a person with no address field is not a person without an address. To record one, create an `address` with owner_id set to the person's id. Never write an address into a notes field.",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -2847,7 +2973,7 @@
       },
       {
         "category": "Data",
-        "description": "Creates ONE new record of an entity (client, service, supplier, …). ALWAYS search first to avoid duplicates. Field keys and required fields come from the entity — on a field error the response lists the valid fields; fix and retry. The user will confirm before anything is written.",
+        "description": "Creates ONE new record of an entity (client, service, supplier, …). ALWAYS search first to avoid duplicates. Field keys and required fields come from the entity — on a field error the response lists the valid fields; fix and retry. The user will confirm before anything is written. Records that attach to another record: `address` holds the street address of a PERSON (client, contact, supplier, staff). A person record has NO street/city/postal_code fields of its own. To read where someone lives, search `address` with filters {\"owner_id\": <the person's id>} — a person with no address field is not a person without an address. To record one, create an `address` with owner_id set to the person's id. Never write an address into a notes field.",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -2896,7 +3022,8 @@
                 "custom_forms:form-categories",
                 "custom_forms:service-default-forms",
                 "tasks:task-labels",
-                "inventory:products"
+                "inventory:products",
+                "address"
               ],
               "type": "string"
             },
@@ -2964,7 +3091,8 @@
                 "custom_forms:form-categories",
                 "custom_forms:service-default-forms",
                 "tasks:task-labels",
-                "inventory:products"
+                "inventory:products",
+                "address"
               ],
               "type": "string"
             },
@@ -2988,7 +3116,7 @@
       },
       {
         "category": "Data",
-        "description": "Searches or lists records of ONE entity and returns matching rows with their fields. Use `search` for names/text and `filters` for exact field values (e.g. {\"status\":\"open\"}) — never put a status word in search. Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:contact (contatos), person:supplier (fornecedores), person:partner (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), tabela-de-preços (tabelas de preços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)), inventory:products (products), beauty:professionals (profissionais).",
+        "description": "Searches or lists records of ONE entity and returns matching rows with their fields. Use `search` for names/text and `filters` for exact field values (e.g. {\"status\":\"open\"}) — never put a status word in search. Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:contact (contatos), person:supplier (fornecedores), person:partner (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), tabela-de-preços (tabelas de preços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)), inventory:products (products), beauty:professionals (profissionais), address (addresses). Records that attach to another record: `address` holds the street address of a PERSON (client, contact, supplier, staff). A person record has NO street/city/postal_code fields of its own. To read where someone lives, search `address` with filters {\"owner_id\": <the person's id>} — a person with no address field is not a person without an address. To record one, create an `address` with owner_id set to the person's id. Never write an address into a notes field.",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -3049,7 +3177,8 @@
                 "financial:invoices",
                 "financial:movements",
                 "inventory:products",
-                "beauty:professionals"
+                "beauty:professionals",
+                "address"
               ],
               "type": "string"
             },
@@ -3074,7 +3203,7 @@
       },
       {
         "category": "Data",
-        "description": "Aggregates over ONE entity: count, sum or avg of a field, with optional date range, equality filters and a group-by. Use for analytical questions (revenue this week, new clients this month, busiest professional). Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:contact (contatos), person:supplier (fornecedores), person:partner (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), tabela-de-preços (tabelas de preços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)), inventory:products (products), beauty:professionals (profissionais).",
+        "description": "Aggregates over ONE entity: count, sum or avg of a field, with optional date range, equality filters and a group-by. Use for analytical questions (revenue this week, new clients this month, busiest professional). Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:contact (contatos), person:supplier (fornecedores), person:partner (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), tabela-de-preços (tabelas de preços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)), inventory:products (products), beauty:professionals (profissionais), address (addresses).",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -3131,7 +3260,8 @@
                 "financial:invoices",
                 "financial:movements",
                 "inventory:products",
-                "beauty:professionals"
+                "beauty:professionals",
+                "address"
               ],
               "type": "string"
             },
@@ -3782,7 +3912,7 @@
       }
     ]
   },
-  "contractHash": "41df3526afd0fff885824e29b9b645ea98c433b521e737c65dd228a8e3c70b22",
+  "contractHash": "bcc90c573d6ca2f26139f1a509172539f47228b6ed63f708a89c92ae0d1319db",
   "id": "beauty-saas",
   "limitDeclarations": [
     {
