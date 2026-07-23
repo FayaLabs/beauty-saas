@@ -68,6 +68,9 @@ export const servicePackageEntity: EntityDef<ServicePackage> = {
 }
 
 export const servicePackageItemEntity: EntityDef = {
+  // Join/config row — meaningless as a conversational target; the agent
+  // reaches this data via the pricing quote RPC and service reads.
+  agentHidden: true,
   name: tl('Package Service', 'Serviço do Pacote'),
   namePlural: tl('Package Services', 'Serviços do Pacote'),
   icon: 'ListChecks',
@@ -123,6 +126,9 @@ export const servicePriceTableEntity: EntityDef = {
 }
 
 export const servicePriceTableItemEntity: EntityDef = {
+  // Join/config row — meaningless as a conversational target; the agent
+  // reaches this data via the pricing quote RPC and service reads.
+  agentHidden: true,
   name: tl('Service Price', 'Preço de Serviço'),
   namePlural: tl('Service Prices', 'Preços de Serviços'),
   icon: 'CircleDollarSign',
@@ -286,6 +292,9 @@ export const servicePriceVariationEntity: EntityDef = {
 }
 
 export const serviceDefaultProductEntity: EntityDef = {
+  // Join/config row — meaningless as a conversational target; the agent
+  // reaches this data via the pricing quote RPC and service reads.
+  agentHidden: true,
   name: tl('Service Default Product', 'Produto Padrão do Serviço'),
   namePlural: tl('Service Default Products', 'Produtos Padrão dos Serviços'),
   icon: 'Boxes',
@@ -334,6 +343,9 @@ export const serviceDefaultProductEntity: EntityDef = {
 }
 
 export const serviceDefaultTemplateEntity: EntityDef = {
+  // Join/config row — meaningless as a conversational target; the agent
+  // reaches this data via the pricing quote RPC and service reads.
+  agentHidden: true,
   name: tl('Service Default Form/Contract', 'Formulário/Contrato Padrão do Serviço'),
   namePlural: tl('Service Default Forms/Contracts', 'Formulários/Contratos Padrão dos Serviços'),
   icon: 'FileCheck2',

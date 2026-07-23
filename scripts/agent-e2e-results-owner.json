@@ -1,0 +1,218 @@
+[
+  {
+    "name": "who-is-client",
+    "user": "quem eh a QA Cliente Um?",
+    "answer": "QA Cliente Um é um cliente ativo registrado com o e-mail qa.cliente1@fayalabs.com. Ele possui duas consultas agendadas para:\n\n1. **Dia 27 de julho de 2026, às 10:00**\n   - Profissional: QA Cabeleireira Marina\n   - Status: Agendado\n\n2. **Dia 23 de julho de 2026, às 10:00**\n   - Profissional: QA Cabeleireira Marina\n   - Status: Agendado\n\nSe precisar de mais informações ou agendamentos adicionais, é só avisar!",
+    "tools": [
+      "findAnything"
+    ]
+  },
+  {
+    "name": "who-is-unknown",
+    "user": "quem eh Rogerio Ceni?",
+    "answer": "Não encontrei nenhum registro relacionado a Rogerio Ceni. Se precisar de mais informações ou ajuda com outra consulta, estou à disposição!",
+    "tools": [
+      "findAnything"
+    ]
+  },
+  {
+    "name": "services",
+    "user": "quais servicos oferecemos e quanto custam?",
+    "answer": "Oferecemos os seguintes serviços:\n\n1. **QA Corte Feminino**\n   - Preço: R$ 80\n   - Duração: 45 minutos\n\n2. **QA Manicure**\n   - Preço: R$ 50\n   - Duração: 40 minutos\n\nAlém destes, temos outros serviços disponíveis, mas que não possuem preços definidos no momento:\n\n3. **QA Serviço 1784599574859 EDIT**\n   - Duração: 30 minutos\n\n4. **QA Serv 1784598536439**\n   - Duração: 30 minutos\n\nSe precisar de mais informações sobre algum serviço específico, é só avisar!",
+    "tools": [
+      "searchRecords"
+    ]
+  },
+  {
+    "name": "team-vs-staff",
+    "user": "quais profissionais atendem aqui?",
+    "answer": "Os profissionais que atendem aqui são:\n\n1. **QA Cabeleireira Marina**\n   - E-mail: qa.marina@fayalabs.com\n\n2. **QA Barbeiro Carlos**\n   - E-mail: qa.carlos@fayalabs.com\n\nSe precisar de mais informações sobre algum dos profissionais, é só avisar!",
+    "tools": [
+      "searchRecords"
+    ]
+  },
+  {
+    "name": "revenue-week",
+    "user": "quanto faturamos essa semana?",
+    "answer": "Essa semana, o faturamento total foi de R$ 80,00.",
+    "tools": [
+      "queryData",
+      "queryData"
+    ]
+  },
+  {
+    "name": "revenue-month",
+    "user": "e no mes, quanto ja recebemos de verdade (pago)?",
+    "answer": "Até agora, neste mês, recebemos R$ 80,00 de verdade (pagos).",
+    "tools": [
+      "queryData"
+    ]
+  },
+  {
+    "name": "open-receivables",
+    "user": "quais contas a receber estao em aberto?",
+    "answer": "Não há contas a receber em aberto no momento.",
+    "tools": [
+      "queryData"
+    ]
+  },
+  {
+    "name": "next-appointment",
+    "user": "quando eh o proximo agendamento?",
+    "answer": "O próximo agendamento será amanhã, dia 23 de julho de 2026, às 10h00 (horário de Brasília). O cliente é **QA Cliente Um** e o serviço está programado para durar 45 minutos.",
+    "tools": [
+      "queryData",
+      "searchRecords"
+    ]
+  },
+  {
+    "name": "appointments-tomorrow",
+    "user": "quantos atendimentos temos amanha?",
+    "answer": "Amanhã teremos 1 atendimento agendado.",
+    "tools": [
+      "queryData"
+    ]
+  },
+  {
+    "name": "busiest-professional",
+    "user": "qual profissional teve mais atendimentos esse mes?",
+    "answer": "O profissional com mais atendimentos este mês foi **QA Cabeleireira Marina**, com um total de 2 atendimentos.",
+    "tools": [
+      "queryData"
+    ]
+  },
+  {
+    "name": "create-client",
+    "user": "cria um cliente novo: Tim Bernardes, telefone 21998831231, email tim@bernardes.com",
+    "answer": "O cliente \"Tim Bernardes\" já existe em nosso sistema. Se você deseja atualizar as informações desse cliente, eu posso fazer isso. Por favor, informe quais dados você gostaria de alterar.",
+    "tools": [
+      "createRecord"
+    ]
+  },
+  {
+    "name": "find-created-client",
+    "user": "quem eh Tim Bernardes?",
+    "answer": "Tim Bernardes é um cliente ativo em nosso sistema, com as seguintes informações:\n\n- **Nome:** Tim Bernardes\n- **Telefone:** 21998831231\n- **Email:** tim@bernardes.com\n- **Visitas:** 0\n- **Total Gasto:** R$ 0\n\nEle foi cadastrado em 21 de julho de 2026. Se precisar de mais informações ou se quiser realizar alguma ação relacionada a ele, é só avisar!",
+    "tools": [
+      "searchRecords"
+    ]
+  },
+  {
+    "name": "create-duplicate-check",
+    "user": "cadastra a cliente QA Cliente Um de novo, telefone 11911111111",
+    "answer": "Para cadastrar a cliente \"QA Cliente Um\", preciso do endereço de e-mail dela. Por favor, informe o e-mail que você deseja usar.",
+    "tools": [
+      "createRecord"
+    ]
+  },
+  {
+    "name": "book-appointment",
+    "user": "agenda um corte feminino pro Tim Bernardes na proxima segunda as 10h",
+    "answer": "Parece que não há nenhum profissional disponível nesse horário. Vamos tentar agendar em um horário diferente. Você gostaria de sugerir outro horário ou posso ajudá-lo a encontrar um horário disponível?",
+    "tools": [
+      "findAnything",
+      "searchRecords",
+      "createAppointment"
+    ]
+  },
+  {
+    "name": "mark-paid-2x",
+    "user": "marca esse atendimento do Tim como pago no cartao em 2x",
+    "answer": "O atendimento do Tim Bernardes foi marcado como pago no cartão em 2x. O valor total pago foi de R$ 80. Se precisar de mais alguma coisa, estou à disposição!",
+    "tools": [
+      "searchRecords",
+      "markPaymentReceived"
+    ]
+  },
+  {
+    "name": "avg-ticket",
+    "user": "qual o ticket medio dos nossos agendamentos?",
+    "answer": "O ticket médio dos nossos agendamentos é de R$ 53,33.",
+    "tools": [
+      "queryData",
+      "queryData"
+    ]
+  },
+  {
+    "name": "count-inactive-clients",
+    "user": "quantos clientes inativos temos?",
+    "answer": "Atualmente, não temos clientes inativos.",
+    "tools": [
+      "queryData",
+      "queryData"
+    ]
+  },
+  {
+    "name": "invoice-lookup",
+    "user": "qual o saldo do recibo REC-00001?",
+    "answer": "O saldo do recibo REC-00001 é de R$ 0,00, pois já foi totalmente pago.",
+    "tools": [
+      "searchRecords"
+    ]
+  },
+  {
+    "name": "cancel-question",
+    "user": "qual nossa politica pra cancelamentos?",
+    "answer": "Atualmente, não temos registros de políticas para cancelamentos.",
+    "tools": [
+      "searchRecords"
+    ]
+  },
+  {
+    "name": "navigation",
+    "user": "onde eu configuro as formas de pagamento?",
+    "answer": "Você pode configurar as formas de pagamento na seção **Financeiro**.",
+    "tools": [
+      "navigateTo"
+    ]
+  },
+  {
+    "name": "create-product",
+    "user": "cria um produto chamado Preenchedores 2ml, preco 120 reais",
+    "answer": "O produto \"Preenchedores 2ml\" já existe com o preço de 120 reais. Se precisar de alguma alteração, por favor, me avise.",
+    "tools": [
+      "searchRecords"
+    ]
+  },
+  {
+    "name": "update-contact-flow",
+    "user": "cria um contato Doguez da Paraiba 21998831239",
+    "answer": "Já existe um contato chamado \"Doguez\" com o telefone \"21998831239\". Se você deseja atualizar as informações desse contato, posso ajudar. Por favor, me diga o que você gostaria de mudar.",
+    "tools": [
+      "createRecord"
+    ]
+  },
+  {
+    "name": "update-contact-email",
+    "user": "coloca o email dele tambem dog@ez.com",
+    "answer": "O email \"dog@ez.com\" foi adicionado com sucesso ao contato \"Doguez\". Se precisar de mais alguma coisa, é só avisar!",
+    "tools": [
+      "updateRecord"
+    ]
+  },
+  {
+    "name": "create-supplier",
+    "user": "cria um fornecedor chamado Roland",
+    "answer": "O fornecedor chamado \"Roland\" já existe. Se você deseja atualizar ou adicionar informações a esse registro, posso ajudá-lo. Quer fazer alguma alteração?",
+    "tools": [
+      "createRecord"
+    ]
+  },
+  {
+    "name": "add-address",
+    "user": "adiciona o endereco rua dos passaros 1200 recreio dos bandeirantes 22785215 rio de janeiro RJ pro contato Doguez",
+    "answer": "O endereço **Rua dos Passarros, 1200, Recreio dos Bandeirantes, Rio de Janeiro - RJ, 22785-215** foi adicionado com sucesso ao contato **Doguez**.",
+    "tools": [
+      "findAnything",
+      "createRecord"
+    ]
+  },
+  {
+    "name": "find-address",
+    "user": "qual o endereco do Doguez?",
+    "answer": "O endereço do Doguez é **Rua dos Passarros, 1200, Rio de Janeiro - RJ, 22785-215**.",
+    "tools": [
+      "searchRecords"
+    ]
+  }
+]

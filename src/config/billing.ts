@@ -4,9 +4,12 @@ import type { BeautyBilling } from '../types/sdk-contract'
 export const beautyBilling: BeautyBilling = {
   plans: [
     {
-      id: 'starter',
-      name: tl('Starter', 'Inicial'),
-      description: tl('For independent stylists', 'Para estilistas independentes'),
+      // Freemium base tier. Ids follow the pool's `tenants.plan` vocabulary
+      // (free/pro/business) — the old starter/professional/enterprise ids never
+      // matched a pool row, so `Plan` resolved null and plan gating failed OPEN.
+      id: 'free',
+      name: tl('Free', 'Grátis'),
+      description: tl('Get started — no card required', 'Comece grátis — sem cartão'),
       features: [
         tl('Up to 2 staff members', 'Até 2 profissionais'),
         tl('Up to 100 clients', 'Até 100 clientes'),
@@ -14,7 +17,8 @@ export const beautyBilling: BeautyBilling = {
         tl('Basic reports', 'Relatórios básicos'),
         tl('Email support', 'Suporte por e-mail'),
       ],
-      prices: { monthly: 29, yearly: 279 },
+      prices: { monthly: 0, yearly: 0 },
+      currency: 'BRL',
       // Freemium base + products cap (25). Premium (Pro+): marketing, advanced
       // reports and financial reconciliation. 'forms avançado' / blog have no
       // feature id in this app's permissions.ts, so they are not feature-gated.
@@ -24,7 +28,7 @@ export const beautyBilling: BeautyBilling = {
       },
     },
     {
-      id: 'professional',
+      id: 'pro',
       name: tl('Professional', 'Profissional'),
       description: tl('For growing salons', 'Para salões em crescimento'),
       features: [
@@ -36,6 +40,7 @@ export const beautyBilling: BeautyBilling = {
         tl('Priority support', 'Suporte prioritário'),
       ],
       prices: { monthly: 79, yearly: 759 },
+      currency: 'BRL',
       popular: true,
       entitlements: {
         features: { marketing: true, reports: true, fin_reconciliation: true },
@@ -43,7 +48,7 @@ export const beautyBilling: BeautyBilling = {
       },
     },
     {
-      id: 'enterprise',
+      id: 'business',
       name: tl('Enterprise', 'Empresarial'),
       description: tl('For multi-location businesses', 'Para negócios multi-unidades'),
       features: [
@@ -55,6 +60,7 @@ export const beautyBilling: BeautyBilling = {
         tl('Custom integrations', 'Integrações personalizadas'),
       ],
       prices: { monthly: 199, yearly: 1909 },
+      currency: 'BRL',
       entitlements: {
         features: { marketing: true, reports: true, fin_reconciliation: true },
         limits: { users: -1, locations: -1, clients: -1, bookings_month: -1, products: -1 },

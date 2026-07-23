@@ -81,6 +81,8 @@ export interface BeautyBillingPlan {
     monthly: number
     yearly: number
   }
+  /** ISO 4217 (ex.: 'BRL') — sem isso o normalizador assume USD. */
+  currency?: string
   popular?: boolean
   /**
    * Structured plan entitlements (feature gates + quantity caps) — the source of

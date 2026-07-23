@@ -73,6 +73,14 @@ if (!pluginsOnly) {
     console.log('▸ saas_core seed (plans + RBAC catalog + roles)')
     await run(readFileSync(seed, 'utf8'), 'supabase/seed-saas-core.sql')
   }
+
+  // App-owned agent RPCs (vertical business rules the server-plane executor
+  // calls — e.g. the pricing quote). Idempotent CREATE OR REPLACE.
+  const agentRpcs = resolve(CWD, 'supabase', 'agent-rpcs.sql')
+  if (existsSync(agentRpcs)) {
+    console.log('▸ agent RPCs (app-owned)')
+    await run(readFileSync(agentRpcs, 'utf8'), 'supabase/agent-rpcs.sql')
+  }
 }
 
 for (const p of ENABLED_PLUGINS) {

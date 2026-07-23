@@ -673,4 +673,50 @@ export const beautyAppConfig: FayzAppConfig = {
     systemPrompt:
       'You are the BeautySoft salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance.',
   },
+  agentContract: {
+    // Agent read-models the CRUD entities can't serve: staff_members is an
+    // EXTENSION table (no name column) — professionals for the agent are
+    // people rows with kind='staff'.
+    queryEntities: [
+      {
+        key: 'beauty:professionals',
+        entity: {
+          name: tl('Professional', 'Profissional'),
+          namePlural: tl('Professionals', 'Profissionais'),
+          icon: 'Users',
+          fields: [
+            { key: 'name', label: 'Nome', type: 'text', required: true, searchable: true },
+            { key: 'email', label: 'Email', type: 'text' },
+            { key: 'phone', label: 'Telefone', type: 'text' },
+            { key: 'isActive', label: 'Ativo', type: 'boolean' },
+            { key: 'createdAt', label: 'Criado em', type: 'text' },
+          ],
+          data: {
+            table: 'people',
+            tenantScoped: true,
+            filters: { kind: 'staff' },
+            searchColumns: ['name', 'email'],
+          },
+        },
+      },
+    ],
+    // App-owned pool RPCs (supabase/agent-rpcs.sql, applied by scripts/db-apply.mjs).
+    rpcs: [
+      {
+        name: 'agent_beauty_quote_service_price',
+        kind: 'read',
+        description:
+          'Quotes the real price of a service for a date/professional/unit: default price table + active variations (the pricing engine, server-side).',
+      },
+    ],
+    knowledge: {
+      businessRules: [
+        {
+          id: 'pricing-engine',
+          description:
+            'Nunca invente preço de serviço: use agent_beauty_quote_service_price (tabela de preços padrão + variações ativas por serviço/categoria/profissional/unidade).',
+        },
+      ],
+    },
+  },
 }

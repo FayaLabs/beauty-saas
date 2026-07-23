@@ -9,6 +9,10 @@ export const staffEntity: EntityDef = {
   name: tl('Staff', 'Profissional'),
   namePlural: tl('Staff', 'Profissionais'),
   icon: 'UserCog',
+  // staff_members is an extension table (no name column) — useless to the
+  // agent's generic reader. The agent sees professionals through the
+  // beauty:professionals read-model (people kind='staff') instead.
+  agentHidden: true,
   layout: 'person',
   displayField: 'name',
   defaultSort: 'name',
@@ -65,6 +69,8 @@ export const supplierEntity: EntityDef = {
     table: 'people',
     schema: 'public',
     tenantScoped: true,
+    archetype: 'person',
+    archetypeKind: 'supplier',
     filters: { kind: 'supplier' },
     defaults: { kind: 'supplier' },
   },
@@ -91,6 +97,8 @@ export const contactEntity: EntityDef = {
     table: 'people',
     schema: 'public',
     tenantScoped: true,
+    archetype: 'person',
+    archetypeKind: 'contact',
     filters: { kind: 'contact' },
     defaults: { kind: 'contact' },
     searchColumns: ['name', 'email', 'phone'],
@@ -116,6 +124,8 @@ export const partnershipEntity: EntityDef = {
     table: 'people',
     schema: 'public',
     tenantScoped: true,
+    archetype: 'person',
+    archetypeKind: 'partner',
     filters: { kind: 'partner' },
     defaults: { kind: 'partner' },
   },
