@@ -246,7 +246,6 @@ export const locationGroupEntity: EntityDef = {
   defaultSort: 'sortOrder',
   fields: [
     { key: 'name', label: tl('Name', 'Nome'), type: 'text', required: true, showInTable: true, searchable: true },
-    { key: 'description', label: tl('Description', 'Descrição'), type: 'textarea' },
     { key: 'sortOrder', label: tl('Order', 'Ordem'), type: 'number', showInTable: true, defaultValue: 0 },
     { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', showInTable: true, defaultValue: true, inlineToggle: true },
   ],
@@ -256,7 +255,7 @@ export const locationGroupEntity: EntityDef = {
     tenantScoped: true,
     filters: { kind: 'location_group' },
     defaults: { kind: 'location_group' },
-    searchColumns: ['name', 'description'],
+    searchColumns: ['name'],
   },
 }
 

@@ -23,7 +23,7 @@ export const beautyBilling: BeautyBilling = {
       // reports and financial reconciliation. 'forms avançado' / blog have no
       // feature id in this app's permissions.ts, so they are not feature-gated.
       entitlements: {
-        features: { marketing: false, reports: false, fin_reconciliation: false },
+        features: { assistant: false, marketing: false, reports: false, fin_reconciliation: false },
         limits: { users: 2, locations: 1, clients: 100, bookings_month: 150, products: 25 },
       },
     },
@@ -43,15 +43,16 @@ export const beautyBilling: BeautyBilling = {
       currency: 'BRL',
       popular: true,
       entitlements: {
-        features: { marketing: true, reports: true, fin_reconciliation: true },
+        features: { assistant: false, marketing: true, reports: true, fin_reconciliation: true },
         limits: { users: 10, locations: 1, clients: -1, bookings_month: -1, products: -1 },
       },
     },
     {
       id: 'business',
-      name: tl('Enterprise', 'Empresarial'),
-      description: tl('For multi-location businesses', 'Para negócios multi-unidades'),
+      name: 'Premium',
+      description: tl('The complete experience — with AI', 'A experiência completa — com IA'),
       features: [
+        tl('*AI Assistant — 1,000 credits/mo', '*Assistente de IA — 1.000 créditos/mês'),
         tl('Unlimited staff', 'Profissionais ilimitados'),
         tl('Multi-location', 'Multi-unidades'),
         tl('Custom branding', 'Marca personalizada'),
@@ -62,8 +63,8 @@ export const beautyBilling: BeautyBilling = {
       prices: { monthly: 199, yearly: 1909 },
       currency: 'BRL',
       entitlements: {
-        features: { marketing: true, reports: true, fin_reconciliation: true },
-        limits: { users: -1, locations: -1, clients: -1, bookings_month: -1, products: -1 },
+        features: { assistant: true, marketing: true, reports: true, fin_reconciliation: true },
+        limits: { users: -1, locations: -1, clients: -1, bookings_month: -1, products: -1, ai_credits_month: 1000 },
       },
     },
   ],

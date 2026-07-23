@@ -73,11 +73,14 @@ test.describe('QA regressions (owner)', () => {
     await expect(page.getByRole('heading', { name: 'Tarefas' })).toBeVisible()
   })
 
-  test('chat FAB opens and shows the "não configurado" state', async ({ page }) => {
+  test('chat FAB opens the assistant panel', async ({ page }) => {
     await page.goto('/')
-    await page.getByRole('button', { name: 'Open chat' }).click()
-    // The assistant panel renders a "não configurado" notice until chat.apiEndpoint is set.
-    await expect(page.getByText(/não configurado/i)).toBeVisible()
+    await page.getByRole('button', { name: 'Abrir assistente' }).click()
+    // The panel is a dialog with a composer; the agent connection comes from
+    // VITE_FAYZ_* env, so the old "não configurado" notice no longer applies.
+    const panel = page.getByRole('dialog')
+    await expect(panel).toBeVisible()
+    await expect(panel.locator('textarea')).toBeVisible()
   })
 
   test('user / workspace menu opens without crashing', async ({ page }) => {

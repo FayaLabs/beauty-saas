@@ -652,8 +652,7 @@
           },
           "schema": "public",
           "searchColumns": [
-            "name",
-            "description"
+            "name"
           ],
           "table": "categories",
           "tenantScoped": true
@@ -665,11 +664,6 @@
             "required": true,
             "searchable": true,
             "type": "text"
-          },
-          {
-            "key": "description",
-            "label": "Descrição",
-            "type": "textarea"
           },
           {
             "key": "sortOrder",

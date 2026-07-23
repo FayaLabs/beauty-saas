@@ -10,3 +10,4 @@ Do not follow operationally. Kept for history.
 | `gap-analysis-2026-06.md` | first v1→v2 gap matrix; its P0 bugs ~60% since fixed | [../GAP-ANALYSIS.md](../GAP-ANALYSIS.md) |
 | `backlog-2026-06.md` | P0–P3 backlog derived from the old gap matrix | Linear |
 | `status-2026-06-14.md` / `status-2026-06-15.md` | published-SDK-boundary build-gate logs (0.1.x era) | superseded by @fayz-ai 0.6.x |
+| `foundation-critique-2026-06.md` | adversarial DB critique; premise ("schema in 3 places / `saas_core`") superseded by the industry-pool pivot | [../FOUNDATIONS.md](../FOUNDATIONS.md) |

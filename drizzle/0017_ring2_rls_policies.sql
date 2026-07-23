@@ -16,11 +16,27 @@
 -- Re-running is a no-op.
 
 -- Ensure the tenant-scoping helper exists (create-if-missing; matches @fayz-ai/db 002).
-CREATE OR REPLACE FUNCTION public.user_tenant_ids()
-RETURNS SETOF uuid
-LANGUAGE sql STABLE SECURITY DEFINER AS $$
-  SELECT tenant_id FROM saas_core.tenant_members WHERE user_id = auth.uid();
-$$;
+--
+-- It reads public.tenant_members, NOT saas_core.tenant_members. This file used
+-- to CREATE OR REPLACE it against `saas_core`, which core-v1 dissolved into
+-- `public` (@fayz-ai/db 000_core_v1_convert). Because the spine runs BEFORE
+-- drizzle in the apply plan, replaying this file on a converted pool silently
+-- overwrote a working helper with one pointing at a schema that no longer
+-- exists — and every RLS policy in the pool depends on it, so the whole
+-- database would have stopped answering. Create-if-missing (not
+-- CREATE OR REPLACE) so the spine's definition always wins.
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
+    WHERE n.nspname = 'public' AND p.proname = 'user_tenant_ids'
+  ) THEN
+    CREATE FUNCTION public.user_tenant_ids()
+    RETURNS SETOF uuid
+    LANGUAGE sql STABLE SECURITY DEFINER AS $fn$
+      SELECT tenant_id FROM public.tenant_members WHERE user_id = auth.uid();
+    $fn$;
+  END IF;
+END $$;
 
 DO $$
 DECLARE
