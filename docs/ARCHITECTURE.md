@@ -1,7 +1,7 @@
 # ARCHITECTURE — how beauty-saas is built (as-is)
 
 Status: canonical · Updated: 2026-07-06
-Source of truth: `src/config/app.tsx` (670 lines — the richest `defineSaas` config in the fleet) + `drizzle/` migrations. SDK contracts: `fayz-sdk/docs/` (ARCHITECTURE, PLUGINS, DATA-MODEL, CUSTOMIZATION). Companions kept from the earlier era: [data-model.md](data-model.md) and [foundation-critique.md](foundation-critique.md) (still-accurate deep analyses).
+Source of truth: `src/config/app.tsx` (670 lines — the richest `defineSaas` config in the fleet) + `drizzle/` migrations. SDK contracts: `fayz-sdk/docs/` (ARCHITECTURE, PLUGINS, DATA-MODEL, CUSTOMIZATION). Companion deep reference: [data-model.md](data-model.md). What's left to stabilize + known bugs: [FOUNDATIONS.md](FOUNDATIONS.md). (The June DB critique is archived at [archive/foundation-critique-2026-06.md](archive/foundation-critique-2026-06.md) — its premise is superseded.)
 
 beauty-saas is the reference consumer of the fayz-sdk: a standalone Vite app that composes published `@fayz-ai/*` packages (0.6.6 line) via `defineSaas(config)` → `renderApp`. Everything app-specific lives in config, registry overrides, and one local plugin — zero SDK forks.
 

@@ -1,3 +1,5 @@
+> **⚠️ ARQUIVADO (2026-07-23) — não seguir operacionalmente.** A premissa central (§0: "o schema mora em 3 lugares divergentes — `saas_core`, cópia do app, TS") foi **superada** pelo pivô industry-pool: o DDL do core mora só no SDK e as tabelas vivem em `public.*`. Os pontos ainda válidos foram absorvidos por [../FOUNDATIONS.md](../FOUNDATIONS.md). Mantido como histórico da análise adversarial de junho.
+
 # Crítica fundacional — core / plugins / archetypes vs. a visão do fayz-sdk
 
 > 2026-06-17. Avaliação crítica e adversarial. O objetivo NÃO é elogiar o que já está bom
