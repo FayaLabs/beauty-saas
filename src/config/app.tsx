@@ -402,6 +402,9 @@ export const beautyAppConfig: FayzAppConfig = {
     oauthProviders: ['google'],
   },
   org: { adapter: import.meta.env.VITE_SUPABASE_URL ? 'supabase' : 'mock', multiOrg: true },
+  // Person-first team: the /settings/team screen is driven by people of these kinds
+  // (staff = professionals); login + role is an optional overlay per person.
+  team: { personKinds: ['staff'] },
   permissions: beautyPermissions,
   theme: beautyTheme,
   plugins: (() => {
