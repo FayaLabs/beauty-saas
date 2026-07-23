@@ -40,7 +40,7 @@ flowchart LR
 | **agenda** | kinds mapped to archetypes (booking=appointment, order=service_order, professional=staff, client=customer); 6 statuses with day-scoped transitions; custom `contactLookup`/`serviceLookup` (real `saas_core` queries + `resolveServicePricing` price-table/variation engine); `financialBridge` auto-creates service orders; `onBookingCreated` → waitlist conversion; 3 settings registries (cancellation reasons, confirmation channels, schedule rules); businessHours 08–20, slot 30min, buffers/advance rules |
 | **financial** | provider = `withAccountingDimensionReconciliation(createSafeFinancialProvider())` — a Proxy that boosts reconciliation match scores by accounting dimensions (±0.08); `modules.reconciliation: true`; `onBookingClick` → agenda deep-link via `agenda:open-booking` CustomEvent (the event-bus seam gap, documented SDK-side) |
 | **openbanking** (local, `src/plugins/openbanking`) | `scope:'addon'`, `dependencies:['financial']`; Tecnospeed PlugBank connector into Financial → Integrations; edge fn `supabase/functions/plugbank-sync`; the incubator-plugin reference for the whole SDK |
-| google-calendar (from plugin-agenda) | connector UI present; **`google-calendar-sync` edge fn not in this repo** — sync inoperative until deployed |
+| google-calendar (from plugin-agenda) | connector UI + app-owned `google-calendar-sync`/`google-calendar-webhook` Edge Functions; signed OAuth state, tenant membership checks and authenticated webhook delivery |
 | inventory | products+stock only (`recipes:false, batchTracking:false`) |
 | crm | `clientConversion` → writes `saas_core.persons` + `public.clients` (lead→client) |
 | reports (app-composed) | 11 reports over `rep_*` views; `occupancy-rate` `available:false` |
@@ -69,7 +69,7 @@ The fayz pipeline only (DECISIONS 2026-07-02): push → fayz project installs `@
 ## 6. Honest gaps in this architecture (tracked)
 
 - Marketing façade (no provider) — biggest looks-built-isn't item.
-- Google-calendar sync edge fn missing from the repo.
+- Google Calendar schema still originates in `plugin-agenda`; the app owns the hardened Edge Function deployment and its operational runbook.
 - 3 hardcoded dashboard KPIs (no ratings source; no slot-capacity view — same blocker as the occupancy report).
 - Cross-plugin nav via window CustomEvents (`agenda:open-booking`) — pending the SDK event bus.
 - Direct `saas_core` queries in app lookups (sanctioned but flagged: seams the SDK should eventually provide).

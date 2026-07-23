@@ -561,8 +561,8 @@ export const beautyAppConfig: FayzAppConfig = {
       // Open Banking connector (Tecnospeed PlugBank) — settings-only; feeds the
       // financial Conciliação view. App-local incubator plugin.
       createOpenBankingPlugin(),
-      // Google Calendar — official SDK integration; two-way booking sync,
-      // settings-only UI. Deploy supabase/functions/google-calendar-sync.
+      // Google Calendar — official SDK control plane with app-owned, hardened
+      // sync + webhook functions under supabase/functions.
       createGoogleCalendarPlugin(),
       createInventoryPlugin({
         navPosition: 4,

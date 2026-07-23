@@ -365,6 +365,20 @@ inspector_port = 8083
 # The Deno major version to use.
 deno_version = 2
 
+[functions.google-calendar-sync]
+enabled = true
+# The Google callback cannot carry a Supabase JWT. This function validates
+# browser JWTs, tenant membership, signed OAuth state and service calls itself.
+verify_jwt = false
+entrypoint = "./functions/google-calendar-sync/index.ts"
+
+[functions.google-calendar-webhook]
+enabled = true
+# Google authenticates deliveries with the per-channel token created by
+# google-calendar-sync; the function verifies its SHA-256 hash.
+verify_jwt = false
+entrypoint = "./functions/google-calendar-webhook/index.ts"
+
 # [edge_runtime.secrets]
 # secret_key = "env(SECRET_VALUE)"
 
