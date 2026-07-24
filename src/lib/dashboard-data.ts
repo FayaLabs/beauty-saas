@@ -54,6 +54,24 @@ export async function countRows(options: DashboardQuery): Promise<number> {
   return count ?? 0
 }
 
+// Cheap existence probe for onboarding "has ≥1 row" checks. Unlike countRows,
+// it does NOT ask PostgREST for an exact COUNT — on the bridge VIEWS
+// (v_clients / v_appointments) an exact count forces a full scan and was costing
+// 2–4s per check. `select('*').limit(1)` lets Postgres short-circuit at the first
+// row and transfers at most one tiny row. select('*') (not a named column) keeps
+// it safe for any table/view regardless of its column set. Returns false — never
+// throws — when Supabase is unconfigured; a missing source still rejects and is
+// handled by the caller.
+export async function rowExists(options: DashboardQuery): Promise<boolean> {
+  const client = getSupabaseClientOptional() as Sb
+  if (!client) return false
+  let qb = from(client, options.table, options.schema).select('*').limit(1)
+  qb = applyFilters(qb, options.filters)
+  const { data, error } = await qb
+  if (error) throw error
+  return (data?.length ?? 0) > 0
+}
+
 // List rows (bounded) for client-side aggregation (e.g. revenue sums).
 export async function listRows<T = Record<string, unknown>>(
   options: DashboardQuery,

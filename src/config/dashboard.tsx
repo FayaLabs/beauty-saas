@@ -1,6 +1,6 @@
 import { createDashboardPlugin } from '@fayz-ai/plugin-dashboard'
 import type { FayzTableFilter } from '@fayz-ai/saas'
-import { countRows, listRows } from '../lib/dashboard-data'
+import { countRows, listRows, rowExists } from '../lib/dashboard-data'
 import { QuickActionsSection } from '../pages/dashboard/QuickActionsSection'
 import { TodayScheduleSection } from '../pages/dashboard/TodayScheduleSection'
 import { tl } from '../i18n/tl'
@@ -120,12 +120,12 @@ async function tableHasRows(
   options: { schema?: string; filters?: FayzTableFilter[] } = {},
 ): Promise<boolean> {
   try {
-    const count = await countRows({
+    // Existence-only probe (LIMIT 1) — avoids exact COUNT() on the bridge views.
+    return await rowExists({
       table,
       schema: options.schema,
       filters: options.filters,
     })
-    return safeNumber(count) > 0
   } catch {
     return false
   }
@@ -447,8 +447,10 @@ export const beautyDashboardPlugin = createDashboardPlugin({
       description: tl('Add accepted payment methods', 'Adicione as formas de pagamento aceitas'),
       icon: 'CreditCard',
       order: 3,
-      // plugin-financial public.payment_methods (default public schema).
-      check: () => tableHasRows('payment_methods'),
+      // plugin-financial payment methods. The plugin renamed its tables with a
+      // `plg_financial_` prefix (000_plg_rename.sql); the legacy `payment_methods`
+      // name 404s on current pools. Query the real table.
+      check: () => tableHasRows('plg_financial_payment_methods'),
       action: '/settings/financial/_properties/payment-methods',
     },
   ],
