@@ -32,5 +32,10 @@ export const beautyTheme: BeautyTheme = {
     mutedForeground: '260 8% 45%',
     border: '260 12% 90%',
     input: '260 12% 90%',
+    // `accent` is the subtle hover surface, not a second brand colour. Left to
+    // the brand shorthand it derives to a mid-lightness complementary blue that
+    // fights the lavender/navy palette, so pin it to a light brand-family tint.
+    accent: '260 35% 94%',
+    accentForeground: '240 30% 18%',
   },
 }

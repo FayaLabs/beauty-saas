@@ -1,5 +1,4 @@
 import type { EntityDef } from '@fayz-ai/saas'
-import { ClientDocumentsTab } from '../components/clients/ClientDocumentsTab'
 import { tl } from '../i18n/tl'
 
 // ---------------------------------------------------------------------------
@@ -27,18 +26,8 @@ export const staffEntity: EntityDef = {
     { key: 'commissionRate', label: tl('Commission (%)', 'Comissão (%)'), type: 'number', showInTable: true, group: 'professional', defaultValue: 0 },
     { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', showInTable: true, defaultValue: true, inlineToggle: true },
   ],
-  detailTabs: [
-    {
-      id: 'documents',
-      label: tl('Documents', 'Documentos'),
-      icon: 'FolderOpen',
-      component: ClientDocumentsTab as never,
-      props: {
-        loadingLabel: tl('Loading professional documents...', 'Carregando documentos do profissional...'),
-        emptyLabel: tl('No attachments or documents found for this professional yet.', 'Nenhum anexo ou documento encontrado para este profissional ainda.'),
-      },
-    },
-  ],
+  // No custom documents tab: the `person` archetype supplies the shared
+  // custom_forms documents widget (same as clients / school-saas).
   data: {
     table: 'staff_members',
     tenantScoped: true,

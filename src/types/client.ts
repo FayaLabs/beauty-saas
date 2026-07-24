@@ -2,7 +2,6 @@ import type { EntityDef } from '@fayz-ai/saas'
 import { createClientOrdersProvider } from '@fayz-ai/saas'
 import { createElement } from 'react'
 import { ClientCareProfileTab } from '../components/clients/ClientCareProfileTab'
-import { ClientDocumentsTab } from '../components/clients/ClientDocumentsTab'
 import { ClientFinancialStatementTab } from '../components/clients/ClientFinancialStatementTab'
 import { ClientOrdersCanonicalTab } from '../components/clients/ClientOrdersCanonicalTab'
 import { ClientTimelineTab } from '../components/clients/ClientTimelineTab'
@@ -163,13 +162,11 @@ export const clientEntity: EntityDef<BeautyClient> = {
       label: tl('Activity', 'Atividade'),
       hidden: true,
     },
-    {
-      id: 'documents',
-      label: tl('Documents', 'Documentos'),
-      icon: 'FolderOpen',
-      aliases: ['journey', 'evidence'],
-      component: ClientDocumentsTab as never,
-    },
+    // Documents tab intentionally omitted: the `person` archetype already
+    // provides it, rendering the custom_forms plugin's PersonDocumentsWidget
+    // (list + create-from-template + fill + archive) — the single shared
+    // documents concept across every app. Overriding it here is what hid the
+    // "new from template" flow that school-saas has by default.
     {
       id: 'financial',
       label: tl('Statement', 'Extrato'),
