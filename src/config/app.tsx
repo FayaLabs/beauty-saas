@@ -605,6 +605,18 @@ export const beautyAppConfig: FayzAppConfig = {
           quotesList: tl('List', 'Lista'),
           activities: tl('Activities', 'Atividades'),
         },
+        // Manual interaction types (settings-editable; lazily seeded per tenant).
+        // System events (lead criado, orçamento aprovado…) are auto-logged by the
+        // plugin and are not part of this list.
+        activityTypes: [
+          { value: 'ligacao', label: tl('Call', 'Ligação'), icon: 'Phone' },
+          { value: 'whatsapp', label: 'WhatsApp', icon: 'MessageCircle' },
+          { value: 'visita', label: tl('Salon visit', 'Visita ao salão'), icon: 'MapPin' },
+          { value: 'avaliacao', label: tl('Consultation', 'Avaliação'), icon: 'Sparkles' },
+          { value: 'retorno', label: tl('Follow-up', 'Retorno'), icon: 'RotateCcw' },
+          { value: 'nota', label: tl('Note', 'Nota'), icon: 'FileText' },
+          { value: 'tarefa', label: tl('Task', 'Tarefa'), icon: 'CheckSquare' },
+        ],
         clientConversion: {
           archetypeKind: 'customer',
           extensionTable: 'clients',
