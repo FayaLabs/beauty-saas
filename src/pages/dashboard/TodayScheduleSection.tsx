@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { fayz } from '@fayz-ai/saas'
+import { Skeleton } from '@fayz-ai/saas/ui'
+import { listRows } from '../../lib/dashboard-data'
 import type { DashboardSectionProps } from '../../types/sdk-contract'
 
 interface TodayAppointment {
@@ -41,6 +42,36 @@ function formatMoney(value: number) {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
 }
 
+// Mirrors the loaded layout (3 stat cards + rows) so nothing shifts on arrival.
+function TodayScheduleSkeleton() {
+  return (
+    <div role="status" aria-label="Carregando agenda de hoje">
+      <div className="grid gap-3 border-b p-4 sm:grid-cols-3">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div key={i} className="rounded-lg border bg-muted/20 p-3">
+            <Skeleton className="h-3 w-24" />
+            <Skeleton className="mt-2 h-4 w-32" />
+          </div>
+        ))}
+      </div>
+      <div className="divide-y">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-4 p-4">
+            <Skeleton className="h-4 w-14 shrink-0" />
+            <div className="min-w-0 flex-1 space-y-2">
+              <Skeleton className="h-4 w-40 max-w-full" />
+              <Skeleton className="h-3 w-56 max-w-full" />
+            </div>
+            <Skeleton className="hidden h-4 w-16 sm:block" />
+            <Skeleton className="hidden h-4 w-24 sm:block" />
+            <Skeleton className="h-5 w-20 rounded-full" />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function TodayScheduleSection({ onNavigate }: DashboardSectionProps) {
   const [appointments, setAppointments] = useState<TodayAppointment[]>([])
   const [loading, setLoading] = useState(true)
@@ -56,7 +87,7 @@ export function TodayScheduleSection({ onNavigate }: DashboardSectionProps) {
         const start = new Date(today.getFullYear(), today.getMonth(), today.getDate()).toISOString()
         const end = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString()
 
-        const { rows } = await fayz.data.listRows<BookingRow>({
+        const { rows } = await listRows<BookingRow>({
           table: 'v_appointments',
           filters: [
             { column: 'starts_at', operator: 'gte', value: start },
@@ -83,7 +114,8 @@ export function TodayScheduleSection({ onNavigate }: DashboardSectionProps) {
             orderTotal: typeof row.order_total === 'number' ? row.order_total : 0,
           })))
         }
-      } catch {
+      } catch (err) {
+        console.error('[TodaySchedule] load failed', err)
         if (!cancelled) setError('Não foi possível carregar a agenda de hoje.')
       } finally {
         if (!cancelled) setLoading(false)
@@ -115,7 +147,7 @@ export function TodayScheduleSection({ onNavigate }: DashboardSectionProps) {
         </button>
       </div>
       {loading ? (
-        <div className="p-8 text-center text-sm text-muted-foreground">Carregando...</div>
+        <TodayScheduleSkeleton />
       ) : error ? (
         <div className="p-8 text-center text-sm text-destructive">{error}</div>
       ) : (

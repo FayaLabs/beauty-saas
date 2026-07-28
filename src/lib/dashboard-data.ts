@@ -40,6 +40,8 @@ export interface DashboardQuery {
   schema?: string
   filters?: FayzTableFilter[]
   limit?: number
+  sortColumn?: string
+  sortDirection?: 'asc' | 'desc'
 }
 
 // Count rows for the active session (RLS-scoped server-side). Returns 0 when no
@@ -80,6 +82,7 @@ export async function listRows<T = Record<string, unknown>>(
   if (!client) return { rows: [] }
   let qb = from(client, options.table, options.schema).select('*')
   qb = applyFilters(qb, options.filters)
+  if (options.sortColumn) qb = qb.order(options.sortColumn, { ascending: options.sortDirection !== 'desc' })
   if (options.limit != null) qb = qb.limit(options.limit)
   const { data, error } = await qb
   if (error) throw error

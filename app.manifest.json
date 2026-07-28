@@ -2357,6 +2357,11 @@
             "type": "text"
           },
           {
+            "key": "slug",
+            "label": "Slug",
+            "type": "text"
+          },
+          {
             "key": "color",
             "label": "Color",
             "type": "color"
@@ -2384,6 +2389,11 @@
             "type": "text"
           },
           {
+            "key": "icon",
+            "label": "Icon",
+            "type": "text"
+          },
+          {
             "key": "isActive",
             "label": "Active",
             "type": "boolean"
@@ -2392,6 +2402,244 @@
         "key": "crm:activity-types",
         "label": "Activity Type",
         "labelPlural": "Activity Types"
+      },
+      {
+        "data": {
+          "searchColumns": [
+            "name",
+            "email",
+            "phone"
+          ],
+          "table": "v_leads",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "email",
+            "label": "Email",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "phone",
+            "label": "Phone",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "company",
+            "label": "Company",
+            "type": "text"
+          },
+          {
+            "key": "status",
+            "label": "Status (new=awaiting first contact, contacted, qualified, converted, lost)",
+            "type": "text"
+          },
+          {
+            "key": "sourceName",
+            "label": "Source",
+            "type": "text"
+          },
+          {
+            "key": "createdAt",
+            "label": "Created at",
+            "type": "text"
+          }
+        ],
+        "key": "crm:leads",
+        "label": "Lead",
+        "labelPlural": "Leads",
+        "permission": {
+          "action": "read",
+          "feature": "crm.leads"
+        }
+      },
+      {
+        "data": {
+          "searchColumns": [
+            "title",
+            "contact_name"
+          ],
+          "table": "v_deals",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "title",
+            "label": "Title",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "value",
+            "label": "Value",
+            "type": "number"
+          },
+          {
+            "key": "status",
+            "label": "Status (open/won/lost)",
+            "type": "text"
+          },
+          {
+            "key": "stage",
+            "label": "Pipeline stage name",
+            "type": "text"
+          },
+          {
+            "key": "contactName",
+            "label": "Contact",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "probability",
+            "label": "Probability %",
+            "type": "number"
+          },
+          {
+            "key": "expectedCloseDate",
+            "label": "Expected close",
+            "type": "text"
+          },
+          {
+            "key": "createdAt",
+            "label": "Created at",
+            "type": "text"
+          }
+        ],
+        "key": "crm:deals",
+        "label": "Deal",
+        "labelPlural": "Deals",
+        "permission": {
+          "action": "read",
+          "feature": "crm.pipeline"
+        }
+      },
+      {
+        "data": {
+          "searchColumns": [
+            "title",
+            "contact_name",
+            "description"
+          ],
+          "table": "plg_crm_activities",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "activityType",
+            "label": "Type (call/email/note… or system events: lead_created, deal_won, quote_approved…)",
+            "type": "text"
+          },
+          {
+            "key": "title",
+            "label": "Title",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "description",
+            "label": "Description",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "contactName",
+            "label": "Contact",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "dueDate",
+            "label": "Due date",
+            "type": "text"
+          },
+          {
+            "key": "completedAt",
+            "label": "Completed at",
+            "type": "text"
+          },
+          {
+            "key": "assignedToName",
+            "label": "Assigned to",
+            "type": "text"
+          },
+          {
+            "key": "createdAt",
+            "label": "Created at",
+            "type": "text"
+          }
+        ],
+        "key": "crm:activities",
+        "label": "CRM activity",
+        "labelPlural": "CRM activities",
+        "permission": {
+          "action": "read",
+          "feature": "sales"
+        }
+      },
+      {
+        "data": {
+          "searchColumns": [
+            "label",
+            "channel_key"
+          ],
+          "table": "plg_marketing_channels",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "label",
+            "label": "Channel",
+            "required": true,
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "channelKey",
+            "label": "Key",
+            "required": true,
+            "type": "text"
+          },
+          {
+            "key": "kind",
+            "label": "Type",
+            "options": [
+              "paid",
+              "organic",
+              "social",
+              "referral",
+              "direct",
+              "outbound"
+            ],
+            "type": "select"
+          },
+          {
+            "key": "icon",
+            "label": "Icon",
+            "type": "text"
+          },
+          {
+            "key": "monthlySpend",
+            "label": "Monthly spend",
+            "type": "number"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          }
+        ],
+        "key": "marketing:channels",
+        "label": "Channel",
+        "labelPlural": "Channels"
       },
       {
         "data": {
@@ -2419,6 +2667,164 @@
         "key": "marketing:origins",
         "label": "Origem",
         "labelPlural": "Origens"
+      },
+      {
+        "data": {
+          "searchColumns": [
+            "name",
+            "channel_key"
+          ],
+          "table": "v_marketing_campaigns",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "name",
+            "label": "Name",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "channelKey",
+            "label": "Channel",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "channelLabel",
+            "label": "Channel label",
+            "type": "text"
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "type": "text"
+          },
+          {
+            "key": "startsAt",
+            "label": "Starts at",
+            "type": "text"
+          },
+          {
+            "key": "endsAt",
+            "label": "Ends at",
+            "type": "text"
+          },
+          {
+            "key": "spend",
+            "label": "Spend",
+            "type": "number"
+          },
+          {
+            "key": "createdAt",
+            "label": "Created at",
+            "type": "text"
+          }
+        ],
+        "key": "marketing:campaigns",
+        "label": "Campaign",
+        "labelPlural": "Campaigns",
+        "permission": {
+          "action": "read",
+          "feature": "marketing"
+        }
+      },
+      {
+        "data": {
+          "searchColumns": [
+            "label",
+            "channel_key"
+          ],
+          "table": "v_marketing_channels",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "channelKey",
+            "label": "Key",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "label",
+            "label": "Channel",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "kind",
+            "label": "Type",
+            "type": "text"
+          },
+          {
+            "key": "isActive",
+            "label": "Active",
+            "type": "boolean"
+          },
+          {
+            "key": "monthlySpend",
+            "label": "Monthly spend",
+            "type": "number"
+          }
+        ],
+        "key": "marketing:channels",
+        "label": "Marketing channel",
+        "labelPlural": "Marketing channels",
+        "permission": {
+          "action": "read",
+          "feature": "marketing"
+        }
+      },
+      {
+        "data": {
+          "searchColumns": [
+            "title",
+            "hook"
+          ],
+          "table": "plg_marketing_content_posts",
+          "tenantScoped": true
+        },
+        "fields": [
+          {
+            "key": "title",
+            "label": "Title",
+            "searchable": true,
+            "type": "text"
+          },
+          {
+            "key": "format",
+            "label": "Format",
+            "type": "text"
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "type": "text"
+          },
+          {
+            "key": "weekNumber",
+            "label": "Week",
+            "type": "number"
+          },
+          {
+            "key": "scheduledDate",
+            "label": "Scheduled date",
+            "type": "text"
+          },
+          {
+            "key": "hook",
+            "label": "Hook",
+            "searchable": true,
+            "type": "text"
+          }
+        ],
+        "key": "marketing:contentPosts",
+        "label": "Content post",
+        "labelPlural": "Content posts",
+        "permission": {
+          "action": "read",
+          "feature": "marketing.content"
+        }
       },
       {
         "data": {
@@ -2831,14 +3237,12 @@
       {
         "entityKey": "crm:activity-types",
         "id": "activity-types",
-        "pluginId": "crm",
-        "readOnly": true
+        "pluginId": "crm"
       },
       {
         "entityKey": "marketing:channels",
         "id": "channels",
-        "pluginId": "marketing",
-        "readOnly": true
+        "pluginId": "marketing"
       },
       {
         "entityKey": "marketing:origins",
@@ -2870,9 +3274,39 @@
       },
       {
         "audits": true,
+        "description": "Guarded appointment reschedule/reassign/cancel: agent_guard (role→plan, no cap), working hours, race-safe conflict check that skips the appointment itself, audited.",
+        "kind": "write",
+        "name": "agent_agenda_update_appointment"
+      },
+      {
+        "audits": true,
         "description": "Guarded settle: invoices the order via fn_invoice_from_order (installments for credit card) and marks the receivable paid, audited with the acting user.",
         "kind": "write",
         "name": "agent_financial_mark_payment_received"
+      },
+      {
+        "audits": true,
+        "description": "Guarded lead create: agent_guard (role→plan→leads cap), closed status set, e-mail/phone dedupe, audited.",
+        "kind": "write",
+        "name": "agent_crm_create_lead"
+      },
+      {
+        "audits": true,
+        "description": "Guarded lead update: agent_guard (role→plan, no cap), closed status set, tenant+kind checked, audited.",
+        "kind": "write",
+        "name": "agent_crm_update_lead"
+      },
+      {
+        "audits": true,
+        "description": "Guarded campaign create: agent_guard (role→plan→campaigns_active cap), channel validated against the tenant channel set, audited.",
+        "kind": "write",
+        "name": "agent_marketing_create_campaign"
+      },
+      {
+        "audits": true,
+        "description": "Guarded form-template upsert: agent_guard (role→plan→form_templates cap), grid layout computed server-side, create or edit by id, audited.",
+        "kind": "write",
+        "name": "agent_forms_upsert_template"
       },
       {
         "description": "Quotes the real price of a service for a date/professional/unit: default price table + active variations (the pricing engine, server-side).",
@@ -2898,7 +3332,7 @@
       },
       {
         "category": "Core",
-        "description": "Lists the WORKSPACE USERS (people with a login) and their roles. This is NOT the professionals/staff registry — for professionals, stylists or other staff the business manages as records, use the staff/people search tools instead.",
+        "description": "Lists the WORKSPACE TEAM exactly as the Team screen shows it: the people who staff this business. Each row carries `kind` (what they do here — teacher, staff…), `accessRole` (their permission role, null when they have no login) and `hasLogin`. Answer headcount questions from this — never report the number of logins as the size of the team.",
         "execution": {
           "plane": "client"
         },
@@ -2908,7 +3342,7 @@
         "parameters": {
           "properties": {
             "role": {
-              "description": "Filter by role: owner, admin, manager, staff, viewer",
+              "description": "Optional filter, matched against either the person kind (teacher, staff…) or the access role (owner, admin, manager, viewer).",
               "type": "string"
             }
           },
@@ -2921,7 +3355,7 @@
       },
       {
         "category": "Core",
-        "description": "Helps the user find and navigate to a specific page or feature in the app.",
+        "description": "Opens one of the app's PAGES (Agenda, Clients, Financial…). Takes a page name, never a person or a record — to open a specific record use openRecord.",
         "execution": {
           "plane": "client"
         },
@@ -2931,12 +3365,34 @@
         "parameters": {
           "properties": {
             "page": {
-              "description": "Page name or feature the user is looking for",
+              "description": "Name of the page, as listed in the app pages",
               "type": "string"
             }
           },
           "required": [
             "page"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "category": "Core",
+        "description": "Opens the detail page of a record already returned by a tool in THIS conversation. Takes that record's id — never a name.",
+        "execution": {
+          "plane": "client"
+        },
+        "id": "core.open-record",
+        "mode": "read",
+        "name": "openRecord",
+        "parameters": {
+          "properties": {
+            "id": {
+              "description": "Record id from an earlier tool result",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id"
           ],
           "type": "object"
         }
@@ -2967,7 +3423,7 @@
       },
       {
         "category": "Data",
-        "description": "Creates ONE new record of an entity (client, service, supplier, …). ALWAYS search first to avoid duplicates. Field keys and required fields come from the entity — on a field error the response lists the valid fields; fix and retry. The user will confirm before anything is written. Records that attach to another record: `address` holds the street address of a PERSON (client, contact, supplier, staff). A person record has NO street/city/postal_code fields of its own. To read where someone lives, search `address` with filters {\"owner_id\": <the person's id>} — a person with no address field is not a person without an address. To record one, create an `address` with owner_id set to the person's id. Never write an address into a notes field.",
+        "description": "Creates ONE new record of an entity (client, service, supplier, …). ALWAYS search first to avoid duplicates. Use ONLY the fields listed below for that entity. Do NOT interview the user field-by-field. Ask in chat only for required (*) fields you genuinely cannot infer, and call this tool the moment you have them — omit every optional field you were not given (its default applies; a boolean status like active defaults to on/true). The confirmation this opens is an EDITABLE FORM, not a yes/no receipt: the user reviews, fills and corrects anything there — including optionals — before it is written. Opening that form fast beats collecting everything in chat. Records that attach to another record: `address` holds the street address of a PERSON (client, contact, supplier, staff). A person record has NO street/city/postal_code fields of its own. To read where someone lives, search `address` with filters {\"owner_id\": <the person's id>} — a person with no address field is not a person without an address. To record one, create an `address` with owner_id set to the person's id. Never write an address into a notes field.\n\nFields by entity (* = required, send nothing else):\nlocation: name*, phone, city, state, address, country, postalCode, email, isHeadquarters, isActive, notes\nperson:customer: name*, email*, phone, dateOfBirth, notes, isActive, gender, origin, lifecycleStatus, stage, statusAlert, anamnesisNotes, hasAnamnesisAlert, visits, totalSpent, lastVisit\nentrada-da-lista-de-espera: clientId, professionalId, serviceId, requestedDate, preferredStartTime, preferredEndTime, priority, status, notes\nserviço: name*, description, durationMinutes*, price*, isActive\ncategoria-de-serviço: name*, sortOrder, isActive\nlocal-de-atendimento: name*, phone, city, state, address, country, postalCode, email, isHeadquarters, isActive, notes\ngrupo-de-locais: name*, sortOrder, isActive\nperson:contact: name*, email, phone, notes, isActive\nperson:supplier: name*, email, phone, notes, isActive\nperson:partner: name*, phone, isActive\nequipamento: name*, description, sku, status\npacote-de-serviços: name*, description, price*, validityDays, maxUses, isActive\ntabela-de-preços: name*, description, startsOn, endsOn, isDefault, sortOrder, isActive\nvariação-de-preço: name*, variationType*, valueType*, value*, firstAppointmentOnly, serviceFilterType*, serviceId, professionalFilterType*, professionalId, categoryFilterType*, categoryId, unitFilterType*, unitId, partnershipFilterType*, partnershipId, sortOrder, isActive\nagenda:holidays: name*, date*, recurring, description, isActive\nagenda:cancellation-reasons: name*, description, requiresNotes, sortOrder, isActive\nagenda:confirmation-channels: name*, channel*, template, sendOffsetHours, retryOffsetHours, isDefault, sortOrder, isActive\nagenda:schedule-rules: name*, scope*, startTime*, endTime*, slotDurationMinutes*, bufferMinutes, minAdvanceHours, maxAdvanceDays, maxConcurrent, allowOnlineBooking, isActive\nfinancial:payment-methods: name*, paymentMethodTypeId*, discountValue, interestValue, minInstallments, maxInstallments, isActive\nfinancial:chart-of-accounts: code*, name*, nodeType*, parentId, isActive\nfinancial:cost-centers: code*, name*, isActive\nfinancial:bank-accounts: name*, accountType*, bankName, accountNumber, agencyNumber, initialBalance, creditLimit, closingDay, dueDay, isActive\nfinancial:commission-rules: name*, priority*, valueType*, value*, description, isActive\nfinancial:price-tables: description*, type*, validFrom, validUntil, isActive\nfinancial:price-variations: name*, variationType*, valueType*, value*, firstAppointmentOnly, isActive\ninventory:suppliers: name*, phone, email, documentNumber, address, notes, isActive\ninventory:product-categories: name*, parentId, isActive\ninventory:stock-locations: name*, description, isActive\ncrm:stages: name*, pipelineId*, order*, color, probability, isWon, isLost\ncrm:lead-sources: name*, isActive\ncrm:tags: name*, slug, color, isActive\ncrm:activity-types: name*, icon, isActive\nmarketing:channels: label*, channelKey*, kind, icon, monthlySpend, isActive\nmarketing:origins: name*, isActive\ncustom_forms:form-categories: name*, icon, color, sortOrder, isActive\ncustom_forms:service-default-forms: serviceId*, templateId*, templateKind*, trigger*, isRequired, sortOrder, notes\ntasks:task-labels: name*, color, isActive",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -3012,6 +3468,8 @@
                 "crm:stages",
                 "crm:lead-sources",
                 "crm:tags",
+                "crm:activity-types",
+                "marketing:channels",
                 "marketing:origins",
                 "custom_forms:form-categories",
                 "custom_forms:service-default-forms",
@@ -3036,7 +3494,7 @@
       },
       {
         "category": "Data",
-        "description": "Updates fields on an EXISTING record (add an email, fix a phone, change a name…). Use the record id already known from this conversation or from a search. Only send the fields being changed. The user confirms before anything is written.",
+        "description": "Updates fields on an EXISTING record (add an email, fix a phone, change a name…). Use the record id already known from this conversation or from a search. Only send the fields being changed, and only fields listed below for that entity. The user confirms before anything is written.\n\nFields by entity (* = required, send nothing else):\nlocation: name*, phone, city, state, address, country, postalCode, email, isHeadquarters, isActive, notes\nperson:customer: name*, email*, phone, dateOfBirth, notes, isActive, gender, origin, lifecycleStatus, stage, statusAlert, anamnesisNotes, hasAnamnesisAlert, visits, totalSpent, lastVisit\nentrada-da-lista-de-espera: clientId, professionalId, serviceId, requestedDate, preferredStartTime, preferredEndTime, priority, status, notes\nserviço: name*, description, durationMinutes*, price*, isActive\ncategoria-de-serviço: name*, sortOrder, isActive\nlocal-de-atendimento: name*, phone, city, state, address, country, postalCode, email, isHeadquarters, isActive, notes\ngrupo-de-locais: name*, sortOrder, isActive\nperson:contact: name*, email, phone, notes, isActive\nperson:supplier: name*, email, phone, notes, isActive\nperson:partner: name*, phone, isActive\nequipamento: name*, description, sku, status\npacote-de-serviços: name*, description, price*, validityDays, maxUses, isActive\ntabela-de-preços: name*, description, startsOn, endsOn, isDefault, sortOrder, isActive\nvariação-de-preço: name*, variationType*, valueType*, value*, firstAppointmentOnly, serviceFilterType*, serviceId, professionalFilterType*, professionalId, categoryFilterType*, categoryId, unitFilterType*, unitId, partnershipFilterType*, partnershipId, sortOrder, isActive\nagenda:holidays: name*, date*, recurring, description, isActive\nagenda:cancellation-reasons: name*, description, requiresNotes, sortOrder, isActive\nagenda:confirmation-channels: name*, channel*, template, sendOffsetHours, retryOffsetHours, isDefault, sortOrder, isActive\nagenda:schedule-rules: name*, scope*, startTime*, endTime*, slotDurationMinutes*, bufferMinutes, minAdvanceHours, maxAdvanceDays, maxConcurrent, allowOnlineBooking, isActive\nfinancial:payment-methods: name*, paymentMethodTypeId*, discountValue, interestValue, minInstallments, maxInstallments, isActive\nfinancial:chart-of-accounts: code*, name*, nodeType*, parentId, isActive\nfinancial:cost-centers: code*, name*, isActive\nfinancial:bank-accounts: name*, accountType*, bankName, accountNumber, agencyNumber, initialBalance, creditLimit, closingDay, dueDay, isActive\nfinancial:commission-rules: name*, priority*, valueType*, value*, description, isActive\nfinancial:price-tables: description*, type*, validFrom, validUntil, isActive\nfinancial:price-variations: name*, variationType*, valueType*, value*, firstAppointmentOnly, isActive\ninventory:suppliers: name*, phone, email, documentNumber, address, notes, isActive\ninventory:product-categories: name*, parentId, isActive\ninventory:stock-locations: name*, description, isActive\ncrm:stages: name*, pipelineId*, order*, color, probability, isWon, isLost\ncrm:lead-sources: name*, isActive\ncrm:tags: name*, slug, color, isActive\ncrm:activity-types: name*, icon, isActive\nmarketing:channels: label*, channelKey*, kind, icon, monthlySpend, isActive\nmarketing:origins: name*, isActive\ncustom_forms:form-categories: name*, icon, color, sortOrder, isActive\ncustom_forms:service-default-forms: serviceId*, templateId*, templateKind*, trigger*, isRequired, sortOrder, notes\ntasks:task-labels: name*, color, isActive",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -3081,6 +3539,8 @@
                 "crm:stages",
                 "crm:lead-sources",
                 "crm:tags",
+                "crm:activity-types",
+                "marketing:channels",
                 "marketing:origins",
                 "custom_forms:form-categories",
                 "custom_forms:service-default-forms",
@@ -3110,7 +3570,7 @@
       },
       {
         "category": "Data",
-        "description": "Searches or lists records of ONE entity and returns matching rows with their fields. Use `search` for names/text and `filters` for exact field values (e.g. {\"status\":\"open\"}) — never put a status word in search. Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:contact (contatos), person:supplier (fornecedores), person:partner (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), tabela-de-preços (tabelas de preços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)), inventory:products (products), beauty:professionals (profissionais), address (addresses). Records that attach to another record: `address` holds the street address of a PERSON (client, contact, supplier, staff). A person record has NO street/city/postal_code fields of its own. To read where someone lives, search `address` with filters {\"owner_id\": <the person's id>} — a person with no address field is not a person without an address. To record one, create an `address` with owner_id set to the person's id. Never write an address into a notes field.",
+        "description": "Searches or lists records of ONE entity and returns matching rows with their fields. Use `search` for names/text and `filters` for exact field values (e.g. {\"status\":\"open\"}) — never put a status word in search. For ANY date or period question (\"hoje\", \"amanhã\", \"esta semana\"), use `dateField` + `from`/`to` — NOT `filters`. Plain dates (YYYY-MM-DD) are read as whole days in the business timezone, so `from` and `to` both being today is exactly \"today\". Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:contact (contatos), person:supplier (fornecedores), person:partner (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), tabela-de-preços (tabelas de preços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), crm:activity-types (activity types), marketing:channels (channels), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)), inventory:products (products), crm:leads (leads), crm:deals (deals), crm:activities (crm activities), marketing:campaigns (campaigns), marketing:channels (marketing channels), marketing:contentPosts (content posts), beauty:professionals (profissionais), address (addresses). Records that attach to another record: `address` holds the street address of a PERSON (client, contact, supplier, staff). A person record has NO street/city/postal_code fields of its own. To read where someone lives, search `address` with filters {\"owner_id\": <the person's id>} — a person with no address field is not a person without an address. To record one, create an `address` with owner_id set to the person's id. Never write an address into a notes field.",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -3121,6 +3581,10 @@
         "name": "searchRecords",
         "parameters": {
           "properties": {
+            "dateField": {
+              "description": "Date field the from/to window applies to (e.g. startsAt for agenda; default 'createdAt').",
+              "type": "string"
+            },
             "direction": {
               "description": "Sort direction",
               "enum": [
@@ -3163,6 +3627,8 @@
                 "crm:stages",
                 "crm:lead-sources",
                 "crm:tags",
+                "crm:activity-types",
+                "marketing:channels",
                 "marketing:origins",
                 "custom_forms:form-categories",
                 "custom_forms:service-default-forms",
@@ -3171,14 +3637,24 @@
                 "financial:invoices",
                 "financial:movements",
                 "inventory:products",
+                "crm:leads",
+                "crm:deals",
+                "crm:activities",
+                "marketing:campaigns",
+                "marketing:channels",
+                "marketing:contentPosts",
                 "beauty:professionals",
                 "address"
               ],
               "type": "string"
             },
             "filters": {
-              "description": "Optional exact-value filters {field: value}, e.g. {\"status\":\"open\"}.",
+              "description": "Optional exact-value filters {field: value}, e.g. {\"status\":\"open\"}. Do not use for dates.",
               "type": "object"
+            },
+            "from": {
+              "description": "Start of the window: YYYY-MM-DD (whole local day) or ISO datetime.",
+              "type": "string"
             },
             "orderBy": {
               "description": "Field to sort by (e.g. startsAt for \"next/upcoming\" questions).",
@@ -3186,6 +3662,10 @@
             },
             "search": {
               "description": "Name or text to match. Omit to list recent records.",
+              "type": "string"
+            },
+            "to": {
+              "description": "End of the window: YYYY-MM-DD (whole local day, inclusive) or ISO datetime.",
               "type": "string"
             }
           },
@@ -3197,7 +3677,156 @@
       },
       {
         "category": "Data",
-        "description": "Aggregates over ONE entity: count, sum or avg of a field, with optional date range, equality filters and a group-by. Use for analytical questions (revenue this week, new clients this month, busiest professional). Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:contact (contatos), person:supplier (fornecedores), person:partner (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), tabela-de-preços (tabelas de preços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)), inventory:products (products), beauty:professionals (profissionais), address (addresses).",
+        "description": "Proposes how the columns of an ATTACHED spreadsheet/CSV map to the fields of one entity, and opens the mapping for the user to review and correct. Use this the moment a file is attached and the user talks about importing — it is the ONLY way to answer that, and it replaces writing the mapping out as text. Send one entry per column you can map; columns you leave out are shown as unmapped for the user to fill in. Field names come from the entity field list in createRecord. When it comes back ok, call commitImport with the same mapping — that is what actually writes the rows. Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:contact (contatos), person:supplier (fornecedores), person:partner (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), tabela-de-preços (tabelas de preços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), crm:activity-types (activity types), marketing:channels (channels), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)), inventory:products (products), crm:leads (leads), crm:deals (deals), crm:activities (crm activities), marketing:campaigns (campaigns), marketing:channels (marketing channels), marketing:contentPosts (content posts), beauty:professionals (profissionais), address (addresses).",
+        "execution": {
+          "entity": "*",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "data.propose-import",
+        "mode": "read",
+        "name": "proposeImport",
+        "parameters": {
+          "properties": {
+            "entity": {
+              "description": "Which entity the rows would become",
+              "enum": [
+                "location",
+                "person:customer",
+                "entrada-da-lista-de-espera",
+                "serviço",
+                "categoria-de-serviço",
+                "local-de-atendimento",
+                "grupo-de-locais",
+                "person:contact",
+                "person:supplier",
+                "person:partner",
+                "equipamento",
+                "pacote-de-serviços",
+                "tabela-de-preços",
+                "variação-de-preço",
+                "agenda:holidays",
+                "agenda:cancellation-reasons",
+                "agenda:confirmation-channels",
+                "agenda:schedule-rules",
+                "financial:payment-methods",
+                "financial:chart-of-accounts",
+                "financial:cost-centers",
+                "financial:bank-accounts",
+                "financial:commission-rules",
+                "financial:price-tables",
+                "financial:price-variations",
+                "inventory:suppliers",
+                "inventory:product-categories",
+                "inventory:stock-locations",
+                "crm:stages",
+                "crm:lead-sources",
+                "crm:tags",
+                "crm:activity-types",
+                "marketing:channels",
+                "marketing:origins",
+                "custom_forms:form-categories",
+                "custom_forms:service-default-forms",
+                "tasks:task-labels",
+                "inventory:products",
+                "address"
+              ],
+              "type": "string"
+            },
+            "file": {
+              "description": "File name, when more than one is attached.",
+              "type": "string"
+            },
+            "mapping": {
+              "description": "Column name from the file → field name in the app, e.g. {\"Nome\":\"name\",\"Celular\":\"phone\"}. Leave a column out when no field fits.",
+              "type": "object"
+            }
+          },
+          "required": [
+            "entity",
+            "mapping"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "category": "Data",
+        "description": "WRITES the rows of an attached file as records, using a mapping the user already confirmed through proposeImport. Call it only after proposeImport came back ok, and pass the SAME mapping it returned. The user confirms the row count before anything is written. Never call this to \"check\" anything — it creates records. Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:contact (contatos), person:supplier (fornecedores), person:partner (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), tabela-de-preços (tabelas de preços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), crm:activity-types (activity types), marketing:channels (channels), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)), inventory:products (products), crm:leads (leads), crm:deals (deals), crm:activities (crm activities), marketing:campaigns (campaigns), marketing:channels (marketing channels), marketing:contentPosts (content posts), beauty:professionals (profissionais), address (addresses).",
+        "execution": {
+          "entity": "*",
+          "kind": "entity_read",
+          "plane": "server"
+        },
+        "id": "data.commit-import",
+        "mode": "persist",
+        "name": "commitImport",
+        "parameters": {
+          "properties": {
+            "entity": {
+              "description": "Which entity the rows become",
+              "enum": [
+                "location",
+                "person:customer",
+                "entrada-da-lista-de-espera",
+                "serviço",
+                "categoria-de-serviço",
+                "local-de-atendimento",
+                "grupo-de-locais",
+                "person:contact",
+                "person:supplier",
+                "person:partner",
+                "equipamento",
+                "pacote-de-serviços",
+                "tabela-de-preços",
+                "variação-de-preço",
+                "agenda:holidays",
+                "agenda:cancellation-reasons",
+                "agenda:confirmation-channels",
+                "agenda:schedule-rules",
+                "financial:payment-methods",
+                "financial:chart-of-accounts",
+                "financial:cost-centers",
+                "financial:bank-accounts",
+                "financial:commission-rules",
+                "financial:price-tables",
+                "financial:price-variations",
+                "inventory:suppliers",
+                "inventory:product-categories",
+                "inventory:stock-locations",
+                "crm:stages",
+                "crm:lead-sources",
+                "crm:tags",
+                "crm:activity-types",
+                "marketing:channels",
+                "marketing:origins",
+                "custom_forms:form-categories",
+                "custom_forms:service-default-forms",
+                "tasks:task-labels",
+                "inventory:products",
+                "address"
+              ],
+              "type": "string"
+            },
+            "file": {
+              "description": "File name, when more than one is attached.",
+              "type": "string"
+            },
+            "mapping": {
+              "description": "The confirmed mapping from proposeImport: file column -> app field.",
+              "type": "object"
+            }
+          },
+          "required": [
+            "entity",
+            "mapping"
+          ],
+          "type": "object"
+        },
+        "requiresConfirmation": false
+      },
+      {
+        "category": "Data",
+        "description": "Aggregates over ONE entity: count, sum or avg of a field, with optional date range, equality filters and a group-by. Use for analytical questions (revenue this week, new clients this month, busiest professional). Entities: location (locations), person:customer (cliente), entrada-da-lista-de-espera (lista de espera), serviço (serviço), categoria-de-serviço (categorias de serviço), local-de-atendimento (locais de atendimento), grupo-de-locais (grupos de locais), person:contact (contatos), person:supplier (fornecedores), person:partner (parcerias), equipamento (equipamentos), pacote-de-serviços (pacotes de serviços), tabela-de-preços (tabelas de preços), variação-de-preço (variações de preço), agenda:holidays (holidays), agenda:cancellation-reasons (motivos de cancelamento), agenda:confirmation-channels (canais de confirmação), agenda:schedule-rules (regras de agenda), financial:payment-methods (payment methods), financial:chart-of-accounts (chart of accounts), financial:cost-centers (cost centers), financial:bank-accounts (bank accounts), financial:commission-rules (commission rules), financial:price-tables (price tables), financial:price-variations (price variations), inventory:suppliers (suppliers), inventory:product-categories (product categories), inventory:stock-locations (stock locations), crm:stages (stages), crm:lead-sources (lead sources), crm:tags (tags), crm:activity-types (activity types), marketing:channels (channels), marketing:origins (origens), custom_forms:form-categories (categories), custom_forms:service-default-forms (formulários/contratos padrão dos serviços), tasks:task-labels (task labels), agenda:appointments (appointments), financial:invoices (invoices (receipts rec- / payables pag-)), financial:movements (financial movements (installment ledger)), inventory:products (products), crm:leads (leads), crm:deals (deals), crm:activities (crm activities), marketing:campaigns (campaigns), marketing:channels (marketing channels), marketing:contentPosts (content posts), beauty:professionals (profissionais), address (addresses).",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -3209,7 +3838,7 @@
         "parameters": {
           "properties": {
             "dateField": {
-              "description": "Date field to range-filter (default 'created_at').",
+              "description": "Date field to range-filter (default 'createdAt'; use startsAt for agenda questions).",
               "type": "string"
             },
             "entity": {
@@ -3246,6 +3875,8 @@
                 "crm:stages",
                 "crm:lead-sources",
                 "crm:tags",
+                "crm:activity-types",
+                "marketing:channels",
                 "marketing:origins",
                 "custom_forms:form-categories",
                 "custom_forms:service-default-forms",
@@ -3254,6 +3885,12 @@
                 "financial:invoices",
                 "financial:movements",
                 "inventory:products",
+                "crm:leads",
+                "crm:deals",
+                "crm:activities",
+                "marketing:campaigns",
+                "marketing:channels",
+                "marketing:contentPosts",
                 "beauty:professionals",
                 "address"
               ],
@@ -3268,7 +3905,7 @@
               "type": "object"
             },
             "from": {
-              "description": "ISO date/datetime lower bound (inclusive).",
+              "description": "Lower bound (inclusive): YYYY-MM-DD (whole local day) or ISO datetime.",
               "type": "string"
             },
             "groupBy": {
@@ -3285,7 +3922,7 @@
               "type": "string"
             },
             "to": {
-              "description": "ISO date/datetime upper bound (inclusive).",
+              "description": "Upper bound (inclusive): YYYY-MM-DD (whole local day) or ISO datetime.",
               "type": "string"
             }
           },
@@ -3389,6 +4026,60 @@
         },
         "permission": {
           "action": "create",
+          "feature": "appointments"
+        },
+        "pluginId": "agenda",
+        "requiresConfirmation": true
+      },
+      {
+        "category": "Scheduling",
+        "description": "Changes an appointment that ALREADY EXISTS: reschedule (starts_at), reassign (professional_id), cancel or confirm (status), or annotate (notes). This is the ONLY way to change an appointment — the appointments entity is a read-only view, so updateRecord cannot touch it. NEVER answer a reschedule or a cancellation by creating a new appointment: that leaves the original standing and double-books the professional. Takes the appointment id from a previous search. The duration is preserved automatically. The user confirms before anything changes.",
+        "execution": {
+          "kind": "rpc",
+          "plane": "server",
+          "rpc": "agent_agenda_update_appointment"
+        },
+        "id": "agenda.update-appointment",
+        "mode": "persist",
+        "name": "updateAppointment",
+        "parameters": {
+          "properties": {
+            "appointment_id": {
+              "description": "Id of the appointment to change (from a search)",
+              "type": "string"
+            },
+            "notes": {
+              "description": "Optional notes",
+              "type": "string"
+            },
+            "professional_id": {
+              "description": "Move to another professional (optional)",
+              "type": "string"
+            },
+            "starts_at": {
+              "description": "New LOCAL date-time of the business, NO timezone suffix — e.g. '2026-07-27T16:30'. Omit to keep the current time.",
+              "type": "string"
+            },
+            "status": {
+              "description": "New status — use \"cancelled\" to cancel",
+              "enum": [
+                "scheduled",
+                "confirmed",
+                "in_progress",
+                "completed",
+                "cancelled",
+                "no_show"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "appointment_id"
+          ],
+          "type": "object"
+        },
+        "permission": {
+          "action": "edit",
           "feature": "appointments"
         },
         "pluginId": "agenda",
@@ -3634,6 +4325,145 @@
         "pluginId": "crm"
       },
       {
+        "category": "Sales",
+        "description": "Opens a NEW lead. This is the ONLY way to create one — the leads entity is a read-only view, so createRecord cannot. Only `name` is required; send whatever else the user gave and omit the rest. Status defaults to \"new\" and belongs to a closed set: new, contacted, qualified, converted, lost. A lead whose e-mail or phone already exists is NOT duplicated — the existing one comes back with deduped:true, and changing it is updateLead. The user confirms before anything is written.",
+        "execution": {
+          "kind": "rpc",
+          "plane": "server",
+          "rpc": "agent_crm_create_lead"
+        },
+        "id": "crm.create-lead",
+        "limitKey": "leads",
+        "mode": "persist",
+        "name": "createLead",
+        "parameters": {
+          "properties": {
+            "assigned_to_id": {
+              "description": "Person the lead is assigned to (id)",
+              "type": "string"
+            },
+            "company": {
+              "description": "Company",
+              "type": "string"
+            },
+            "email": {
+              "description": "E-mail",
+              "type": "string"
+            },
+            "name": {
+              "description": "The person's name",
+              "type": "string"
+            },
+            "notes": {
+              "description": "Notes",
+              "type": "string"
+            },
+            "phone": {
+              "description": "Phone",
+              "type": "string"
+            },
+            "source_name": {
+              "description": "Where the lead came from",
+              "type": "string"
+            },
+            "status": {
+              "description": "Funnel stage — defaults to \"new\"",
+              "enum": [
+                "new",
+                "contacted",
+                "qualified",
+                "converted",
+                "lost"
+              ],
+              "type": "string"
+            },
+            "value": {
+              "description": "Estimated value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "permission": {
+          "action": "create",
+          "feature": "sales"
+        },
+        "pluginId": "crm",
+        "requiresConfirmation": true
+      },
+      {
+        "category": "Sales",
+        "description": "Changes a lead that ALREADY EXISTS: move its status through the funnel, reassign it, or fix its data (name, email, phone, company, value, notes). This is the ONLY way to change a lead — the leads entity is a read-only view, so updateRecord cannot touch it. Status is a closed set: new (awaiting first contact), contacted, qualified, converted, lost. A proposal that went out is usually \"qualified\"; a closed sale is \"converted\". Takes the lead id from a previous search. The user confirms before anything changes.",
+        "execution": {
+          "kind": "rpc",
+          "plane": "server",
+          "rpc": "agent_crm_update_lead"
+        },
+        "id": "crm.update-lead",
+        "mode": "persist",
+        "name": "updateLead",
+        "parameters": {
+          "properties": {
+            "assigned_to_id": {
+              "description": "Person the lead is assigned to (id)",
+              "type": "string"
+            },
+            "company": {
+              "description": "Company",
+              "type": "string"
+            },
+            "email": {
+              "description": "Corrected e-mail",
+              "type": "string"
+            },
+            "lead_id": {
+              "description": "Id of the lead to change (from a search)",
+              "type": "string"
+            },
+            "name": {
+              "description": "Corrected name",
+              "type": "string"
+            },
+            "notes": {
+              "description": "Notes",
+              "type": "string"
+            },
+            "phone": {
+              "description": "Corrected phone",
+              "type": "string"
+            },
+            "status": {
+              "description": "New funnel stage",
+              "enum": [
+                "new",
+                "contacted",
+                "qualified",
+                "converted",
+                "lost"
+              ],
+              "type": "string"
+            },
+            "value": {
+              "description": "Estimated value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "lead_id"
+          ],
+          "type": "object"
+        },
+        "permission": {
+          "action": "edit",
+          "feature": "sales"
+        },
+        "pluginId": "crm",
+        "requiresConfirmation": true
+      },
+      {
         "category": "Marketing",
         "description": "Returns acquisition performance per channel (reach, conversions, CVR, spend, CPA).",
         "id": "marketing.channel-performance",
@@ -3697,24 +4527,51 @@
       },
       {
         "category": "Marketing",
-        "description": "Creates an acquisition campaign on a channel.",
+        "description": "Creates an acquisition campaign on a channel. Resolve the channel first via queryData/searchRecords on marketing channels (use its channel key). The user confirms before creating.",
+        "execution": {
+          "kind": "rpc",
+          "plane": "server",
+          "rpc": "agent_marketing_create_campaign"
+        },
         "id": "marketing.create-campaign",
+        "limitKey": "campaigns_active",
         "mode": "persist",
         "name": "createCampaign",
         "parameters": {
           "properties": {
-            "channelId": {
-              "description": "Acquisition channel id",
+            "channel_key": {
+              "description": "Acquisition channel key (e.g. 'instagram') or its label",
+              "type": "string"
+            },
+            "ends_at": {
+              "description": "ISO end date-time (optional)",
               "type": "string"
             },
             "name": {
               "description": "Campaign name",
               "type": "string"
+            },
+            "spend": {
+              "description": "Planned/committed spend (optional)",
+              "type": "number"
+            },
+            "starts_at": {
+              "description": "ISO start date-time (defaults to now)",
+              "type": "string"
+            },
+            "status": {
+              "description": "Defaults to draft",
+              "enum": [
+                "draft",
+                "active",
+                "paused"
+              ],
+              "type": "string"
             }
           },
           "required": [
             "name",
-            "channelId"
+            "channel_key"
           ],
           "type": "object"
         },
@@ -3772,6 +4629,69 @@
         "pluginId": "custom_forms"
       },
       {
+        "category": "Forms",
+        "description": "Creates or edits a form template (anamnese, contrato, ficha…). Persisted server-side, so it works from ANY page — the user does NOT need the form builder open. Omit templateId to CREATE (name required); pass templateId to EDIT an existing form. Send the FULL desired field list in `fields` (replaces all fields), or `append_fields` to add to what already exists. Layout is automatic — never send positions. Understand the intent and propose a sensible field set in one call rather than asking field by field. The user confirms before it is saved.",
+        "execution": {
+          "kind": "rpc",
+          "plane": "server",
+          "rpc": "agent_forms_upsert_template"
+        },
+        "id": "custom_forms.createOrUpdateForm",
+        "limitKey": "form_templates",
+        "mode": "persist",
+        "name": "createOrUpdateForm",
+        "parameters": {
+          "properties": {
+            "append_fields": {
+              "description": "Fields to ADD to the existing form, keeping current ones. Use this for incremental edits instead of `fields`. Each item: A field object: { type, label, required?, placeholder?, options?[] }. type ∈ title|text|memo|richtext|date|select|radio|tags|checkbox|image|gallery|budget (title = section heading, no input). options are plain strings, only for select/radio/tags.",
+              "items": {
+                "description": "A field object: { type, label, required?, placeholder?, options?[] }. type ∈ title|text|memo|richtext|date|select|radio|tags|checkbox|image|gallery|budget (title = section heading, no input). options are plain strings, only for select/radio/tags.",
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "category": {
+              "description": "anamnesis | evolution | report | contract | general",
+              "enum": [
+                "anamnesis",
+                "evolution",
+                "report",
+                "contract",
+                "general"
+              ],
+              "type": "string"
+            },
+            "description": {
+              "description": "Optional short description of the form.",
+              "type": "string"
+            },
+            "fields": {
+              "description": "The FULL desired field list — REPLACES every existing field. Each item: A field object: { type, label, required?, placeholder?, options?[] }. type ∈ title|text|memo|richtext|date|select|radio|tags|checkbox|image|gallery|budget (title = section heading, no input). options are plain strings, only for select/radio/tags.",
+              "items": {
+                "description": "A field object: { type, label, required?, placeholder?, options?[] }. type ∈ title|text|memo|richtext|date|select|radio|tags|checkbox|image|gallery|budget (title = section heading, no input). options are plain strings, only for select/radio/tags.",
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "name": {
+              "description": "Form name — required when creating.",
+              "type": "string"
+            },
+            "templateId": {
+              "description": "Existing form id to EDIT (from context or listFormTemplates). Omit to create a new form.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "permission": {
+          "action": "create",
+          "feature": "custom_forms"
+        },
+        "pluginId": "custom_forms",
+        "requiresConfirmation": true
+      },
+      {
         "category": "Tasks",
         "description": "Returns a summary of pending tasks: total, overdue, due today, by status and priority.",
         "id": "tasks.summary",
@@ -3813,6 +4733,7 @@
         "description": "Comece grátis — sem cartão",
         "entitlements": {
           "features": {
+            "assistant": false,
             "fin_reconciliation": false,
             "marketing": false,
             "reports": false
@@ -3844,6 +4765,7 @@
         "description": "Para salões em crescimento",
         "entitlements": {
           "features": {
+            "assistant": false,
             "fin_reconciliation": true,
             "marketing": true,
             "reports": true
@@ -3874,14 +4796,16 @@
       },
       {
         "currency": "BRL",
-        "description": "Para negócios multi-unidades",
+        "description": "A experiência completa — com IA",
         "entitlements": {
           "features": {
+            "assistant": true,
             "fin_reconciliation": true,
             "marketing": true,
             "reports": true
           },
           "limits": {
+            "ai_credits_month": 1000,
             "bookings_month": -1,
             "clients": -1,
             "locations": -1,
@@ -3890,6 +4814,7 @@
           }
         },
         "features": [
+          "*Assistente de IA — 1.000 créditos/mês",
           "Profissionais ilimitados",
           "Multi-unidades",
           "Marca personalizada",
@@ -3898,7 +4823,7 @@
           "Integrações personalizadas"
         ],
         "id": "business",
-        "name": "Empresarial",
+        "name": "Premium",
         "prices": {
           "monthly": 199,
           "yearly": 1909
@@ -3906,7 +4831,7 @@
       }
     ]
   },
-  "contractHash": "bcc90c573d6ca2f26139f1a509172539f47228b6ed63f708a89c92ae0d1319db",
+  "contractHash": "4e4f113bcb49ea472085264c341ff8e9c04979cd034574964e6fa32e0e70943d",
   "id": "beauty-saas",
   "limitDeclarations": [
     {
@@ -3959,6 +4884,11 @@
       "kindFilter": "quote",
       "label": "Quotes",
       "table": "orders"
+    },
+    {
+      "key": "campaigns_active",
+      "label": "Active campaigns",
+      "table": "plg_marketing_campaigns"
     },
     {
       "key": "content_posts_month",
@@ -4824,6 +5754,8 @@
   "theme": {
     "brand": "260 30% 45%",
     "colors": {
+      "accent": "260 35% 94%",
+      "accentForeground": "240 30% 18%",
       "border": "260 12% 90%",
       "card": "0 0% 100%",
       "cardForeground": "240 30% 12%",
