@@ -73,6 +73,11 @@
       },
       {
         "group": "Engage",
+        "id": "marketing.landing-pages",
+        "label": "Páginas"
+      },
+      {
+        "group": "Engage",
         "id": "marketing.content",
         "label": "Conteúdo"
       },
@@ -4831,7 +4836,7 @@
       }
     ]
   },
-  "contractHash": "4e4f113bcb49ea472085264c341ff8e9c04979cd034574964e6fa32e0e70943d",
+  "contractHash": "bb64ee4c34747ab38094e55db7c1d399945524f08a8d01acc51323b8b7a7dca9",
   "id": "beauty-saas",
   "limitDeclarations": [
     {
