@@ -644,7 +644,7 @@ export const beautyAppConfig: FayzAppConfig = {
           blog: tl('Blog', 'Blog'),
           blogCategories: tl('Categories', 'Categorias'),
         },
-        modules: { contentPlanner: true, blog: true },
+        modules: { contentPlanner: true, blog: true, landingPages: true },
         settingsRegistries: [
           {
             id: 'origins',
