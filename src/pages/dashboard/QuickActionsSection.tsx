@@ -44,15 +44,20 @@ export function QuickActionsSection({ onNavigate }: DashboardSectionProps) {
         <button
           type="button"
           key={action.label}
-          className="grid min-h-[104px] grid-cols-[2rem_1fr] items-start gap-3 rounded-lg border border-input bg-background p-4 text-left text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+          // `accent` is derived from the brand hue, so it lands as a bold fill
+          // rather than a subtle surface: every nested bit has to invert with it
+          // or it drops out against the hover background.
+          className="group grid min-h-[104px] grid-cols-[2rem_1fr] items-start gap-3 rounded-lg border border-input bg-background p-4 text-left text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
           onClick={() => onNavigate?.(action.route)}
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-md border bg-muted/50 text-muted-foreground">
+          <span className="flex h-8 w-8 items-center justify-center rounded-md border bg-muted/50 text-muted-foreground transition-colors group-hover:border-accent-foreground/25 group-hover:bg-accent-foreground/15 group-hover:text-accent-foreground">
             <action.icon className="h-4 w-4" aria-hidden="true" />
           </span>
           <span className="min-w-0">
             <span className="block text-sm font-semibold leading-5">{action.label}</span>
-            <span className="mt-1 block text-xs leading-4 text-muted-foreground">{action.description}</span>
+            <span className="mt-1 block text-xs leading-4 text-muted-foreground transition-colors group-hover:text-accent-foreground/80">
+              {action.description}
+            </span>
           </span>
         </button>
       ))}

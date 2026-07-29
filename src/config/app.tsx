@@ -374,6 +374,9 @@ async function markWaitlistEntryScheduled(input: { bookingId: string; waitlistId
 export const beautyAppConfig: FayzAppConfig = {
   name: 'BeautySoft',
   logo: React.createElement(Logo),
+  // Icon-only, for square contexts like the connect/consent badge — the full
+  // logo is a wordmark and gets cropped there.
+  markLogo: React.createElement(Logo, { collapsed: true }),
   layout: 'topbar',
   supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
   supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
@@ -641,7 +644,7 @@ export const beautyAppConfig: FayzAppConfig = {
           blog: tl('Blog', 'Blog'),
           blogCategories: tl('Categories', 'Categorias'),
         },
-        modules: { contentPlanner: true, blog: true },
+        modules: { contentPlanner: true, blog: true, landingPages: true },
         settingsRegistries: [
           {
             id: 'origins',
