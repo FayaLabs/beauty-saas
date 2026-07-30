@@ -4831,7 +4831,7 @@
       }
     ]
   },
-  "contractHash": "4e4f113bcb49ea472085264c341ff8e9c04979cd034574964e6fa32e0e70943d",
+  "contractHash": "a27be5aa0b696cc7a94de670566e0d687d164aa5a7e7530308717c23131eebcf",
   "id": "beauty-saas",
   "limitDeclarations": [
     {
@@ -5431,12 +5431,18 @@
         "systemPermissions": []
       },
       {
-        "description": "Campanhas, canais e relatórios de público.",
+        "description": "Campanhas, canais, relatórios de público e consulta do funil de vendas.",
         "grants": {
           "appointments": [
             "read"
           ],
           "clients": [
+            "read"
+          ],
+          "crm_leads": [
+            "read"
+          ],
+          "crm_pipeline": [
             "read"
           ],
           "dashboard": [
@@ -5465,6 +5471,9 @@
             "read"
           ],
           "reports_operations": [
+            "read"
+          ],
+          "sales": [
             "read"
           ]
         },

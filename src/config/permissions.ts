@@ -162,13 +162,14 @@ export const beautyPermissions: BeautyPermissions = {
     {
       id: 'marketing',
       name: 'Marketing',
-      description: tl('Campaigns, channels and audience reports.', 'Campanhas, canais e relatórios de público.'),
+      description: tl('Campaigns, channels, audience reports and read-only sales funnel.', 'Campanhas, canais, relatórios de público e consulta do funil de vendas.'),
       isSystem: true,
       systemPermissions: [],
       grants: {
         dashboard: R,
         appointments: R,
         clients: R,
+        sales: R, crm_pipeline: R, crm_leads: R,
         marketing: R, mkt_campaigns: RCED, mkt_channels: RE, mkt_funnel: R,
         reports: R, reports_operations: R, reports_clients: R,
       },
