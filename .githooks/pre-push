@@ -1,2 +1,0 @@
-#!/bin/sh
-npx @fayz-ai/cli doctor --full || exit 1

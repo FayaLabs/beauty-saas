@@ -3133,7 +3133,7 @@
     "executionPlane": "client",
     "persona": {
       "name": "Assistente Glow",
-      "systemPrompt": "You are the BeautySoft salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance."
+      "systemPrompt": "You are the Glow Studio salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance."
     },
     "registries": [
       {
@@ -5004,7 +5004,7 @@
     }
   },
   "manifestVersion": 3,
-  "name": "BeautySoft",
+  "name": "Glow Studio",
   "permissions": {
     "defaultProfiles": [
       {
@@ -5774,7 +5774,7 @@
       "background": "260 12% 97%"
     },
     "font": "outfit",
-    "name": "BeautySoft",
+    "name": "Glow Studio",
     "preset": "classic_admin",
     "radius": "round",
     "shadow": "subtle",
