@@ -6,7 +6,7 @@ export function Logo({ collapsed }: { collapsed?: boolean }) {
       <img src="/logo.png" alt="Glow Studio" className="h-8 w-8 rounded-lg" />
       {!collapsed && (
         <span className="text-base font-semibold tracking-tight">
-          Beauty<span className="opacity-50 font-normal">Soft</span>
+          Glow<span className="opacity-50 font-normal">Studio</span>
         </span>
       )}
     </div>
