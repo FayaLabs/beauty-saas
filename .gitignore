@@ -2,6 +2,7 @@ node_modules/
 dist/
 .env
 .env.local
+.env.google-calendar.local
 .DS_Store
 *.png
 .playwright-mcp/

@@ -5,15 +5,20 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 5301 --strictPort",
-    "dev:published-sdk": "FAYZ_SDK_SOURCE=published vite --port 5301 --strictPort",
+    "dev:published-sdk": "node scripts/vite-with-sdk-source.mjs published dev",
     "typecheck": "tsc -p tsconfig.local.json --noEmit",
-    "build": "tsc -p tsconfig.local.json && FAYZ_SDK_SOURCE=local vite build",
-    "build:published-sdk": "FAYZ_SDK_SOURCE=published tsc -p tsconfig.published.json && FAYZ_SDK_SOURCE=published vite build",
+    "build": "tsc -p tsconfig.local.json && node scripts/vite-with-sdk-source.mjs local build",
+    "build:published-sdk": "tsc -p tsconfig.published.json && node scripts/vite-with-sdk-source.mjs published build",
     "preview": "vite preview --port 5180",
+    "test:gcal:unit": "node --test supabase/functions/_shared/google-calendar-security.test.mjs supabase/functions/_shared/google-calendar-mapping.test.mjs supabase/functions/_shared/google-calendar-runtime.test.mjs supabase/functions/google-calendar-webhook/webhook.test.mjs scripts/google-calendar-smoke.test.mjs",
+    "test:gcal:edge": "node scripts/google-calendar-template-check.mjs && node scripts/google-calendar-bundle-check.mjs",
+    "test:gcal:preflight": "node scripts/google-calendar-smoke.mjs --mode=preflight",
+    "test:gcal:connected": "node scripts/google-calendar-smoke.mjs --mode=connected",
+    "test:gcal": "npm run test:gcal:unit && npm run test:gcal:edge && npm run test:gcal:preflight",
     "db:generate": "drizzle-kit generate",
     "db:check": "drizzle-kit check",
     "db:apply": "node scripts/db-apply.mjs",
-    "prepare": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true"
+    "prepare": "node scripts/prepare-git-hooks.mjs"
   },
   "dependencies": {
     "@fayz-ai/auth": "^0.9.0",
