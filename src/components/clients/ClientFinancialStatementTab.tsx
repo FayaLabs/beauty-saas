@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Receipt, Wallet } from 'lucide-react'
-import { Badge, Card, CardContent } from '@fayz-ai/ui'
-import { getActiveTenantId, getSupabaseClientOptional, type EntityDef } from '@fayz-ai/saas'
-import { tl } from '../../i18n/tl'
+import { Badge, Card, CardContent } from '@fayz-ai/saas/ui'
+import { getActiveTenantId, getSupabaseClientOptional, type EntityDef, tl } from '@fayz-ai/saas'
 
 interface StatementEntry {
   id: string

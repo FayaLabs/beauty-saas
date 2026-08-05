@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { asset } from '../assets'
 
 export function Logo({ collapsed }: { collapsed?: boolean }) {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Bell, CalendarPlus, ClipboardCheck, Inbox, UserPlus } from 'lucide-react'
-import type { DashboardSectionProps } from '../../types/sdk-contract'
+import type { DashboardSectionProps } from '@fayz-ai/plugin-dashboard'
 
 const actions = [
   {

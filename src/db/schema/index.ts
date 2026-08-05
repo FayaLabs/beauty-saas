@@ -33,4 +33,4 @@ export {
 
 // Ring 1 — enabled plugins with a Drizzle schema
 export * from '@fayz-ai/plugin-crm/schema'
-export * from '../../plugins/openbanking/schema'
+export * from '@fayz-ai/plugin-banking-br/schema'

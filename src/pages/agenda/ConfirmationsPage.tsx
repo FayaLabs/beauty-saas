@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { CalendarCheck2, Clock, ExternalLink, MessageCircle, UserRound } from 'lucide-react'
-import { Badge, Card, CardContent } from '@fayz-ai/ui'
-import { getActiveTenantId, getSupabaseClientOptional } from '@fayz-ai/saas'
-import { tl } from '../../i18n/tl'
+import { Badge, Card, CardContent } from '@fayz-ai/saas/ui'
+import { getActiveTenantId, getSupabaseClientOptional, tl } from '@fayz-ai/saas'
 
 interface ConfirmationRow {
   bookingId: string

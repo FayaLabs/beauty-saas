@@ -1,13 +1,16 @@
-import { createArchetypeLookup, getActiveTenantId, getSupabaseClientOptional, type EntityLookup, type FayzAppConfig } from '@fayz-ai/saas'
+import { createArchetypeLookup, getActiveTenantId, getSupabaseClientOptional, type EntityLookup, type FayzAppConfig, tl, resolveBackendEnv } from '@fayz-ai/saas'
+import { registerMessageDefaults, entityEventKey, deriveEntityKey } from '@fayz-ai/core'
 import { createFinancialPlugin, createSafeFinancialProvider, type FinancialDataProvider } from '@fayz-ai/plugin-financial'
 import { createInventoryPlugin } from '@fayz-ai/plugin-inventory'
 import { createCrmPlugin } from '@fayz-ai/plugin-crm'
+import { createAutomationsPlugin } from '@fayz-ai/plugin-automations'
 import { createAgendaPlugin, createFinancialBridge, createGoogleCalendarPlugin, type AgendaPluginOptions } from '@fayz-ai/plugin-agenda'
 import { createCustomFormsPlugin } from '@fayz-ai/plugin-forms'
+import { createScribePlugin } from '@fayz-ai/plugin-scribe'
 import { createTasksPlugin } from '@fayz-ai/plugin-tasks'
 import { createMarketingPlugin } from '@fayz-ai/plugin-marketing'
 
-import { createOpenBankingPlugin } from '../plugins/openbanking'
+import { createOpenBankingPlugin } from '@fayz-ai/plugin-banking-br'
 import { Logo } from '../components/Logo'
 import { clientEntity } from '../types/client'
 import { beautyBilling } from './billing'
@@ -15,10 +18,10 @@ import { beautyDashboardPlugin } from './dashboard'
 import { beautyPages } from './pages'
 import { beautyPermissions } from './permissions'
 import { beautyReportsPlugin } from './reports'
+import { beautyScribeOptions } from './scribe'
 import { serviceDefaultTemplateEntity } from '../types/service'
 import { beautyTheme } from './theme'
 import { appTranslations } from '../i18n'
-import { tl } from '../i18n/tl'
 import { asset } from '../assets'
 import {
   appointmentCancellationReasonEntity,
@@ -372,6 +375,38 @@ async function markWaitlistEntryScheduled(input: { bookingId: string; waitlistId
   if (error) throw error
 }
 
+// ---------------------------------------------------------------------------
+// Boas-vindas ao cliente novo.
+//
+// O cadastro emite o fato sozinho — todo CRUD do sistema passa pelo mesmo
+// ponto. O que o app declara aqui é a REAÇÃO: que texto, por qual canal. Sem
+// esta declaração o fato continua valendo para auditoria e webhook; ele só não
+// aparece na lista de automações, porque não haveria o que ligar.
+//
+// Nasce DESLIGADO. Quem cadastra na recepção costuma estar com a cliente na
+// frente, e uma mensagem automática nessa hora soa estranha — melhor o salão
+// ligar quando decidir que faz sentido.
+// ---------------------------------------------------------------------------
+registerMessageDefaults([
+  {
+    eventKey: entityEventKey(deriveEntityKey(clientEntity), 'created'),
+    kind: 'transactional',
+    channels: ['whatsapp', 'email'],
+    defaults: {
+      whatsapp: {
+        body: 'Oi {{record_name}}! Que bom ter você com a gente 💛\n\nSeu cadastro já está pronto. Quando quiser marcar um horário, é só chamar por aqui.\n\n— {{business_name}}',
+      },
+      email: {
+        subject: 'Boas-vindas à {{business_name}}!',
+        body: 'Olá {{record_name}},\n\nSeu cadastro está pronto. É um prazer ter você com a gente.\n\nQuando quiser marcar um horário, é só responder este e-mail.\n\n{{business_name}}',
+      },
+    },
+  },
+])
+
+// Backend: um resolvedor so (VITE_SUPABASE_ENABLED manda; senao url+key decidem).
+const backend = resolveBackendEnv()
+
 export const beautyAppConfig: FayzAppConfig = {
   name: 'Glow Studio',
   logo: React.createElement(Logo),
@@ -379,15 +414,15 @@ export const beautyAppConfig: FayzAppConfig = {
   // logo is a wordmark and gets cropped there.
   markLogo: React.createElement(Logo, { collapsed: true }),
   layout: 'topbar',
-  supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
-  supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+  supabaseUrl: backend.supabaseUrl,
+  supabaseAnonKey: backend.supabaseAnonKey,
   locale: {
     default: 'pt-BR',
     supported: ['en', 'pt-BR'],
     translations: appTranslations,
   },
   auth: {
-    adapter: import.meta.env.VITE_SUPABASE_URL ? 'supabase' : 'mock',
+    adapter: backend.adapter,
     requireAuth: true,
     loginLayout: 'split',
     loginTagline: tl('Manage your salon with confidence', 'Gerencie seu salão com confiança'),
@@ -405,7 +440,7 @@ export const beautyAppConfig: FayzAppConfig = {
     showOAuth: true,
     oauthProviders: ['google'],
   },
-  org: { adapter: import.meta.env.VITE_SUPABASE_URL ? 'supabase' : 'mock', multiOrg: true },
+  org: { adapter: backend.adapter, multiOrg: true },
   // Person-first team: the /settings/team screen is driven by people of these kinds
   // (staff = professionals); login + role is an optional overlay per person.
   team: { personKinds: ['staff'] },
@@ -586,6 +621,16 @@ export const beautyAppConfig: FayzAppConfig = {
           stock: tl('Stock', 'Estoque'),
         },
       }),
+      // Automações — o que sai sozinho quando algo acontece (horário marcado,
+      // lembrete de véspera, negócio ganho). O CRM e a agenda registram os
+      // eventos e apontam para cá; sem este plugin instalado eles ficam sem a
+      // metade que fala com o cliente.
+      //
+      // Dentro das configurações, e não no menu: num salão o dia inteiro é
+      // agenda e cliente. A automação se ajusta uma vez e se esquece — um item
+      // fixo no topo cobraria atenção todo dia por uma tela visitada uma vez
+      // por mês.
+      createAutomationsPlugin({ placement: 'settings' }),
       createCrmPlugin({
         navPosition: 6,
         currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
@@ -683,6 +728,10 @@ export const beautyAppConfig: FayzAppConfig = {
           quickAddPlaceholder: tl('Add a task...', 'Adicionar tarefa...'),
         },
       }),
+      // Depois do forms de propósito: o scribe declara dependencies:['custom_forms']
+      // porque ele EMITE documento sem ser dono do conceito de documento.
+      // Toda a vertical (rótulos, modelos padrão, retenção) vive em ./scribe.
+      createScribePlugin(beautyScribeOptions),
     ]
   })(),
   pages: beautyPages,

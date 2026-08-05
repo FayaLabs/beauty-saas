@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Bell, CalendarPlus, Check, ExternalLink, Filter, Inbox, ListPlus, PhoneCall, UserRound, X } from 'lucide-react'
-import { Badge, Card, CardContent } from '@fayz-ai/ui'
-import { getActiveTenantId, getSupabaseClientOptional } from '@fayz-ai/saas'
-import { tl } from '../../i18n/tl'
+import { Badge, Card, CardContent } from '@fayz-ai/saas/ui'
+import { getActiveTenantId, getSupabaseClientOptional, tl } from '@fayz-ai/saas'
 
 interface WaitlistRow {
   waitlistId: string

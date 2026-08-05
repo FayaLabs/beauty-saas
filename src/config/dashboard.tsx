@@ -1,9 +1,9 @@
+import { tl } from '@fayz-ai/saas'
 import { createDashboardPlugin } from '@fayz-ai/plugin-dashboard'
 import type { FayzTableFilter } from '@fayz-ai/saas'
 import { countRows, listRows, rowExists } from '../lib/dashboard-data'
 import { QuickActionsSection } from '../pages/dashboard/QuickActionsSection'
 import { TodayScheduleSection } from '../pages/dashboard/TodayScheduleSection'
-import { tl } from '../i18n/tl'
 
 function getLocalDayRange(offsetDays = 0) {
   const today = new Date()

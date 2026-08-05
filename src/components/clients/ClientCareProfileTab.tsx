@@ -1,7 +1,7 @@
+import { tl } from '@fayz-ai/saas'
 import { AlertTriangle, HeartPulse, UserRoundCheck } from 'lucide-react'
-import { Badge, Card, CardContent } from '@fayz-ai/ui'
+import { Badge, Card, CardContent } from '@fayz-ai/saas/ui'
 import type { EntityDef } from '@fayz-ai/saas'
-import { tl } from '../../i18n/tl'
 
 const lifecycleLabels: Record<string, string> = {
   active: tl('Active', 'Ativo'),

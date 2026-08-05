@@ -1,5 +1,5 @@
-import { tl } from '../i18n/tl'
-import type { BeautyPermissions, BeautyPermissionFeature, PermissionAction } from '../types/sdk-contract'
+import { tl } from '@fayz-ai/saas'
+import type { PermissionsConfig, FeatureDeclaration, PermissionAction } from '@fayz-ai/saas'
 
 // ---------------------------------------------------------------------------
 // Granular, per-submodule permission taxonomy for a beauty salon.
@@ -32,9 +32,9 @@ const G = {
   reports: tl('Reports', 'Relatórios'),
 }
 
-const f = (id: string, label: string, group: string): BeautyPermissionFeature => ({ id, label, group })
+const f = (id: string, label: string, group: string): FeatureDeclaration => ({ id, label, group })
 
-const features: BeautyPermissionFeature[] = [
+const features: FeatureDeclaration[] = [
   // Overview
   f('dashboard', tl('Dashboard', 'Painel'), G.core),
 
@@ -46,6 +46,11 @@ const features: BeautyPermissionFeature[] = [
 
   // Clients
   f('clients', tl('Clients', 'Clientes'), G.clients),
+  // Documentos e formulários da ficha. O plugin-forms auto-declara a feature
+  // `custom_forms`, mas nenhum perfil a concedia — o resultado prático era a
+  // aba de documentos existir e ninguém ter acesso a ela.
+  f('custom_forms', tl('Documents & Forms', 'Documentos e Formulários'), G.clients),
+  f('scribe', tl('Session Recording', 'Gravação de Atendimentos'), G.clients),
 
   // Registry (service catalog)
   f('services', tl('Services', 'Serviços'), G.registry),
@@ -100,7 +105,7 @@ const RE: PermissionAction[] = ['read', 'edit']
 const ALL_BUSINESS: Record<string, PermissionAction[]> = {
   dashboard: R,
   appointments: RCED, agenda_waitlist: RCE, agenda_schedules: RE, agenda_settings: RCED,
-  clients: RCED,
+  clients: RCED, custom_forms: RCED, scribe: RCED,
   services: RCED,
   inventory: R, inv_products: RCED, inv_stock: RCE, inv_settings: RCED,
   sales: R, crm_pipeline: RE, crm_leads: RCED, crm_quotes: RCED, crm_activities: RCE,
@@ -110,7 +115,7 @@ const ALL_BUSINESS: Record<string, PermissionAction[]> = {
   reports: R, reports_operations: R, reports_financial: R, reports_clients: R,
 }
 
-export const beautyPermissions: BeautyPermissions = {
+export const beautyPermissions: PermissionsConfig = {
   features,
   defaultProfiles: [
     {
@@ -138,7 +143,7 @@ export const beautyPermissions: BeautyPermissions = {
       grants: {
         dashboard: R,
         appointments: RCED, agenda_waitlist: RCE, agenda_schedules: R, agenda_settings: R,
-        clients: RCED,
+        clients: RCED, custom_forms: RCE,
         services: R,
         inventory: R, inv_products: R,
         sales: R, crm_leads: RC, crm_quotes: RC,
@@ -156,6 +161,10 @@ export const beautyPermissions: BeautyPermissions = {
         dashboard: R,
         appointments: RCE,
         clients: R,
+        // O profissional é quem grava e quem assina o documento — sem create
+        // aqui o botão "Iniciar atendimento" nunca apareceria para quem mais
+        // precisa dele.
+        custom_forms: RCE, scribe: RCE,
         services: R,
       },
     },
