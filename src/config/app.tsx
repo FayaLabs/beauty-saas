@@ -407,7 +407,7 @@ registerMessageDefaults([
 const backend = resolveBackendEnv()
 
 export const beautyAppConfig: FayzAppConfig = {
-  name: 'BeautySoft',
+  name: 'Glow Studio',
   logo: React.createElement(Logo),
   // Icon-only, for square contexts like the connect/consent badge — the full
   // logo is a wordmark and gets cropped there.
@@ -738,7 +738,7 @@ export const beautyAppConfig: FayzAppConfig = {
   chat: {
     title: tl('Glow Assistant', 'Assistente Glow'),
     systemPrompt:
-      'You are the BeautySoft salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance.',
+      'You are the Glow Studio salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance.',
   },
   agentContract: {
     // Agent read-models the CRUD entities can't serve: staff_members is an

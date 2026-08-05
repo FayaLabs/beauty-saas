@@ -3138,7 +3138,7 @@
     "executionPlane": "client",
     "persona": {
       "name": "Assistente Glow",
-      "systemPrompt": "You are the BeautySoft salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance."
+      "systemPrompt": "You are the Glow Studio salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance."
     },
     "registries": [
       {
@@ -4771,13 +4771,16 @@
             "assistant": false,
             "fin_reconciliation": false,
             "marketing": false,
-            "reports": false
+            "reports": false,
+            "scribe": false
           },
           "limits": {
             "bookings_month": 150,
             "clients": 100,
             "locations": 1,
             "products": 25,
+            "scribe_documents_month": 0,
+            "scribe_minutes_month": 0,
             "users": 2
           }
         },
@@ -4803,13 +4806,16 @@
             "assistant": false,
             "fin_reconciliation": true,
             "marketing": true,
-            "reports": true
+            "reports": true,
+            "scribe": true
           },
           "limits": {
             "bookings_month": -1,
             "clients": -1,
             "locations": 1,
             "products": -1,
+            "scribe_documents_month": 100,
+            "scribe_minutes_month": 600,
             "users": 10
           }
         },
@@ -4837,7 +4843,8 @@
             "assistant": true,
             "fin_reconciliation": true,
             "marketing": true,
-            "reports": true
+            "reports": true,
+            "scribe": true
           },
           "limits": {
             "ai_credits_month": 1000,
@@ -4845,6 +4852,8 @@
             "clients": -1,
             "locations": -1,
             "products": -1,
+            "scribe_documents_month": 500,
+            "scribe_minutes_month": 3000,
             "users": -1
           }
         },
@@ -4866,7 +4875,7 @@
       }
     ]
   },
-  "contractHash": "56c5d8e77600836e18fcc09b1a93cfe0747de685b1e99c7f5caec01c9909e787",
+  "contractHash": "8011beb32addb0d132ed4fa90d01e108c4fabb90a180be9f99ede154092f35c3",
   "id": "beauty-saas",
   "limitDeclarations": [
     {
@@ -5046,7 +5055,7 @@
     }
   },
   "manifestVersion": 3,
-  "name": "BeautySoft",
+  "name": "Glow Studio",
   "permissions": {
     "defaultProfiles": [
       {
@@ -5872,7 +5881,7 @@
       "background": "260 12% 97%"
     },
     "font": "outfit",
-    "name": "BeautySoft",
+    "name": "Glow Studio",
     "preset": "classic_admin",
     "radius": "round",
     "shadow": "subtle",
