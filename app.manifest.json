@@ -42,6 +42,11 @@
         "label": "Estoque (acesso)"
       },
       {
+        "group": "Automate",
+        "id": "automations",
+        "label": "Automations"
+      },
+      {
         "group": "Vendas",
         "id": "sales",
         "label": "Vendas (acesso)"
@@ -73,6 +78,11 @@
       },
       {
         "group": "Engage",
+        "id": "marketing.landing-pages",
+        "label": "Páginas"
+      },
+      {
+        "group": "Engage",
         "id": "marketing.content",
         "label": "Conteúdo"
       },
@@ -82,9 +92,14 @@
         "label": "Blog"
       },
       {
-        "group": "Formulários",
+        "group": "Clientes",
         "id": "custom_forms",
-        "label": "Formulários"
+        "label": "Documentos e Formulários"
+      },
+      {
+        "group": "Clientes",
+        "id": "scribe",
+        "label": "Gravação de Atendimentos"
       },
       {
         "group": "Agenda",
@@ -2110,11 +2125,6 @@
             "type": "text"
           },
           {
-            "key": "address",
-            "label": "Address",
-            "type": "text"
-          },
-          {
             "key": "notes",
             "label": "Notes",
             "type": "textarea"
@@ -3423,7 +3433,7 @@
       },
       {
         "category": "Data",
-        "description": "Creates ONE new record of an entity (client, service, supplier, …). ALWAYS search first to avoid duplicates. Use ONLY the fields listed below for that entity. Do NOT interview the user field-by-field. Ask in chat only for required (*) fields you genuinely cannot infer, and call this tool the moment you have them — omit every optional field you were not given (its default applies; a boolean status like active defaults to on/true). The confirmation this opens is an EDITABLE FORM, not a yes/no receipt: the user reviews, fills and corrects anything there — including optionals — before it is written. Opening that form fast beats collecting everything in chat. Records that attach to another record: `address` holds the street address of a PERSON (client, contact, supplier, staff). A person record has NO street/city/postal_code fields of its own. To read where someone lives, search `address` with filters {\"owner_id\": <the person's id>} — a person with no address field is not a person without an address. To record one, create an `address` with owner_id set to the person's id. Never write an address into a notes field.\n\nFields by entity (* = required, send nothing else):\nlocation: name*, phone, city, state, address, country, postalCode, email, isHeadquarters, isActive, notes\nperson:customer: name*, email*, phone, dateOfBirth, notes, isActive, gender, origin, lifecycleStatus, stage, statusAlert, anamnesisNotes, hasAnamnesisAlert, visits, totalSpent, lastVisit\nentrada-da-lista-de-espera: clientId, professionalId, serviceId, requestedDate, preferredStartTime, preferredEndTime, priority, status, notes\nserviço: name*, description, durationMinutes*, price*, isActive\ncategoria-de-serviço: name*, sortOrder, isActive\nlocal-de-atendimento: name*, phone, city, state, address, country, postalCode, email, isHeadquarters, isActive, notes\ngrupo-de-locais: name*, sortOrder, isActive\nperson:contact: name*, email, phone, notes, isActive\nperson:supplier: name*, email, phone, notes, isActive\nperson:partner: name*, phone, isActive\nequipamento: name*, description, sku, status\npacote-de-serviços: name*, description, price*, validityDays, maxUses, isActive\ntabela-de-preços: name*, description, startsOn, endsOn, isDefault, sortOrder, isActive\nvariação-de-preço: name*, variationType*, valueType*, value*, firstAppointmentOnly, serviceFilterType*, serviceId, professionalFilterType*, professionalId, categoryFilterType*, categoryId, unitFilterType*, unitId, partnershipFilterType*, partnershipId, sortOrder, isActive\nagenda:holidays: name*, date*, recurring, description, isActive\nagenda:cancellation-reasons: name*, description, requiresNotes, sortOrder, isActive\nagenda:confirmation-channels: name*, channel*, template, sendOffsetHours, retryOffsetHours, isDefault, sortOrder, isActive\nagenda:schedule-rules: name*, scope*, startTime*, endTime*, slotDurationMinutes*, bufferMinutes, minAdvanceHours, maxAdvanceDays, maxConcurrent, allowOnlineBooking, isActive\nfinancial:payment-methods: name*, paymentMethodTypeId*, discountValue, interestValue, minInstallments, maxInstallments, isActive\nfinancial:chart-of-accounts: code*, name*, nodeType*, parentId, isActive\nfinancial:cost-centers: code*, name*, isActive\nfinancial:bank-accounts: name*, accountType*, bankName, accountNumber, agencyNumber, initialBalance, creditLimit, closingDay, dueDay, isActive\nfinancial:commission-rules: name*, priority*, valueType*, value*, description, isActive\nfinancial:price-tables: description*, type*, validFrom, validUntil, isActive\nfinancial:price-variations: name*, variationType*, valueType*, value*, firstAppointmentOnly, isActive\ninventory:suppliers: name*, phone, email, documentNumber, address, notes, isActive\ninventory:product-categories: name*, parentId, isActive\ninventory:stock-locations: name*, description, isActive\ncrm:stages: name*, pipelineId*, order*, color, probability, isWon, isLost\ncrm:lead-sources: name*, isActive\ncrm:tags: name*, slug, color, isActive\ncrm:activity-types: name*, icon, isActive\nmarketing:channels: label*, channelKey*, kind, icon, monthlySpend, isActive\nmarketing:origins: name*, isActive\ncustom_forms:form-categories: name*, icon, color, sortOrder, isActive\ncustom_forms:service-default-forms: serviceId*, templateId*, templateKind*, trigger*, isRequired, sortOrder, notes\ntasks:task-labels: name*, color, isActive",
+        "description": "Creates ONE new record of an entity (client, service, supplier, …). ALWAYS search first to avoid duplicates. Use ONLY the fields listed below for that entity. Do NOT interview the user field-by-field. Ask in chat only for required (*) fields you genuinely cannot infer, and call this tool the moment you have them — omit every optional field you were not given (its default applies; a boolean status like active defaults to on/true). The confirmation this opens is an EDITABLE FORM, not a yes/no receipt: the user reviews, fills and corrects anything there — including optionals — before it is written. Opening that form fast beats collecting everything in chat. Records that attach to another record: `address` holds the street address of a PERSON (client, contact, supplier, staff). A person record has NO street/city/postal_code fields of its own. To read where someone lives, search `address` with filters {\"owner_id\": <the person's id>} — a person with no address field is not a person without an address. To record one, create an `address` with owner_id set to the person's id. Never write an address into a notes field.\n\nFields by entity (* = required, send nothing else):\nlocation: name*, phone, city, state, address, country, postalCode, email, isHeadquarters, isActive, notes\nperson:customer: name*, email*, phone, dateOfBirth, notes, isActive, gender, origin, lifecycleStatus, stage, statusAlert, anamnesisNotes, hasAnamnesisAlert, visits, totalSpent, lastVisit\nentrada-da-lista-de-espera: clientId, professionalId, serviceId, requestedDate, preferredStartTime, preferredEndTime, priority, status, notes\nserviço: name*, description, durationMinutes*, price*, isActive\ncategoria-de-serviço: name*, sortOrder, isActive\nlocal-de-atendimento: name*, phone, city, state, address, country, postalCode, email, isHeadquarters, isActive, notes\ngrupo-de-locais: name*, sortOrder, isActive\nperson:contact: name*, email, phone, notes, isActive\nperson:supplier: name*, email, phone, notes, isActive\nperson:partner: name*, phone, isActive\nequipamento: name*, description, sku, status\npacote-de-serviços: name*, description, price*, validityDays, maxUses, isActive\ntabela-de-preços: name*, description, startsOn, endsOn, isDefault, sortOrder, isActive\nvariação-de-preço: name*, variationType*, valueType*, value*, firstAppointmentOnly, serviceFilterType*, serviceId, professionalFilterType*, professionalId, categoryFilterType*, categoryId, unitFilterType*, unitId, partnershipFilterType*, partnershipId, sortOrder, isActive\nagenda:holidays: name*, date*, recurring, description, isActive\nagenda:cancellation-reasons: name*, description, requiresNotes, sortOrder, isActive\nagenda:confirmation-channels: name*, channel*, template, sendOffsetHours, retryOffsetHours, isDefault, sortOrder, isActive\nagenda:schedule-rules: name*, scope*, startTime*, endTime*, slotDurationMinutes*, bufferMinutes, minAdvanceHours, maxAdvanceDays, maxConcurrent, allowOnlineBooking, isActive\nfinancial:payment-methods: name*, paymentMethodTypeId*, discountValue, interestValue, minInstallments, maxInstallments, isActive\nfinancial:chart-of-accounts: code*, name*, nodeType*, parentId, isActive\nfinancial:cost-centers: code*, name*, isActive\nfinancial:bank-accounts: name*, accountType*, bankName, accountNumber, agencyNumber, initialBalance, creditLimit, closingDay, dueDay, isActive\nfinancial:commission-rules: name*, priority*, valueType*, value*, description, isActive\nfinancial:price-tables: description*, type*, validFrom, validUntil, isActive\nfinancial:price-variations: name*, variationType*, valueType*, value*, firstAppointmentOnly, isActive\ninventory:suppliers: name*, phone, email, documentNumber, notes, isActive\ninventory:product-categories: name*, parentId, isActive\ninventory:stock-locations: name*, description, isActive\ncrm:stages: name*, pipelineId*, order*, color, probability, isWon, isLost\ncrm:lead-sources: name*, isActive\ncrm:tags: name*, slug, color, isActive\ncrm:activity-types: name*, icon, isActive\nmarketing:channels: label*, channelKey*, kind, icon, monthlySpend, isActive\nmarketing:origins: name*, isActive\ncustom_forms:form-categories: name*, icon, color, sortOrder, isActive\ncustom_forms:service-default-forms: serviceId*, templateId*, templateKind*, trigger*, isRequired, sortOrder, notes\ntasks:task-labels: name*, color, isActive",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -3494,7 +3504,7 @@
       },
       {
         "category": "Data",
-        "description": "Updates fields on an EXISTING record (add an email, fix a phone, change a name…). Use the record id already known from this conversation or from a search. Only send the fields being changed, and only fields listed below for that entity. The user confirms before anything is written.\n\nFields by entity (* = required, send nothing else):\nlocation: name*, phone, city, state, address, country, postalCode, email, isHeadquarters, isActive, notes\nperson:customer: name*, email*, phone, dateOfBirth, notes, isActive, gender, origin, lifecycleStatus, stage, statusAlert, anamnesisNotes, hasAnamnesisAlert, visits, totalSpent, lastVisit\nentrada-da-lista-de-espera: clientId, professionalId, serviceId, requestedDate, preferredStartTime, preferredEndTime, priority, status, notes\nserviço: name*, description, durationMinutes*, price*, isActive\ncategoria-de-serviço: name*, sortOrder, isActive\nlocal-de-atendimento: name*, phone, city, state, address, country, postalCode, email, isHeadquarters, isActive, notes\ngrupo-de-locais: name*, sortOrder, isActive\nperson:contact: name*, email, phone, notes, isActive\nperson:supplier: name*, email, phone, notes, isActive\nperson:partner: name*, phone, isActive\nequipamento: name*, description, sku, status\npacote-de-serviços: name*, description, price*, validityDays, maxUses, isActive\ntabela-de-preços: name*, description, startsOn, endsOn, isDefault, sortOrder, isActive\nvariação-de-preço: name*, variationType*, valueType*, value*, firstAppointmentOnly, serviceFilterType*, serviceId, professionalFilterType*, professionalId, categoryFilterType*, categoryId, unitFilterType*, unitId, partnershipFilterType*, partnershipId, sortOrder, isActive\nagenda:holidays: name*, date*, recurring, description, isActive\nagenda:cancellation-reasons: name*, description, requiresNotes, sortOrder, isActive\nagenda:confirmation-channels: name*, channel*, template, sendOffsetHours, retryOffsetHours, isDefault, sortOrder, isActive\nagenda:schedule-rules: name*, scope*, startTime*, endTime*, slotDurationMinutes*, bufferMinutes, minAdvanceHours, maxAdvanceDays, maxConcurrent, allowOnlineBooking, isActive\nfinancial:payment-methods: name*, paymentMethodTypeId*, discountValue, interestValue, minInstallments, maxInstallments, isActive\nfinancial:chart-of-accounts: code*, name*, nodeType*, parentId, isActive\nfinancial:cost-centers: code*, name*, isActive\nfinancial:bank-accounts: name*, accountType*, bankName, accountNumber, agencyNumber, initialBalance, creditLimit, closingDay, dueDay, isActive\nfinancial:commission-rules: name*, priority*, valueType*, value*, description, isActive\nfinancial:price-tables: description*, type*, validFrom, validUntil, isActive\nfinancial:price-variations: name*, variationType*, valueType*, value*, firstAppointmentOnly, isActive\ninventory:suppliers: name*, phone, email, documentNumber, address, notes, isActive\ninventory:product-categories: name*, parentId, isActive\ninventory:stock-locations: name*, description, isActive\ncrm:stages: name*, pipelineId*, order*, color, probability, isWon, isLost\ncrm:lead-sources: name*, isActive\ncrm:tags: name*, slug, color, isActive\ncrm:activity-types: name*, icon, isActive\nmarketing:channels: label*, channelKey*, kind, icon, monthlySpend, isActive\nmarketing:origins: name*, isActive\ncustom_forms:form-categories: name*, icon, color, sortOrder, isActive\ncustom_forms:service-default-forms: serviceId*, templateId*, templateKind*, trigger*, isRequired, sortOrder, notes\ntasks:task-labels: name*, color, isActive",
+        "description": "Updates fields on an EXISTING record (add an email, fix a phone, change a name…). Use the record id already known from this conversation or from a search. Only send the fields being changed, and only fields listed below for that entity. The user confirms before anything is written.\n\nFields by entity (* = required, send nothing else):\nlocation: name*, phone, city, state, address, country, postalCode, email, isHeadquarters, isActive, notes\nperson:customer: name*, email*, phone, dateOfBirth, notes, isActive, gender, origin, lifecycleStatus, stage, statusAlert, anamnesisNotes, hasAnamnesisAlert, visits, totalSpent, lastVisit\nentrada-da-lista-de-espera: clientId, professionalId, serviceId, requestedDate, preferredStartTime, preferredEndTime, priority, status, notes\nserviço: name*, description, durationMinutes*, price*, isActive\ncategoria-de-serviço: name*, sortOrder, isActive\nlocal-de-atendimento: name*, phone, city, state, address, country, postalCode, email, isHeadquarters, isActive, notes\ngrupo-de-locais: name*, sortOrder, isActive\nperson:contact: name*, email, phone, notes, isActive\nperson:supplier: name*, email, phone, notes, isActive\nperson:partner: name*, phone, isActive\nequipamento: name*, description, sku, status\npacote-de-serviços: name*, description, price*, validityDays, maxUses, isActive\ntabela-de-preços: name*, description, startsOn, endsOn, isDefault, sortOrder, isActive\nvariação-de-preço: name*, variationType*, valueType*, value*, firstAppointmentOnly, serviceFilterType*, serviceId, professionalFilterType*, professionalId, categoryFilterType*, categoryId, unitFilterType*, unitId, partnershipFilterType*, partnershipId, sortOrder, isActive\nagenda:holidays: name*, date*, recurring, description, isActive\nagenda:cancellation-reasons: name*, description, requiresNotes, sortOrder, isActive\nagenda:confirmation-channels: name*, channel*, template, sendOffsetHours, retryOffsetHours, isDefault, sortOrder, isActive\nagenda:schedule-rules: name*, scope*, startTime*, endTime*, slotDurationMinutes*, bufferMinutes, minAdvanceHours, maxAdvanceDays, maxConcurrent, allowOnlineBooking, isActive\nfinancial:payment-methods: name*, paymentMethodTypeId*, discountValue, interestValue, minInstallments, maxInstallments, isActive\nfinancial:chart-of-accounts: code*, name*, nodeType*, parentId, isActive\nfinancial:cost-centers: code*, name*, isActive\nfinancial:bank-accounts: name*, accountType*, bankName, accountNumber, agencyNumber, initialBalance, creditLimit, closingDay, dueDay, isActive\nfinancial:commission-rules: name*, priority*, valueType*, value*, description, isActive\nfinancial:price-tables: description*, type*, validFrom, validUntil, isActive\nfinancial:price-variations: name*, variationType*, valueType*, value*, firstAppointmentOnly, isActive\ninventory:suppliers: name*, phone, email, documentNumber, notes, isActive\ninventory:product-categories: name*, parentId, isActive\ninventory:stock-locations: name*, description, isActive\ncrm:stages: name*, pipelineId*, order*, color, probability, isWon, isLost\ncrm:lead-sources: name*, isActive\ncrm:tags: name*, slug, color, isActive\ncrm:activity-types: name*, icon, isActive\nmarketing:channels: label*, channelKey*, kind, icon, monthlySpend, isActive\nmarketing:origins: name*, isActive\ncustom_forms:form-categories: name*, icon, color, sortOrder, isActive\ncustom_forms:service-default-forms: serviceId*, templateId*, templateKind*, trigger*, isRequired, sortOrder, notes\ntasks:task-labels: name*, color, isActive",
         "execution": {
           "entity": "*",
           "kind": "entity_read",
@@ -4714,6 +4724,31 @@
           "type": "object"
         },
         "pluginId": "tasks"
+      },
+      {
+        "category": "Atendimentos",
+        "description": "Lista atendimentos gravados, com data, duração e status.",
+        "id": "scribe.list-sessions",
+        "mode": "read",
+        "name": "listScribeSessions",
+        "parameters": {
+          "properties": {
+            "status": {
+              "description": "Filtra pelo status da sessão",
+              "type": "string"
+            },
+            "subjectId": {
+              "description": "Filtra pelo id do titular",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "permission": {
+          "action": "read",
+          "feature": "scribe"
+        },
+        "pluginId": "scribe"
       }
     ]
   },
@@ -4831,7 +4866,7 @@
       }
     ]
   },
-  "contractHash": "4e4f113bcb49ea472085264c341ff8e9c04979cd034574964e6fa32e0e70943d",
+  "contractHash": "56c5d8e77600836e18fcc09b1a93cfe0747de685b1e99c7f5caec01c9909e787",
   "id": "beauty-saas",
   "limitDeclarations": [
     {
@@ -4911,6 +4946,18 @@
       "label": "Documents / month",
       "period": "month",
       "table": "documents"
+    },
+    {
+      "key": "scribe_minutes_month",
+      "label": "Minutos de gravação por mês",
+      "period": "month",
+      "table": "plg_scribe_sessions"
+    },
+    {
+      "key": "scribe_documents_month",
+      "label": "Documentos gerados por mês",
+      "period": "month",
+      "table": "plg_scribe_generations"
     }
   ],
   "locale": {
@@ -5053,6 +5100,12 @@
             "edit",
             "delete"
           ],
+          "custom_forms": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
           "dashboard": [
             "read"
           ],
@@ -5149,6 +5202,12 @@
           ],
           "sales": [
             "read"
+          ],
+          "scribe": [
+            "read",
+            "create",
+            "edit",
+            "delete"
           ],
           "services": [
             "read",
@@ -5218,6 +5277,12 @@
             "edit",
             "delete"
           ],
+          "custom_forms": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
           "dashboard": [
             "read"
           ],
@@ -5315,6 +5380,12 @@
           "sales": [
             "read"
           ],
+          "scribe": [
+            "read",
+            "create",
+            "edit",
+            "delete"
+          ],
           "services": [
             "read",
             "create",
@@ -5364,6 +5435,11 @@
           "crm_quotes": [
             "read",
             "create"
+          ],
+          "custom_forms": [
+            "read",
+            "create",
+            "edit"
           ],
           "dashboard": [
             "read"
@@ -5418,8 +5494,18 @@
           "clients": [
             "read"
           ],
+          "custom_forms": [
+            "read",
+            "create",
+            "edit"
+          ],
           "dashboard": [
             "read"
+          ],
+          "scribe": [
+            "read",
+            "create",
+            "edit"
           ],
           "services": [
             "read"
@@ -5569,6 +5655,16 @@
         "group": "Clientes",
         "id": "clients",
         "label": "Clientes"
+      },
+      {
+        "group": "Clientes",
+        "id": "custom_forms",
+        "label": "Documentos e Formulários"
+      },
+      {
+        "group": "Clientes",
+        "id": "scribe",
+        "label": "Gravação de Atendimentos"
       },
       {
         "group": "Cadastros",
@@ -5733,6 +5829,9 @@
           "id": "inventory"
         },
         {
+          "id": "automations"
+        },
+        {
           "id": "crm"
         },
         {
@@ -5746,12 +5845,16 @@
         },
         {
           "id": "tasks"
+        },
+        {
+          "id": "scribe"
         }
       ],
       "scaffold": "admin"
     }
   },
   "theme": {
+    "__kind": "saas-theme",
     "brand": "260 30% 45%",
     "colors": {
       "accent": "260 35% 94%",

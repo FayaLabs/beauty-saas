@@ -1,7 +1,7 @@
-import { tl } from '../i18n/tl'
-import type { BeautyBilling } from '../types/sdk-contract'
+import { tl } from '@fayz-ai/saas'
+import type { FayzBillingConfig } from '@fayz-ai/saas'
 
-export const beautyBilling: BeautyBilling = {
+export const beautyBilling: FayzBillingConfig = {
   plans: [
     {
       // Freemium base tier. Ids follow the pool's `tenants.plan` vocabulary
@@ -23,8 +23,11 @@ export const beautyBilling: BeautyBilling = {
       // reports and financial reconciliation. 'forms avançado' / blog have no
       // feature id in this app's permissions.ts, so they are not feature-gated.
       entitlements: {
-        features: { assistant: false, marketing: false, reports: false, fin_reconciliation: false },
-        limits: { users: 2, locations: 1, clients: 100, bookings_month: 150, products: 25 },
+        features: { assistant: false, marketing: false, reports: false, fin_reconciliation: false, scribe: false },
+        // scribe_minutes_month tem custo REAL por minuto (STT ~US$0,0043/min):
+        // 40 min de atendimento ≈ US$0,17. Por isso a cota existe desde o dia
+        // um em vez de "depois" — sem ela um tenant no free custa dinheiro.
+        limits: { users: 2, locations: 1, clients: 100, bookings_month: 150, products: 25, scribe_minutes_month: 0, scribe_documents_month: 0 },
       },
     },
     {
@@ -43,8 +46,8 @@ export const beautyBilling: BeautyBilling = {
       currency: 'BRL',
       popular: true,
       entitlements: {
-        features: { assistant: false, marketing: true, reports: true, fin_reconciliation: true },
-        limits: { users: 10, locations: 1, clients: -1, bookings_month: -1, products: -1 },
+        features: { assistant: false, marketing: true, reports: true, fin_reconciliation: true, scribe: true },
+        limits: { users: 10, locations: 1, clients: -1, bookings_month: -1, products: -1, scribe_minutes_month: 600, scribe_documents_month: 100 },
       },
     },
     {
@@ -63,8 +66,10 @@ export const beautyBilling: BeautyBilling = {
       prices: { monthly: 199, yearly: 1909 },
       currency: 'BRL',
       entitlements: {
-        features: { assistant: true, marketing: true, reports: true, fin_reconciliation: true },
-        limits: { users: -1, locations: -1, clients: -1, bookings_month: -1, products: -1, ai_credits_month: 1000 },
+        features: { assistant: true, marketing: true, reports: true, fin_reconciliation: true, scribe: true },
+        // Nem no Premium é -1: minuto de STT é custo variável direto, e
+        // "ilimitado" num custo variável é um cheque em branco.
+        limits: { users: -1, locations: -1, clients: -1, bookings_month: -1, products: -1, ai_credits_month: 1000, scribe_minutes_month: 3000, scribe_documents_month: 500 },
       },
     },
   ],

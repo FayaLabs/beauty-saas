@@ -1,5 +1,5 @@
+import { tl } from '@fayz-ai/saas'
 import type { EntityDef } from '@fayz-ai/saas'
-import { tl } from '../i18n/tl'
 
 // ---------------------------------------------------------------------------
 // Staff — person archetype + extension table

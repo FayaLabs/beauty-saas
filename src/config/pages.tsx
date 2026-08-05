@@ -1,12 +1,11 @@
 import React from 'react'
-import { createCrudPage } from '@fayz-ai/saas'
+import { createCrudPage, tl } from '@fayz-ai/saas'
 import { createPlaceholder } from '../pages/Placeholder'
 import { CancellationsFollowUpPage } from '../pages/agenda/CancellationsFollowUpPage'
 import { ConfirmationsPage } from '../pages/agenda/ConfirmationsPage'
 import { ExecutionChecklistPage } from '../pages/agenda/ExecutionChecklistPage'
 import { WaitlistPage } from '../pages/agenda/WaitlistPage'
-import { tl } from '../i18n/tl'
-import type { BeautyCustomPage } from '../types/sdk-contract'
+import type { CustomPage } from '@fayz-ai/saas'
 import {
   serviceEntity,
   serviceDefaultProductEntity,
@@ -68,7 +67,7 @@ function ClientRegistryAliasRedirect() {
   return null
 }
 
-export const beautyPages: BeautyCustomPage[] = [
+export const beautyPages: CustomPage[] = [
   {
     path: '/clients',
     label: tl('Clients', 'Clientes'),

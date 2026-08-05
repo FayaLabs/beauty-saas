@@ -1,8 +1,7 @@
-import { type EntityDef } from '@fayz-ai/saas'
-import { ListView } from '@fayz-ai/ui'
+import { type EntityDef, tl } from '@fayz-ai/saas'
+import { ListView } from '@fayz-ai/saas/ui'
 import { CalendarDays, CheckCircle2, CircleDashed, CircleEllipsis, DollarSign, ExternalLink, FileText, ShoppingBag } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { tl } from '../../i18n/tl'
 
 type ClientOrderStage = 'draft' | 'quoted' | 'booked' | 'invoiced' | 'paid' | 'partial' | 'overdue' | 'cancelled' | 'no_show' | 'completed'
 

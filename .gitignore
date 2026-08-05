@@ -4,6 +4,8 @@ dist/
 .env.local
 .DS_Store
 *.png
+# ...mas os assets de /public sao produto, nao screenshot de QA.
+!public/**/*.png
 .playwright-mcp/
 
 # Playwright / QA e2e

@@ -3,7 +3,11 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "jsx": "react-jsx",
     "strict": true,
     "esModuleInterop": true,
@@ -14,21 +18,83 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@fayz-ai/sdk": ["../../fayz-sdk/packages/sdk/src"],
-      "@fayz-ai/sdk/*": ["../../fayz-sdk/packages/sdk/src/*"],
-      "@fayz-ai/core": ["../../fayz-sdk/packages/core/src"],
-      "@fayz-ai/auth": ["../../fayz-sdk/packages/auth/src"],
-      "@fayz-ai/ui": ["../../fayz-sdk/packages/ui/src"],
-      "@fayz-ai/ui/*": ["../../fayz-sdk/packages/ui/src/*"],
-      "@fayz-ai/saas": ["../../fayz-sdk/packages/saas/src"],
-      "@fayz-ai/saas/*": ["../../fayz-sdk/packages/saas/src/*"],
-      "@fayz-ai/shop": ["../../fayz-sdk/packages/shop/src"],
-      "@fayz-ai/db": ["../../fayz-sdk/packages/db/src"],
-      "@fayz-ai/plugin-crm/*": ["../../fayz-sdk/plugins/plugin-crm/src/*"],
-      "@fayz-ai/plugin-*": ["../../fayz-sdk/plugins/plugin-*/src"]
+      "@fayz-ai/auth": [
+        "../../fayz-sdk/packages/auth/src"
+      ],
+      "@fayz-ai/core": [
+        "../../fayz-sdk/packages/core/src"
+      ],
+      "@fayz-ai/courses": [
+        "../../fayz-sdk/packages/courses/src"
+      ],
+      "@fayz-ai/db": [
+        "../../fayz-sdk/packages/db/src"
+      ],
+      "@fayz-ai/saas": [
+        "../../fayz-sdk/packages/saas/src"
+      ],
+      "@fayz-ai/sdk": [
+        "../../fayz-sdk/packages/sdk/src"
+      ],
+      "@fayz-ai/shop": [
+        "../../fayz-sdk/packages/shop/src"
+      ],
+      "@fayz-ai/ui": [
+        "../../fayz-sdk/packages/ui/src"
+      ],
+      "@/*": [
+        "./src/*"
+      ],
+      "@fayz-ai/auth/*": [
+        "../../fayz-sdk/packages/auth/src/*"
+      ],
+      "@fayz-ai/core/*": [
+        "../../fayz-sdk/packages/core/src/*"
+      ],
+      "@fayz-ai/courses/*": [
+        "../../fayz-sdk/packages/courses/src/*"
+      ],
+      "@fayz-ai/db/*": [
+        "../../fayz-sdk/packages/db/src/*"
+      ],
+      "@fayz-ai/plugin-*": [
+        "../../fayz-sdk/plugins/plugin-*/src"
+      ],
+      "@fayz-ai/plugin-agenda/*": [
+        "../../fayz-sdk/plugins/plugin-agenda/src/*"
+      ],
+      "@fayz-ai/plugin-banking-br/*": [
+        "../../fayz-sdk/plugins/plugin-banking-br/src/*"
+      ],
+      "@fayz-ai/plugin-crm/*": [
+        "../../fayz-sdk/plugins/plugin-crm/src/*"
+      ],
+      "@fayz-ai/plugin-financial/*": [
+        "../../fayz-sdk/plugins/plugin-financial/src/*"
+      ],
+      "@fayz-ai/plugin-shop/*": [
+        "../../fayz-sdk/plugins/plugin-shop/src/*"
+      ],
+      "@fayz-ai/saas/*": [
+        "../../fayz-sdk/packages/saas/src/*"
+      ],
+      "@fayz-ai/sdk/*": [
+        "../../fayz-sdk/packages/sdk/src/*"
+      ],
+      "@fayz-ai/shop/*": [
+        "../../fayz-sdk/packages/shop/src/*"
+      ],
+      "@fayz-ai/ui/*": [
+        "../../fayz-sdk/packages/ui/src/*"
+      ]
     }
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }

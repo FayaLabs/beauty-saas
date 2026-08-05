@@ -1,11 +1,11 @@
 import type { EntityDef } from '@fayz-ai/saas'
-import { createClientOrdersProvider } from '@fayz-ai/saas'
+import { createClientOrdersProvider, tl } from '@fayz-ai/saas'
 import { createElement } from 'react'
 import { ClientCareProfileTab } from '../components/clients/ClientCareProfileTab'
 import { ClientFinancialStatementTab } from '../components/clients/ClientFinancialStatementTab'
 import { ClientOrdersCanonicalTab } from '../components/clients/ClientOrdersCanonicalTab'
+import { ClientScribeTab } from '../components/clients/ClientScribeTab'
 import { ClientTimelineTab } from '../components/clients/ClientTimelineTab'
-import { tl } from '../i18n/tl'
 
 export interface BeautyClient {
   id: string
@@ -149,6 +149,15 @@ export const clientEntity: EntityDef<BeautyClient> = {
           window.location.hash = `/financial/receivables/detail/${orderId}`
         },
       },
+    },
+    {
+      // Atalho do v0. O lugar certo de "Iniciar atendimento" é o cabeçalho, ao
+      // lado de Editar — mas CrudDetailPage não expõe seam de ação lá. Ver o
+      // comentário em ClientScribeTab.
+      id: 'scribe',
+      label: tl('Session', 'Atendimento'),
+      icon: 'Mic',
+      component: ClientScribeTab as never,
     },
     {
       id: 'timeline',

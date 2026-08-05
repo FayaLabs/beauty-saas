@@ -1,5 +1,6 @@
-import { createReportsPlugin, type ReportGrain } from '@fayz-ai/plugin-reports'
-import { tl } from '../i18n/tl'
+import { tl } from '@fayz-ai/saas'
+import { createAnalyticsPlugin, type ReportGrain } from '@fayz-ai/plugin-reports'
+import { beautyAnalyticsCards } from './analytics'
 
 function reportContract(sourceView: string, grain: ReportGrain, canonicalOwner: string) {
   return {
@@ -15,12 +16,30 @@ function reportDescription(en: string, pt: string) {
   return tl(en, pt)
 }
 
-export const beautyReportsPlugin = createReportsPlugin({
+// Análises = painel (métricas padrão, ./analytics.ts) + catálogo de relatórios.
+// Os relatórios abaixo continuam exatamente como estavam: viram cards de tabela
+// na lista, sem bloco no painel. Quem quiser subir um deles para o painel só
+// precisa dar a ele dimensões/medidas e um `dashboard`.
+export const beautyReportsPlugin = createAnalyticsPlugin({
   currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
   navPosition: 10,
+  createdBy: 'BeautySoft',
+  cards: beautyAnalyticsCards,
   labels: {
-    pageTitle: tl('Reports', 'Relatórios'),
-    pageSubtitle: tl('Access complete reports for analysis and decision making', 'Acesse relatórios completos para análise e tomada de decisão'),
+    analytics: tl('Analytics', 'Análises'),
+    reports: tl('Reports', 'Relatórios'),
+    liveView: tl('Live View', 'Ao vivo'),
+    overviewSubtitle: tl('Key metrics for your salon', 'Métricas principais do seu salão'),
+    reportsSubtitle: tl('Access complete reports for analysis and decision making', 'Acesse relatórios completos para análise e tomada de decisão'),
+    searchReports: tl('Search reports', 'Buscar relatórios'),
+    category: tl('Category', 'Categoria'),
+    createdBy: tl('Created by', 'Criado por'),
+    allCategories: tl('All categories', 'Todas as categorias'),
+    allCreatedBy: tl('All authors', 'Todos os autores'),
+    lastViewed: tl('Last viewed', 'Visto por último'),
+    name: tl('Name', 'Nome'),
+    results: tl('reports', 'relatórios'),
+    noResults: tl('No results found.', 'Nenhum resultado encontrado.'),
   },
   reports: [
     {

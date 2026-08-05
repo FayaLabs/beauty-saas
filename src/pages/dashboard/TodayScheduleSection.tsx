@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Skeleton } from '@fayz-ai/saas/ui'
 import { listRows } from '../../lib/dashboard-data'
-import type { DashboardSectionProps } from '../../types/sdk-contract'
+import type { DashboardSectionProps } from '@fayz-ai/plugin-dashboard'
 
 interface TodayAppointment {
   id: string
