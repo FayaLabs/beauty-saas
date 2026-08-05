@@ -22,6 +22,7 @@ import { beautyScribeOptions } from './scribe'
 import { serviceDefaultTemplateEntity } from '../types/service'
 import { beautyTheme } from './theme'
 import { appTranslations } from '../i18n'
+import { asset } from '../assets'
 import {
   appointmentCancellationReasonEntity,
   appointmentConfirmationChannelEntity,
@@ -430,9 +431,9 @@ export const beautyAppConfig: FayzAppConfig = {
       'Agendamento, gestão de clientes, controle financeiro e marketing — tudo em uma plataforma feita para profissionais de beleza.',
     ),
     loginAmbassadors: [
-      { name: 'Ana Hickmann', role: tl('Ambassador', 'Embaixadora'), image: '/ambassadors/ana-hickmann.jpg' },
-      { name: 'Camila Duarte', role: tl('Hairstylist', 'Cabeleireira'), image: '/ambassadors/pro-1.jpg' },
-      { name: 'Renata Alves', role: tl('Esthetician', 'Esteticista'), image: '/ambassadors/pro-2.jpg' },
+      { name: 'Ana Hickmann', role: tl('Ambassador', 'Embaixadora'), image: asset('ambassadors/ana-hickmann.jpg') },
+      { name: 'Camila Duarte', role: tl('Hairstylist', 'Cabeleireira'), image: asset('ambassadors/pro-1.jpg') },
+      { name: 'Renata Alves', role: tl('Esthetician', 'Esteticista'), image: asset('ambassadors/pro-2.jpg') },
       // Espaço para mais embaixadoras: adicione novas entradas aqui.
     ],
     loginAmbassadorsLabel: tl('+2k beauty pros', '+2 mil profissionais de beleza'),
