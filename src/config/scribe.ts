@@ -140,10 +140,18 @@ export const beautyEvolutionPreset: NarrativeTemplatePreset = {
 export const beautyScribeOptions: ScribePluginOptions = {
   subjectKind: 'customer',
   contextEntities: ['person', 'appointment'],
+  // O atendimento É o produto aqui, então o plugin nasce ligado e quem decide
+  // se ele existe na conta é o PLANO (features.scribe em ./billing) — não uma
+  // ativação manual para a qual não existe tela: a única que ligaria o plugin
+  // é a aba de configurações dele, que não renderiza até ele estar ligado.
+  enabledByDefault: true,
   labels: {
-    sessionSingular: tl('Session', 'Atendimento'),
-    sessionPlural: tl('Sessions', 'Atendimentos'),
-    start: tl('Start session', 'Iniciar atendimento'),
+    // "Atendimento" é o encontro (o que a agenda marca); o que este plugin
+    // possui é a GRAVAÇÃO dele. Misturar os dois nomes foi o que fez a aba do
+    // scribe brigar com a aba de atendimento da ficha do cliente.
+    sessionSingular: tl('Recording', 'Gravação'),
+    sessionPlural: tl('Recordings', 'Gravações'),
+    start: tl('Record session', 'Gravar atendimento'),
     pause: tl('Pause', 'Pausar'),
     resume: tl('Resume', 'Retomar'),
     finish: tl('Finish', 'Finalizar'),

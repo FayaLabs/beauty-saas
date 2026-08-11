@@ -151,12 +151,17 @@ export const clientEntity: EntityDef<BeautyClient> = {
       },
     },
     {
-      // Atalho do v0. O lugar certo de "Iniciar atendimento" é o cabeçalho, ao
-      // lado de Editar — mas CrudDetailPage não expõe seam de ação lá. Ver o
-      // comentário em ClientScribeTab.
+      // O verbo saiu daqui: "Iniciar atendimento" agora é widget do próprio
+      // plugin na zona `clients.detail.header.actions`, ao lado de Editar. Esta
+      // aba ficou só com o histórico das gravações.
+      //
+      // `requiresWidgetZone` amarra a aba ao plugin estar ligado no tenant. Sem
+      // isso ela aparecia com o scribe desligado, e o botão que morava aqui
+      // disparava `scribe:start` para um ouvinte que nunca tinha montado.
       id: 'scribe',
-      label: tl('Session', 'Atendimento'),
+      label: tl('Recordings', 'Gravações'),
       icon: 'Mic',
+      requiresWidgetZone: 'clients.detail.header.actions',
       component: ClientScribeTab as never,
     },
     {
