@@ -1,32 +1,41 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { FileText, Mic, Sparkles } from 'lucide-react'
-import { Badge, Button, Card, CardContent } from '@fayz-ai/saas/ui'
+import { FileText, Sparkles } from 'lucide-react'
+import { Badge, Card, CardContent, Skeleton } from '@fayz-ai/saas/ui'
 import { tl } from '@fayz-ai/saas'
 import {
+  ScribeLivePanel,
+  ScribeSessionPage,
   fetchSessionsForSubject,
   formatElapsed,
   isCaptureSupported,
-  requestScribeStart,
   useScribeStore,
   type ScribeSession,
 } from '@fayz-ai/plugin-scribe'
+import { beautyScribeOptions } from '../../config/scribe'
 
 // ---------------------------------------------------------------------------
-// A entrada do atendimento gravado na ficha do cliente.
+// O histórico de atendimentos gravados na ficha do cliente.
 //
-// UMA ABA É A AFFORDANCE ERRADA para um verbo primário — "Iniciar atendimento"
-// devia estar no cabeçalho, ao lado de Editar. Mas `CrudDetailPage` não tem
-// nenhum ponto de extensão ali: a linha do hero é hardcoded em onEdit/onDelete
-// (packages/saas/src/crud/CrudDetailPage.tsx:363-377), e a única outra zona é
-// um WidgetSlot que renderiza ABAIXO das abas.
+// O verbo NÃO mora mais aqui. "Iniciar atendimento" é widget do plugin-scribe
+// na zona `clients.detail.header.actions` do CrudDetailPage — ao lado de
+// Editar, que é onde uma ação primária pertence. Uma aba é um lugar, não um
+// botão: enquanto o verbo esteve aqui, era preciso descobrir a aba para achar
+// a ação.
 //
-// O conserto certo é uma zona `${entityId}.detail.header.actions` no SDK — ~5
-// linhas, e toda plugin vai querer ("Iniciar atendimento", "Abrir conversa",
-// "Gerar cobrança"). Está listado no v1 do plano. Esta aba destrava o v0 sem
-// depender daquele PR.
+// Esta aba sobrou com o que de fato é conteúdo: a gravação em curso (com a
+// transcrição correndo) e o histórico das anteriores. Ela só é registrada
+// quando o widget do plugin existe (`requiresWidgetZone` em types/client.ts),
+// ou seja, quando o plugin está ligado no tenant.
 //
-// O disparo é por evento (`scribe:start`), espelhando `agenda:open-booking`
-// (src/config/app.tsx:544): a ficha do cliente não passa a depender do scribe.
+// A transcrição ao vivo aparece AQUI e não numa aba própria do assistente: o
+// lugar de tudo que é daquele encontro é o encontro, não uma segunda tela
+// paralela. O assistente mantém só o controle (pill do FAB e barra) — que é o
+// que precisa existir quando a pessoa está longe desta ficha.
+//
+// Abrir uma gravação também não sai daqui: é mestre-detalhe DENTRO da aba. A
+// rota `#/scribe/:id` trocava a página inteira, e com ela o contexto — o nome
+// do cliente, as outras abas, o caminho de volta. Voltar de lá caía na lista de
+// gravações solta, não na ficha de onde a pessoa saiu.
 // ---------------------------------------------------------------------------
 
 const STATUS_LABELS: Record<string, string> = {
@@ -59,10 +68,10 @@ function formatDate(value: string): string {
 export function ClientScribeTab({ item }: { item?: { id?: string; personId?: string; name?: string } }) {
   const [sessions, setSessions] = useState<ScribeSession[]>([])
   const [loading, setLoading] = useState(true)
+  const [openSessionId, setOpenSessionId] = useState<string | null>(null)
 
   // `clients` é a tabela de extensão; o titular da sessão é a linha de `people`.
   const subjectId = item?.personId ?? item?.id
-  const subjectName = item?.name
 
   // Redesenha a lista quando a gravação corrente termina, para a sessão nova
   // aparecer sem o usuário precisar recarregar a ficha.
@@ -85,9 +94,42 @@ export function ClientScribeTab({ item }: { item?: { id?: string; personId?: str
   }, [load, captureState])
 
   const supported = isCaptureSupported()
+  // A gravação em curso é DESTE cliente? Duas fichas abertas não podem exibir
+  // a mesma sessão como se fosse de ambas.
+  const liveSubjectId = useScribeStore((s) => s.subjectId)
+  const liveState = useScribeStore((s) => s.state)
+  const isLiveHere =
+    !!subjectId &&
+    liveSubjectId === subjectId &&
+    (liveState === 'recording' || liveState === 'paused' || liveState === 'interrupted')
+
+  if (openSessionId) {
+    return (
+      <ScribeSessionPage
+        sessionId={openSessionId}
+        embedded
+        labels={beautyScribeOptions.labels as never}
+        presets={beautyScribeOptions.templatePresets ?? []}
+        stt={beautyScribeOptions.stt}
+        // O default do plugin quando a vertical não declara um.
+        generateEndpoint={beautyScribeOptions.generateEndpoint ?? 'scribe-generate'}
+        onBack={() => setOpenSessionId(null)}
+      />
+    )
+  }
 
   return (
     <div className="space-y-4">
+      {isLiveHere && (
+        <div className="overflow-hidden rounded-xl border">
+          <ScribeLivePanel
+            labels={beautyScribeOptions.labels as never}
+            // Finalizar abre a gravação recém-encerrada aqui mesmo, não numa
+            // página que apaga a ficha de onde ela veio.
+            onOpenSession={(id) => setOpenSessionId(id)}
+          />
+        </div>
+      )}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h3 className="text-sm font-medium">{tl('Recorded sessions', 'Atendimentos gravados')}</h3>
@@ -98,19 +140,6 @@ export function ClientScribeTab({ item }: { item?: { id?: string; personId?: str
             )}
           </p>
         </div>
-        <Button
-          size="sm"
-          disabled={!supported || !subjectId}
-          onClick={() => requestScribeStart({ subjectId, subjectName })}
-          title={
-            supported
-              ? undefined
-              : tl('This browser does not support recording', 'Este navegador não suporta gravação')
-          }
-        >
-          <Mic className="mr-1.5 h-4 w-4" />
-          {tl('Start session', 'Iniciar atendimento')}
-        </Button>
       </div>
 
       {!supported && (
@@ -123,7 +152,20 @@ export function ClientScribeTab({ item }: { item?: { id?: string; personId?: str
       )}
 
       {loading ? (
-        <p className="py-8 text-center text-sm text-muted-foreground">{tl('Loading…', 'Carregando…')}</p>
+        // Esqueleto no formato das linhas que vêm, não um spinner: a lista já
+        // ocupa o espaço final, então a chegada dos dados não empurra a página
+        // — e quem olha entende o que está sendo carregado.
+        <div className="space-y-2" aria-busy="true" aria-label={tl('Loading recordings', 'Carregando gravações')}>
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="flex items-center justify-between gap-3 rounded-lg border p-3">
+              <div className="min-w-0 flex-1 space-y-1.5">
+                <Skeleton className="h-3.5 w-40" />
+                <Skeleton className="h-3 w-24" />
+              </div>
+              <Skeleton className="h-5 w-16 rounded-full" />
+            </div>
+          ))}
+        </div>
       ) : sessions.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center gap-2 py-10 text-center">
@@ -143,9 +185,7 @@ export function ClientScribeTab({ item }: { item?: { id?: string; personId?: str
             <button
               key={session.id}
               type="button"
-              onClick={() => {
-                window.location.hash = `/scribe/${session.id}`
-              }}
+              onClick={() => setOpenSessionId(session.id)}
               className="flex w-full items-center justify-between gap-3 rounded-lg border p-3 text-left transition-colors hover:bg-muted/50"
             >
               <div className="min-w-0">
