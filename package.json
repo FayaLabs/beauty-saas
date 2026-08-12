@@ -15,6 +15,7 @@
     "db:apply": "node scripts/db-apply.mjs",
     "functions:sync": "node scripts/functions-sync.mjs",
     "functions:check": "node scripts/functions-sync.mjs --check",
+    "test:functions": "node --test supabase/functions/*/*.test.mjs",
     "prepare": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true"
   },
   "dependencies": {
