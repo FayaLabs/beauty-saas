@@ -73,7 +73,23 @@ export async function handleRequest(req, deps) {
     new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
 
   try {
-    const admin = createClient(env('SUPABASE_URL'), env('SUPABASE_SERVICE_ROLE_KEY'))
+    // The pool serves N tenants, so a valid JWT only proves the caller is
+    // someone — never which tenant. Every statement below therefore runs as the
+    // caller, not as service_role: tenancy is decided by RLS
+    // (tenant_id IN (SELECT public.user_tenant_ids())) on bank_integrations,
+    // plg_financial_movements and bank_integration_sync_log, all of which grant
+    // `authenticated` exactly the SELECT/INSERT/UPDATE this function needs.
+    // Nothing here requires bypassing RLS, so nothing here holds the service key.
+    const jwt = String(req.headers.get('Authorization') ?? '').replace(/^Bearer\s+/i, '')
+    if (!jwt) return json({ error: 'Não autenticado' }, 401)
+
+    const db = createClient(env('SUPABASE_URL'), env('SUPABASE_ANON_KEY'), {
+      global: { headers: { Authorization: `Bearer ${jwt}` } },
+      auth: { persistSession: false, autoRefreshToken: false },
+    })
+
+    const { data: caller } = await db.auth.getUser(jwt)
+    if (!caller?.user) return json({ error: 'Não autenticado' }, 401)
 
     const body = await req.json()
     const action = body.action
@@ -89,11 +105,14 @@ export async function handleRequest(req, deps) {
     }
 
     // For the data actions we need the stored integration (token + tenant).
-    const { data: integration } = await admin
+    // Read as the caller: a connection owned by another tenant is invisible, so
+    // it comes back null and takes the same 404 as an id that never existed —
+    // the response must not confirm that another tenant's connection exists.
+    const { data: integration } = await db
       .from('bank_integrations')
       .select('*')
       .eq('id', body.integrationId)
-      .single()
+      .maybeSingle()
     if (!integration) return json({ error: 'Integração não encontrada' }, 404)
 
     // ---- fetch_statement: return normalized lines (no DB writes) ----
@@ -107,7 +126,7 @@ export async function handleRequest(req, deps) {
       const lines = body.lines ?? []
       let imported = 0, duplicates = 0
       for (const l of lines) {
-        const { error } = await admin.from('plg_financial_movements').insert({
+        const { error } = await db.from('plg_financial_movements').insert({
           tenant_id: integration.tenant_id,
           direction: l.type === 'C' ? 'credit' : 'debit',
           movement_kind: 'payment',
@@ -127,8 +146,8 @@ export async function handleRequest(req, deps) {
         } else imported++
       }
 
-      await admin.from('bank_integrations').update({ last_sync_at: new Date().toISOString() }).eq('id', integration.id)
-      await admin.from('bank_integration_sync_log').insert({
+      await db.from('bank_integrations').update({ last_sync_at: new Date().toISOString() }).eq('id', integration.id)
+      await db.from('bank_integration_sync_log').insert({
         tenant_id: integration.tenant_id,
         bank_integration_id: integration.id,
         bank_account_id: body.bankAccountId ?? integration.bank_account_id ?? null,
