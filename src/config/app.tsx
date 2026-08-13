@@ -13,6 +13,7 @@ import { createMarketingPlugin } from '@fayz-ai/plugin-marketing'
 import { createOpenBankingPlugin } from '@fayz-ai/plugin-banking-br'
 import { Logo } from '../components/Logo'
 import { clientEntity } from '../types/client'
+import './connectors' // instala as portas de credencial e de consentimento OAuth dos conectores
 import { beautyBilling } from './billing'
 import { beautyDashboardPlugin } from './dashboard'
 import { beautyPages } from './pages'
