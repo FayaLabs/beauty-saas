@@ -18,6 +18,9 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
+      "@fayz-ai/admin": [
+        "../../fayz-sdk/packages/admin/src"
+      ],
       "@fayz-ai/auth": [
         "../../fayz-sdk/packages/auth/src"
       ],
@@ -44,6 +47,9 @@
       ],
       "@/*": [
         "./src/*"
+      ],
+      "@fayz-ai/admin/*": [
+        "../../fayz-sdk/packages/admin/src/*"
       ],
       "@fayz-ai/auth/*": [
         "../../fayz-sdk/packages/auth/src/*"
