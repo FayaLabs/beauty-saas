@@ -57,3 +57,29 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ──────────────────────────────────────────────────────────────────────
+   fayz.ai design system — the parts a SaasTheme token cannot carry.
+
+   Everything expressible as a token lives in src/config/theme.ts. Keep this
+   block small: a rule here overrides the shell for this app alone and will
+   not follow the design system when the SDK moves.
+   ────────────────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    /* The system has TWO faces — Outfit for display, DM Sans for body — and a
+       theme carries a single `--font-family`. Display is declared here and
+       applied to headings below. */
+    --font-family-display: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* The shell renders page and section titles as bare h1/h2/h3 with no class
+     hook, so the element is the only seam — which also matches the design
+     system, where every heading is Outfit. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-family-display);
+    letter-spacing: -0.02em;
+  }
+}
