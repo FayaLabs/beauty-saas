@@ -98,6 +98,11 @@ export const beautyPages: CustomPage[] = [
     path: '/agenda/confirmations',
     label: tl('Confirmations', 'Confirmações'),
     icon: 'CalendarCheck2',
+    // Fora do menu, e por isso Agenda volta a ser um destino direto: qualquer
+    // rota sob /agenda vira filha dela no shell, e o calendário — a tela que se
+    // abre o dia inteiro — passava a custar um clique a mais para chegar. Estas
+    // quatro são atalhos do Painel (Ações rápidas), não seções da navegação.
+    nav: false,
     position: 2.4,
     component: ConfirmationsPage,
     permission: { feature: 'appointments', action: 'read' },
@@ -106,6 +111,7 @@ export const beautyPages: CustomPage[] = [
     path: '/agenda/cancellations',
     label: tl('Cancellations', 'Cancelamentos'),
     icon: 'CalendarX',
+    nav: false,
     position: 2.5,
     component: CancellationsFollowUpPage,
     permission: { feature: 'appointments', action: 'read' },
@@ -114,6 +120,7 @@ export const beautyPages: CustomPage[] = [
     path: '/agenda/waitlist',
     label: tl('Waitlist Queue', 'Fila de Espera'),
     icon: 'Inbox',
+    nav: false,
     position: 2.6,
     component: WaitlistPage,
     permission: { feature: 'appointments', action: 'read' },
@@ -129,6 +136,7 @@ export const beautyPages: CustomPage[] = [
     path: '/agenda/execution-checklist',
     label: tl('Execution Checklist', 'Checklist de Atendimento'),
     icon: 'ListChecks',
+    nav: false,
     position: 2.7,
     component: ExecutionChecklistPage,
     permission: { feature: 'appointments', action: 'read' },

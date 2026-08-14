@@ -1,5 +1,5 @@
 import React from 'react'
-import { Bell, CalendarPlus, ClipboardCheck, Inbox, UserPlus } from 'lucide-react'
+import { Bell, CalendarPlus, CalendarX, ClipboardCheck, Inbox, UserPlus } from 'lucide-react'
 import type { DashboardSectionProps } from '@fayz-ai/plugin-dashboard'
 
 const actions = [
@@ -20,6 +20,12 @@ const actions = [
     description: 'Confirmar proximos horarios',
     route: '/agenda/confirmations',
     icon: Bell,
+  },
+  {
+    label: 'Cancelamentos',
+    description: 'Retomar horarios perdidos',
+    route: '/agenda/cancellations',
+    icon: CalendarX,
   },
   {
     label: 'Lista de Espera',
