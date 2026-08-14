@@ -1,4 +1,5 @@
 import { getFayzSupabaseClientOptional } from '@fayz-ai/saas'
+import { setConnectorRuntimeTokenSource } from '@fayz-ai/core'
 import {
   createFayzConnectorCredentialSink,
   createFayzConnectorOAuthStarter,
@@ -59,4 +60,18 @@ if (projectId) {
   setConnectorOAuthStarter(
     createFayzConnectorOAuthStarter({ projectId, baseUrl, runtimeToken }),
   )
+
+  /**
+   * A terceira porta, e a que faltava: o conector que CHAMA a própria edge
+   * function precisa provar em nome de qual tenant está chamando, e uma edge
+   * function não sabe cunhar esse token — ela só repassa o que veio na
+   * requisição.
+   *
+   * Sem esta linha o Google Calendar conecta e depois não faz nada: listar as
+   * agendas e sincronizar agora recusam antes de sair do navegador, porque o
+   * conector pede o token e não há de quem pedir. É o mesmo `runtimeToken` das
+   * duas portas acima, de propósito — duas fontes seriam duas sessões para a
+   * mesma clínica.
+   */
+  setConnectorRuntimeTokenSource(runtimeToken)
 }

@@ -10,3 +10,6 @@ dist/
 test-results/
 playwright-report/
 e2e/.auth/
+
+# Build artifacts do TS incremental.
+*.tsbuildinfo
