@@ -741,6 +741,15 @@ export const beautyAppConfig: FayzAppConfig = {
     title: tl('Glow Assistant', 'Assistente Glow'),
     systemPrompt:
       'You are the Glow Studio salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance.',
+    // A marca do produto no botão do assistente. Desde que o rail parou de
+    // escrever o nome do app, este círculo é a única marca permanente na tela —
+    // e é o mesmo desenho da aba do navegador, onde o usuário já o reconhece.
+    fab: {
+      // `logo.png` e não `favicon.png`: o segundo nunca subiu para o bucket
+      // (404), e é o mesmo desenho — o Logo colapsado já o usa como marca.
+      icon: <img src={asset('logo.png')} alt="" />,
+      variant: 'bordered',
+    },
   },
   agentContract: {
     // Agent read-models the CRUD entities can't serve: staff_members is an
