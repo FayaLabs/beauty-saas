@@ -28,7 +28,9 @@ const RAIL_MUTED = '0 0% 100% / 0.55'
 
 // ── Warm neutrals ───────────────────────────────────────────────────────────
 const INK = '156 12% 8%' //   #131816
-const PAPER = '60 17% 98%' //   #FAFAF8
+// The design's paper (#FAFAF8) is 2% off white: as the page it left the white
+// cards with nothing to stand on. The sunken surface is the step down the same
+// warm scale, and it is what the page is made of.
 const SURFACE_SUNK = '60 12% 95%' //   #F4F4F1
 const BORDER = '60 11% 91%' //   #EAEAE5
 const BORDER_STRONG = '60 8% 84%' //   #D9D9D2
@@ -50,18 +52,24 @@ export const beautyTheme: SaasTheme = {
     muted: RAIL_MUTED,
   },
   content: {
-    background: PAPER,
+    background: SURFACE_SUNK,
   },
   colors: {
-    background: PAPER,
+    // Matches `content`: under md the framed card is suppressed and the page
+    // falls back to this one.
+    background: SURFACE_SUNK,
     foreground: INK,
     card: '0 0% 100%',
     cardForeground: INK,
     popover: '0 0% 100%',
     popoverForeground: INK,
-    secondary: SURFACE_SUNK,
+    // One step below the page, not level with it: these are the quiet fills —
+    // the track behind a tab strip, a table head, a secondary button — and they
+    // only read as sunken while they are darker than what they sit on. Same
+    // value as the hairline, one role down the same scale.
+    secondary: BORDER,
     secondaryForeground: INK,
-    muted: SURFACE_SUNK,
+    muted: BORDER,
     mutedForeground: TEXT_MUTED,
     border: BORDER,
     // Fields carry the STRONG border — the design draws inputs a step darker
