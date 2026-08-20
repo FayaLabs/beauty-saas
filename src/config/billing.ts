@@ -70,7 +70,7 @@ export const beautyBilling: FayzBillingConfig = {
       prices: { monthly: 199, yearly: 1909 },
       currency: 'BRL',
       entitlements: {
-        features: { assistant: true, 'assistant.frontdesk': true, 'assistant.growth': true, marketing: true, reports: true, fin_reconciliation: true, scribe: true },
+        features: { assistant: true, 'assistant.frontdesk': true, 'assistant.growth': true, 'assistant.finance': true, marketing: true, reports: true, fin_reconciliation: true, scribe: true },
         // Nem no Premium é -1: minuto de STT é custo variável direto, e
         // "ilimitado" num custo variável é um cheque em branco.
         limits: { users: -1, locations: -1, clients: -1, bookings_month: -1, products: -1, ai_credits_month: 1000, scribe_minutes_month: 3000, scribe_documents_month: 500 },
