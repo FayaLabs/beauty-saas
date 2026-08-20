@@ -4,8 +4,10 @@
     <meta charset="UTF-8" />
     <!-- Assets vêm do bucket R2 (ver src/assets.ts). Aqui a URL é crua porque
          o index.html é servido antes de qualquer JS — não há helper a chamar. -->
-    <link rel="icon" type="image/png" href="https://assets.fayz.ai/glow-studio/favicon.png" />
-    <link rel="apple-touch-icon" href="https://assets.fayz.ai/glow-studio/favicon.png" />
+    <!-- `logo.png`: `favicon.png` nunca subiu para o bucket e devolvia 404 —
+         a aba ficava com o ícone genérico do navegador. É o mesmo desenho. -->
+    <link rel="icon" type="image/png" href="https://assets.fayz.ai/glow-studio/logo.png" />
+    <link rel="apple-touch-icon" href="https://assets.fayz.ai/glow-studio/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Glow Studio — agenda, clientes, comandas, estoque e financeiro para salões e clínicas de estética." />
     <meta name="theme-color" content="#161122" />

@@ -26,11 +26,23 @@ const sdkAliases = useLocalSdk
     )
   : {}
 
-export default defineConfig(
-  fayzVite({
-    port: 5301,
-    strictPort: true,
-    plugins: [react()],
-    aliases: sdkAliases,
-  }),
-)
+const base = fayzVite({
+  port: 5301,
+  strictPort: true,
+  plugins: [react()],
+  aliases: sdkAliases,
+})
+
+// Segunda ponte, mesma causa: rodando o SDK do source, os @fayz-ai/* saem do
+// optimize e as bare deps DELES somem do scan inicial do Vite. A que so aparece
+// atras de um React.lazy() e descoberta no clique, e o re-optimize que vem a
+// seguir mata o proprio import que o disparou ("Failed to fetch dynamically
+// imported module"). recharts (graficos) e @dnd-kit (builder de formularios)
+// sao esses casos. O fayzVite novo ja inclui a lista; ate o release, aqui.
+export default defineConfig({
+  ...base,
+  optimizeDeps: {
+    ...base.optimizeDeps,
+    include: ['recharts', '@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/modifiers', '@dnd-kit/utilities'],
+  },
+})
