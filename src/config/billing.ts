@@ -50,7 +50,11 @@ export const beautyBilling: FayzBillingConfig = {
       currency: 'BRL',
       popular: true,
       entitlements: {
-        features: { assistant: true, 'assistant.frontdesk': true, marketing: true, reports: true, fin_reconciliation: true, scribe: true },
+        // `assistant.encounter` (a Bia) acompanha `scribe` de propósito: ela é
+        // COMO se grava neste app, então cobrar a gravação e a auxiliar em duas
+        // chaves seria vender a mesma coisa duas vezes e ainda deixar um plano
+        // possível onde o botão existe e ninguém pode atender por ele.
+        features: { assistant: true, 'assistant.frontdesk': true, 'assistant.encounter': true, marketing: true, reports: true, fin_reconciliation: true, scribe: true },
         limits: { users: 10, locations: 1, clients: -1, bookings_month: -1, products: -1, scribe_minutes_month: 600, scribe_documents_month: 100 },
       },
     },
@@ -70,7 +74,7 @@ export const beautyBilling: FayzBillingConfig = {
       prices: { monthly: 199, yearly: 1909 },
       currency: 'BRL',
       entitlements: {
-        features: { assistant: true, 'assistant.frontdesk': true, 'assistant.growth': true, 'assistant.finance': true, marketing: true, reports: true, fin_reconciliation: true, scribe: true },
+        features: { assistant: true, 'assistant.frontdesk': true, 'assistant.encounter': true, 'assistant.growth': true, 'assistant.finance': true, marketing: true, reports: true, fin_reconciliation: true, scribe: true },
         // Nem no Premium é -1: minuto de STT é custo variável direto, e
         // "ilimitado" num custo variável é um cheque em branco.
         limits: { users: -1, locations: -1, clients: -1, bookings_month: -1, products: -1, ai_credits_month: 1000, scribe_minutes_month: 3000, scribe_documents_month: 500 },
