@@ -36,6 +36,11 @@ import { beautyScribeOptions } from '../../config/scribe'
 // rota `#/scribe/:id` trocava a página inteira, e com ela o contexto — o nome
 // do cliente, as outras abas, o caminho de volta. Voltar de lá caía na lista de
 // gravações solta, não na ficha de onde a pessoa saiu.
+//
+// E mestre-detalhe DENTRO da aba não quer dizer escondido da URL: a gravação
+// aberta é o segmento depois de `/scribe` (ver `tabPath` no CrudDetailPage), o
+// que a torna linkável sem ela virar uma página. É por ali que o assistente
+// entrega o atendimento recém-encerrado.
 // ---------------------------------------------------------------------------
 
 const STATUS_LABELS: Record<string, string> = {
@@ -65,10 +70,36 @@ function formatDate(value: string): string {
   }
 }
 
-export function ClientScribeTab({ item }: { item?: { id?: string; personId?: string; name?: string } }) {
+export function ClientScribeTab({
+  item,
+  tabPath,
+  setTabPath,
+}: {
+  item?: { id?: string; personId?: string; name?: string }
+  /** Segmentos depois de `/scribe` na URL — ver CrudDetailPage.tabPath. */
+  tabPath?: string[]
+  setTabPath?: (...segments: string[]) => void
+}) {
   const [sessions, setSessions] = useState<ScribeSession[]>([])
   const [loading, setLoading] = useState(true)
-  const [openSessionId, setOpenSessionId] = useState<string | null>(null)
+
+  // A gravação aberta ANDA COM a URL: `/clients/:id/scribe` lista,
+  // `/clients/:id/scribe/:gravacao` abre aquela. É o que faz o link ser
+  // compartilhável e o que deixa o assistente mandar alguém para cá ao encerrar
+  // — sem trocar a página inteira, como a rota `#/scribe/:id` fazia.
+  //
+  // Estado local espelhando a URL, e não a URL direto: quem escreve usa
+  // `replaceState`, que não dispara `hashchange`, então o clique na lista não
+  // repintaria nada. O efeito cobre o caminho contrário — a URL mudando por
+  // fora (link colado, ou o fim de uma gravação) manda na tela.
+  const [openSessionId, setOpenSessionId] = useState<string | null>(tabPath?.[0] ?? null)
+  const deepLinked = tabPath?.[0] ?? null
+  useEffect(() => setOpenSessionId(deepLinked), [deepLinked])
+
+  const openSession = useCallback((id: string | null) => {
+    setOpenSessionId(id)
+    setTabPath?.(...(id ? [id] : []))
+  }, [setTabPath])
 
   // `clients` é a tabela de extensão; o titular da sessão é a linha de `people`.
   const subjectId = item?.personId ?? item?.id
@@ -113,7 +144,7 @@ export function ClientScribeTab({ item }: { item?: { id?: string; personId?: str
         stt={beautyScribeOptions.stt}
         // O default do plugin quando a vertical não declara um.
         generateEndpoint={beautyScribeOptions.generateEndpoint ?? 'scribe-generate'}
-        onBack={() => setOpenSessionId(null)}
+        onBack={() => openSession(null)}
       />
     )
   }
@@ -126,7 +157,7 @@ export function ClientScribeTab({ item }: { item?: { id?: string; personId?: str
             labels={beautyScribeOptions.labels as never}
             // Finalizar abre a gravação recém-encerrada aqui mesmo, não numa
             // página que apaga a ficha de onde ela veio.
-            onOpenSession={(id) => setOpenSessionId(id)}
+            onOpenSession={(id) => openSession(id)}
           />
         </div>
       )}
@@ -185,7 +216,7 @@ export function ClientScribeTab({ item }: { item?: { id?: string; personId?: str
             <button
               key={session.id}
               type="button"
-              onClick={() => setOpenSessionId(session.id)}
+              onClick={() => openSession(session.id)}
               className="flex w-full items-center justify-between gap-3 rounded-lg border p-3 text-left transition-colors hover:bg-muted/50"
             >
               <div className="min-w-0">
