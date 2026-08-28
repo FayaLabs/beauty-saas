@@ -2,7 +2,7 @@ import { tl } from '@fayz-ai/saas'
 import type { AnalyticsCardDef, AnalyticsFilterDef } from '@fayz-ai/core'
 
 // ---------------------------------------------------------------------------
-// Métricas padrão do /analytics do Glow Studio.
+// Métricas padrão do /analytics do StudioControl.
 //
 // Cada card aqui é, ao mesmo tempo, um bloco do painel, uma linha da lista de
 // relatórios e um relatório inteiro — a mesma definição em três tamanhos. Quem

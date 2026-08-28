@@ -13,7 +13,7 @@ import { fayzVite } from '@fayz-ai/sdk/vite'
 // qualquer pacote que exista nele, inclusive os que ainda nem foram criados.
 // Continua valendo o mesmo interruptor: FAYZ_SDK_SOURCE=published (`npm run
 // dev:published-sdk`) volta tudo pro node_modules.
-const sdkDir = resolve(dirname(fileURLToPath(import.meta.url)), '../../fayz-sdk')
+const sdkDir = process.env.FAYZ_SDK_DIR ?? resolve(dirname(fileURLToPath(import.meta.url)), '../../fayz-sdk')
 const useLocalSdk =
   process.env.FAYZ_SDK_SOURCE !== 'published' && existsSync(resolve(sdkDir, 'packages/core/src/index.ts'))
 const sdkAliases = useLocalSdk

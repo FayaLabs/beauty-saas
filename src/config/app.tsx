@@ -409,7 +409,7 @@ registerMessageDefaults([
 const backend = resolveBackendEnv()
 
 export const beautyAppConfig: FayzAppConfig = {
-  name: 'Glow Studio',
+  name: 'StudioControl',
   logo: React.createElement(Logo),
   // Icon-only, for square contexts like the connect/consent badge — the full
   // logo is a wordmark and gets cropped there.
@@ -740,7 +740,7 @@ export const beautyAppConfig: FayzAppConfig = {
   chat: {
     title: tl('Glow Assistant', 'Assistente Glow'),
     systemPrompt:
-      'You are the Glow Studio salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance.',
+      'You are the StudioControl salon operations assistant. Help managers reason about agenda, clients, services, inventory, marketing, and financial workflows using concise business guidance.',
     // A equipe do salão. Téo vem em todo plano porque ele é o suporte — quem
     // importa a agenda antiga e explica onde as coisas ficam; os outros são
     // contratados à parte, e enquanto não forem, ele apresenta o trabalho deles

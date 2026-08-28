@@ -1,5 +1,5 @@
 /**
- * Glow Studio — Portuguese (Brazil) translations
+ * StudioControl — Portuguese (Brazil) translations
  *
  * These override saas-core defaults for app-specific strings:
  * navigation labels, entity names, page descriptions, and business terms.

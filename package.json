@@ -27,6 +27,7 @@
     "@fayz-ai/plugin-banking-br": "^0.9.1",
     "@fayz-ai/plugin-crm": "^0.9.1",
     "@fayz-ai/plugin-dashboard": "^0.9.1",
+    "@fayz-ai/plugin-conversations": "^0.9.1",
     "@fayz-ai/plugin-financial": "^0.9.1",
     "@fayz-ai/plugin-forms": "^0.9.1",
     "@fayz-ai/plugin-inventory": "^0.9.1",
