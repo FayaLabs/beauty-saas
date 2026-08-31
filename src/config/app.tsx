@@ -410,7 +410,7 @@ const backend = resolveBackendEnv()
 
 export const beautyAppConfig: FayzAppConfig = {
   name: 'StudioControl',
-  logo: React.createElement(Logo),
+  logo: React.createElement(Logo, { full: true }),
   // Icon-only, for square contexts like the connect/consent badge — the full
   // logo is a wordmark and gets cropped there.
   markLogo: React.createElement(Logo, { collapsed: true }),
@@ -426,6 +426,7 @@ export const beautyAppConfig: FayzAppConfig = {
     adapter: backend.adapter,
     requireAuth: true,
     loginLayout: 'split',
+    loginLogo: React.createElement(Logo, { full: true }),
     loginTagline: tl('Manage your salon with confidence', 'Gerencie seu salão com confiança'),
     loginDescription: tl(
       'Scheduling, client management, financial tracking, and marketing — all in one beautiful platform built for beauty professionals.',
