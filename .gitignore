@@ -13,3 +13,8 @@ e2e/.auth/
 
 # Build artifacts do TS incremental.
 *.tsbuildinfo
+
+# Backups de env feitos à mão: carregam chave e nunca devem ser versionados.
+.env*.bak*
+.env.bak-*
+.claude/
