@@ -475,6 +475,30 @@ export const beautyAppConfig: FayzAppConfig = {
     // Options extracted to consts so the clinic preset (below) can reuse them
     // verbatim while overriding just a couple of module flags.
     const agendaOptions: NonNullable<Parameters<typeof createAgendaPlugin>[0]> = {
+        // A recepção não abre o calendário para saber quem chegou: ela quer a
+        // lista de HOJE, com quem já pagou e quem não. Por isso o check-in tem
+        // entrada própria ao lado da Agenda, e não uma aba dentro dela.
+        checkin: true,
+        // O "Receber" da fila LEVANTA a fatura do atendimento e leva à cobrança.
+        //
+        // Mandar para a lista de contas a receber sem levantar nada deixava a
+        // recepção diante de "nenhuma fatura ainda" logo depois de clicar em
+        // receber de uma cliente com R$ 80 na tela — o pedido existe desde o
+        // agendamento, mas a fatura só nasce quando o atendimento fecha.
+        //
+        // `fn_invoice_from_order` é idempotente: com fatura, devolve a que já
+        // existe em vez de levantar uma segunda.
+        onCheckinReceive: async ({ orderId }) => {
+          const supabase = getSupabaseClientOptional() as any
+          if (supabase && orderId) {
+            const { error } = await supabase.rpc('fn_invoice_from_order', {
+              p_order_id: orderId, p_due_date: new Date().toISOString().slice(0, 10),
+              p_status: null, p_installments: 1,
+            })
+            if (error) console.error('[checkin] levantar fatura', error)
+          }
+          window.location.hash = '/financial/receivables/list'
+        },
         bookingKind: 'appointment',
         orderKind: 'service_order',
         scheduleKind: 'working_hours',

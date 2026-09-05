@@ -18,3 +18,7 @@ e2e/.auth/
 .env*.bak*
 .env.bak-*
 .claude/
+
+# Env de ferramenta: carrega service_role. Nunca versionar.
+.env.tooling.local
+.env.*.local
