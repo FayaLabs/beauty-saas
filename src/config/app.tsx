@@ -691,11 +691,12 @@ export const beautyAppConfig: FayzAppConfig = {
           { value: 'nota', label: tl('Note', 'Nota'), icon: 'FileText' },
           { value: 'tarefa', label: tl('Task', 'Tarefa'), icon: 'CheckSquare' },
         ],
-        clientConversion: {
-          archetypeKind: 'customer',
-          extensionTable: 'clients',
-          fkColumn: 'person_id',
-        },
+        // Sem `clientConversion`: converter lead em cliente é só trocar o
+        // `kind` de `people` para 'customer', que o próprio plugin já faz. O
+        // bloco existia para criar a linha na extensão `clients`, que não
+        // existe mais — e como o upsert vem DEPOIS da troca de kind e sem
+        // try/catch, aprovar um orçamento quebrava no meio, com a pessoa já
+        // convertida e a exceção subindo para a tela.
       }),
       beautyReportsPlugin,
       createMarketingPlugin({
