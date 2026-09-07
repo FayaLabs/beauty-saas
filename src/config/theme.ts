@@ -1,7 +1,7 @@
 import type { SaasTheme } from '@fayz-ai/saas'
 
 /**
- * Glow Studio — the fayz.ai design system in its beauty/wellness register.
+ * StudioControl — the fayz.ai design system in its beauty/wellness register.
  *
  * The system's neutrals are WARM (paper #FAFAF8 over a green-undertoned ink),
  * not the blue-grey shadcn default, and the brand colour appears as a plum
@@ -38,7 +38,7 @@ const TEXT_MUTED = '60 3% 35%' //   #5C5C57
 
 export const beautyTheme: SaasTheme = {
   __kind: 'saas-theme',
-  name: 'Glow Studio',
+  name: 'StudioControl',
   preset: 'classic_admin',
   brand: PLUM,
   shadow: 'subtle',

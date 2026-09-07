@@ -16,7 +16,7 @@
  */
 const ASSETS_BASE = 'https://assets.fayz.ai'
 
-/** Asset próprio do Glow Studio. `asset('logo.png')` → `…/glow-studio/logo.png`. */
+/** Asset próprio do StudioControl. `asset('logo.png')` → `…/glow-studio/logo.png`. */
 export const asset = (path: string) => `${ASSETS_BASE}/glow-studio/${path}`
 
 /**

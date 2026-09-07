@@ -1,5 +1,5 @@
 /**
- * Glow Studio — English translations
+ * StudioControl — English translations
  *
  * App-specific strings that override or extend saas-core defaults.
  */

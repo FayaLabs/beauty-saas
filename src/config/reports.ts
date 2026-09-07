@@ -23,7 +23,7 @@ function reportDescription(en: string, pt: string) {
 export const beautyReportsPlugin = createAnalyticsPlugin({
   currency: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' },
   navPosition: 10,
-  createdBy: 'Glow Studio',
+  createdBy: 'StudioControl',
   cards: beautyAnalyticsCards,
   labels: {
     analytics: tl('Analytics', 'Análises'),

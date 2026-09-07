@@ -25,6 +25,7 @@
     "@fayz-ai/plugin-agenda": "^0.11.0",
     "@fayz-ai/plugin-automations": "^0.11.0",
     "@fayz-ai/plugin-banking-br": "^0.10.3",
+    "@fayz-ai/plugin-conversations": "^0.11.2",
     "@fayz-ai/plugin-crm": "^0.10.0",
     "@fayz-ai/plugin-dashboard": "^0.9.5",
     "@fayz-ai/plugin-financial": "^0.11.0",
