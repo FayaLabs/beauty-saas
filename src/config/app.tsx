@@ -35,6 +35,9 @@ import React from 'react'
 const beautyAgendaStatuses: NonNullable<AgendaPluginOptions['statuses']> = [
   { value: 'scheduled', label: tl('Scheduled', 'Agendado'), color: '#6366f1' },
   { value: 'confirmed', label: tl('Confirmed', 'Confirmado'), color: '#3b82f6' },
+  // Sem esta linha o plugin injeta o `waiting` do check-in com o rótulo
+  // interno em inglês, e a agenda listava "Waiting" no meio do português.
+  { value: 'waiting', label: tl('Waiting', 'Aguardando'), color: '#f97316', availableWhen: 'today_only' as const },
   { value: 'in_progress', label: tl('In Progress', 'Em atendimento'), color: '#f59e0b', availableWhen: 'today_only' as const },
   { value: 'completed', label: tl('Completed', 'Concluído'), color: '#10b981', availableWhen: 'today_or_past' as const },
   { value: 'cancelled', label: tl('Cancelled', 'Cancelado'), color: '#ef4444' },
@@ -497,7 +500,9 @@ export const beautyAppConfig: FayzAppConfig = {
             })
             if (error) console.error('[checkin] levantar fatura', error)
           }
-          window.location.hash = '/financial/receivables/list'
+          // Sem redirecionamento: quem chamou é a conferência de check-in, e ela
+          // mostra a conta do cliente ali mesmo. Mandar a recepção para a lista
+          // de contas a receber era perder o contexto do atendimento.
         },
         bookingKind: 'appointment',
         orderKind: 'service_order',
