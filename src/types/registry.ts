@@ -24,6 +24,17 @@ export const staffEntity: EntityDef = {
     { key: 'phone', label: tl('Phone', 'Telefone'), type: 'phone', showInTable: true },
     { key: 'profession', label: tl('Profession', 'Profissão'), type: 'text', showInTable: true, group: 'professional' },
     { key: 'commissionRate', label: tl('Commission (%)', 'Comissão (%)'), type: 'number', showInTable: true, group: 'professional', defaultValue: 0 },
+    // Trabalhar aqui não é atender cliente: a recepção e o financeiro entram
+    // por esta mesma tela. Sem a escolha no cadastro, todo mundo nascia com
+    // coluna na grade da semana e horário livre para marcarem em cima.
+    {
+      key: 'isBookable', label: tl('Appears in the calendar', 'Aparece na agenda'), type: 'boolean',
+      showInTable: true, defaultValue: true, inlineToggle: true, group: 'professional',
+      hint: tl(
+        'Clients can be booked with this person.',
+        'Clientes podem ser marcados com esta pessoa.',
+      ),
+    },
     { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', showInTable: true, defaultValue: true, inlineToggle: true },
   ],
   // No custom documents tab: the `person` archetype supplies the shared
