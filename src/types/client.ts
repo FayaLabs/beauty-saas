@@ -190,10 +190,18 @@ export const clientEntity: EntityDef<BeautyClient> = {
     },
   ],
   data: {
-    table: 'clients',
+    // Pessoa pura: `people` filtrada por kind, sem tabela de extensão — o mesmo
+    // padrão do resto-saas e do marketplace-saas, num banco só. A extensão
+    // `clients` (e a view `v_clients` que a juntava) não existe mais.
+    table: 'people',
     tenantScoped: true,
     archetype: 'person',
     archetypeKind: 'customer',
+    // O que era coluna de `clients` e não é coluna de `people` passa a morar em
+    // `custom_fields`. Declarar é obrigatório: sem isto o provider manda estes
+    // campos para o balde da extensão, que não existe, e eles somem ao salvar
+    // sem erro nenhum.
+    customFields: ['gender', 'origin', 'lifecycleStatus', 'stage', 'statusAlert', 'anamnesisNotes', 'hasAnamnesisAlert'],
     searchColumns: ['name', 'email', 'phone'],
   },
 }

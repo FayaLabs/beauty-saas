@@ -24,15 +24,33 @@ export const staffEntity: EntityDef = {
     { key: 'phone', label: tl('Phone', 'Telefone'), type: 'phone', showInTable: true },
     { key: 'profession', label: tl('Profession', 'Profissão'), type: 'text', showInTable: true, group: 'professional' },
     { key: 'commissionRate', label: tl('Commission (%)', 'Comissão (%)'), type: 'number', showInTable: true, group: 'professional', defaultValue: 0 },
+    // Trabalhar aqui não é atender cliente: a recepção e o financeiro entram
+    // por esta mesma tela. Sem a escolha no cadastro, todo mundo nascia com
+    // coluna na grade da semana e horário livre para marcarem em cima.
+    {
+      key: 'isBookable', label: tl('Appears in the calendar', 'Aparece na agenda'), type: 'boolean',
+      showInTable: true, defaultValue: true, inlineToggle: true, group: 'professional',
+      hint: tl(
+        'Clients can be booked with this person.',
+        'Clientes podem ser marcados com esta pessoa.',
+      ),
+    },
     { key: 'isActive', label: tl('Active', 'Ativo'), type: 'boolean', showInTable: true, defaultValue: true, inlineToggle: true },
   ],
   // No custom documents tab: the `person` archetype supplies the shared
   // custom_forms documents widget (same as clients / school-saas).
   data: {
-    table: 'staff_members',
+    // Pessoa pura, como no resto-saas: quem é da equipe é `people.kind='staff'`.
+    // A extensão `staff_members` e a view `v_staff` não existem mais.
+    table: 'people',
     tenantScoped: true,
     archetype: 'person',
     archetypeKind: 'staff',
+    // `profession` e `commissionRate` eram colunas da extensão. A comissão de
+    // verdade é a do motor de regras do Financeiro (plg_financial_commission_*),
+    // que sabe dividir por serviço e por profissional; este número aqui é o
+    // resquício de quando havia um só. Fica em custom_fields para não sumir.
+    customFields: ['profession', 'commissionRate'],
     searchColumns: ['name', 'email', 'phone'],
   },
 }
@@ -215,11 +233,13 @@ export const serviceLocationEntity: EntityDef = {
     { key: 'notes', label: tl('Notes', 'Observações'), type: 'textarea' },
   ],
   data: {
-    table: 'locations',
-    schema: 'public',
+    // A filial É a unidade. `v_units` é a ponte pública para o schema `app`, e
+    // traz exatamente os campos desta tela (nome, contato, endereço, matriz,
+    // ativo, observações). A tabela `locations` não existe mais.
+    table: 'v_units',
     tenantScoped: true,
-    filters: { kind: 'branch' },
-    defaults: { kind: 'branch' },
+    archetype: 'location',
+    archetypeKind: 'branch',
     searchColumns: ['name', 'city', 'state'],
   },
 }

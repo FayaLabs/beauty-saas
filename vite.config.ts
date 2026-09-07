@@ -39,10 +39,27 @@ const base = fayzVite({
 // seguir mata o proprio import que o disparou ("Failed to fetch dynamically
 // imported module"). recharts (graficos) e @dnd-kit (builder de formularios)
 // sao esses casos. O fayzVite novo ja inclui a lista; ate o release, aqui.
+// Terceira ponte: plugin-agenda e a app carregam CADA UMA uma copia de
+// @fullcalendar, e so a da app tem `premium-common`. Em duas copias, as views
+// de recurso registram o ScrollGrid num `core` que nao e o do calendario e a
+// grade da semana morre com "No ScrollGrid implementation" — falha que so
+// aparece depois de limpar o cache de deps, entao parece aleatoria. O fayzVite
+// novo ja deduplica; ate o release, aqui.
+const FULLCALENDAR = [
+  '@fullcalendar/core', '@fullcalendar/react', '@fullcalendar/daygrid',
+  '@fullcalendar/timegrid', '@fullcalendar/list', '@fullcalendar/interaction',
+  '@fullcalendar/premium-common', '@fullcalendar/resource',
+  '@fullcalendar/resource-daygrid', '@fullcalendar/resource-timegrid',
+]
+
 export default defineConfig({
   ...base,
+  resolve: {
+    ...base.resolve,
+    dedupe: [...(base.resolve?.dedupe ?? []), ...FULLCALENDAR],
+  },
   optimizeDeps: {
     ...base.optimizeDeps,
-    include: ['recharts', '@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/modifiers', '@dnd-kit/utilities'],
+    include: ['recharts', '@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/modifiers', '@dnd-kit/utilities', ...FULLCALENDAR],
   },
 })

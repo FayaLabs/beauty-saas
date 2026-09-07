@@ -35,6 +35,9 @@ import React from 'react'
 const beautyAgendaStatuses: NonNullable<AgendaPluginOptions['statuses']> = [
   { value: 'scheduled', label: tl('Scheduled', 'Agendado'), color: '#6366f1' },
   { value: 'confirmed', label: tl('Confirmed', 'Confirmado'), color: '#3b82f6' },
+  // Sem esta linha o plugin injeta o `waiting` do check-in com o rótulo
+  // interno em inglês, e a agenda listava "Waiting" no meio do português.
+  { value: 'waiting', label: tl('Waiting', 'Aguardando'), color: '#f97316', availableWhen: 'today_only' as const },
   { value: 'in_progress', label: tl('In Progress', 'Em atendimento'), color: '#f59e0b', availableWhen: 'today_only' as const },
   { value: 'completed', label: tl('Completed', 'Concluído'), color: '#10b981', availableWhen: 'today_or_past' as const },
   { value: 'cancelled', label: tl('Cancelled', 'Cancelado'), color: '#ef4444' },
@@ -476,6 +479,32 @@ export const beautyAppConfig: FayzAppConfig = {
     // Options extracted to consts so the clinic preset (below) can reuse them
     // verbatim while overriding just a couple of module flags.
     const agendaOptions: NonNullable<Parameters<typeof createAgendaPlugin>[0]> = {
+        // A recepção não abre o calendário para saber quem chegou: ela quer a
+        // lista de HOJE, com quem já pagou e quem não. Por isso o check-in tem
+        // entrada própria ao lado da Agenda, e não uma aba dentro dela.
+        checkin: true,
+        // O "Receber" da fila LEVANTA a fatura do atendimento e leva à cobrança.
+        //
+        // Mandar para a lista de contas a receber sem levantar nada deixava a
+        // recepção diante de "nenhuma fatura ainda" logo depois de clicar em
+        // receber de uma cliente com R$ 80 na tela — o pedido existe desde o
+        // agendamento, mas a fatura só nasce quando o atendimento fecha.
+        //
+        // `fn_invoice_from_order` é idempotente: com fatura, devolve a que já
+        // existe em vez de levantar uma segunda.
+        onCheckinReceive: async ({ orderId }) => {
+          const supabase = getSupabaseClientOptional() as any
+          if (supabase && orderId) {
+            const { error } = await supabase.rpc('fn_invoice_from_order', {
+              p_order_id: orderId, p_due_date: new Date().toISOString().slice(0, 10),
+              p_status: null, p_installments: 1,
+            })
+            if (error) console.error('[checkin] levantar fatura', error)
+          }
+          // Sem redirecionamento: quem chamou é a conferência de check-in, e ela
+          // mostra a conta do cliente ali mesmo. Mandar a recepção para a lista
+          // de contas a receber era perder o contexto do atendimento.
+        },
         bookingKind: 'appointment',
         orderKind: 'service_order',
         scheduleKind: 'working_hours',
@@ -668,11 +697,12 @@ export const beautyAppConfig: FayzAppConfig = {
           { value: 'nota', label: tl('Note', 'Nota'), icon: 'FileText' },
           { value: 'tarefa', label: tl('Task', 'Tarefa'), icon: 'CheckSquare' },
         ],
-        clientConversion: {
-          archetypeKind: 'customer',
-          extensionTable: 'clients',
-          fkColumn: 'person_id',
-        },
+        // Sem `clientConversion`: converter lead em cliente é só trocar o
+        // `kind` de `people` para 'customer', que o próprio plugin já faz. O
+        // bloco existia para criar a linha na extensão `clients`, que não
+        // existe mais — e como o upsert vem DEPOIS da troca de kind e sem
+        // try/catch, aprovar um orçamento quebrava no meio, com a pessoa já
+        // convertida e a exceção subindo para a tela.
       }),
       beautyReportsPlugin,
       createMarketingPlugin({
