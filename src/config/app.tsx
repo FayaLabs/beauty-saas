@@ -417,7 +417,10 @@ export const beautyAppConfig: FayzAppConfig = {
   // Icon-only, for square contexts like the connect/consent badge — the full
   // logo is a wordmark and gets cropped there.
   markLogo: React.createElement(Logo, { collapsed: true }),
-  layout: 'topbar',
+  // The family's shell: dark rail on the left, like ChefControl, StoreControl and
+  // TicketControl. The topbar was not just a different look — the SDK mounts
+  // NotificationBell only in the rail, so this app simply had no bell.
+  layout: 'sidebar',
   supabaseUrl: backend.supabaseUrl,
   supabaseAnonKey: backend.supabaseAnonKey,
   locale: {

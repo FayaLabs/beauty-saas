@@ -29,7 +29,7 @@ flowchart LR
     LOOKUPS <--> DB
 ```
 
-- Layout `topbar`, locale pt-BR (+en via `tl()` helper), currency BRL, Supabase auth adapter (requireAuth, split login, Google OAuth) with mock fallback, multi-org Supabase adapter.
+- Layout `sidebar` (dark rail, como os demais apps Control), locale pt-BR (+en via `tl()` helper), currency BRL, Supabase auth adapter (requireAuth, split login, Google OAuth) with mock fallback, multi-org Supabase adapter.
 - **Clinic persona preset**: `VITE_BEAUTY_PRESET=clinic` returns only [dashboard, agenda(no locationSelection), financial(no reconciliation)] — implemented, kept as persona-engine evidence, not deployed (DECISIONS 2026-07-02).
 
 ## 2. Plugins and their configuration (the interesting parts)
