@@ -6,9 +6,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <rect width="64" height="64" rx="14" fill="#161122"/>
   <g transform="translate(14 14) scale(1.5)" fill="none" stroke="#B4A0E5" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="8.5" cy="18.3" r="2.5"/>
-    <circle cx="15.5" cy="18.3" r="2.5"/>
-    <path d="M9.59 16.05 15.4 4"/>
-    <path d="M14.41 16.05 8.6 4"/>
+    <circle cx="6.9" cy="6.2" r="2.6"/>
+    <circle cx="6.9" cy="17.8" r="2.6"/>
+    <path d="M8.74 8.04 19.7 19"/>
+    <path d="M8.74 15.96 19.7 5"/>
   </g>
 </svg>

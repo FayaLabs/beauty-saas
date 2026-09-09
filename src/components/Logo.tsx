@@ -12,11 +12,12 @@ import React from 'react'
  * (ChefControl's hat, TicketControl's stub) are inline paths in `currentColor`
  * — the surface decides the colour, the way it decides for the word beside it.
  *
- * Upright rather than Lucide's diagonal `Scissors`: standing on its rings the
- * pair is symmetrical about the vertical, which is what lets it sit in a square
- * tile — a favicon, an AppSwitcher chip — without a diagonal object leaving two
- * empty corners. The blades cross at the grid's centre, so the pivot is where
- * the eye already is at 16px.
+ * Diagonal, not upright. Standing the pair on its rings is symmetrical about
+ * the vertical and fills a square tile better — and it reads as a headstone:
+ * two round feet under an arch is a grave before it is a tool. Turned on the
+ * diagonal the silhouette is unambiguous, because the two rings sit side by
+ * side on ONE side and the blades open away from them, which is the shape a
+ * pair of scissors has when it is being held.
  *
  * Contour at 1.8 on the 24 grid, so in a rail of Lucide icons it stands as one
  * of them rather than as a blot of ink.
@@ -33,12 +34,13 @@ export function StudioMark({ className }: { className?: string }) {
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      {/* The finger rings. */}
-      <circle cx="8.5" cy="18.3" r="2.5" />
-      <circle cx="15.5" cy="18.3" r="2.5" />
-      {/* The blades, leaving each ring's edge and crossing at (12, 11.05). */}
-      <path d="M9.59 16.05 15.4 4" />
-      <path d="M14.41 16.05 8.6 4" />
+      {/* The finger rings, stacked on the left. */}
+      <circle cx="6.9" cy="6.2" r="2.6" />
+      <circle cx="6.9" cy="17.8" r="2.6" />
+      {/* Each blade leaves its own ring's edge, runs through the pivot at
+          (12.5, 12) and out to the tip on the far side. */}
+      <path d="M8.74 8.04 19.7 19" />
+      <path d="M8.74 15.96 19.7 5" />
     </svg>
   )
 }
