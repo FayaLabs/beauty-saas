@@ -74,11 +74,10 @@ export const beautyPages: CustomPage[] = [
     icon: 'Users',
     position: 3,
     component: createCrudPage(clientEntity, { feature: 'clients' }),
+    // Sem grupo: a lista JÁ tem o "+ Adicionar", então "Adicionar/Lista"
+    // repetia o botão e custava um clique para chegar na tela mais aberta do
+    // dia. Clientes volta a ser destino direto.
     permission: { feature: 'clients', action: 'read' },
-    children: [
-      { path: '/clients/new', label: tl('Add', 'Adicionar'), icon: 'Plus' },
-      { path: '/clients', label: tl('List', 'Lista'), icon: 'List' },
-    ],
   },
   {
     path: '/registry/clients',
