@@ -3,7 +3,10 @@ dist/
 .env
 .env.local
 .DS_Store
+# Capturas de tela soltas na raiz não entram; o que está em public/ é asset
+# do produto e entra (o ícone da aba, por exemplo).
 *.png
+!public/**/*.png
 .playwright-mcp/
 
 # Playwright / QA e2e

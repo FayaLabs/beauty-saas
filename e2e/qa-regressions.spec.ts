@@ -95,9 +95,15 @@ test.describe('QA regressions (owner)', () => {
     expect(pageErrors, `unexpected page errors: ${pageErrors.join(' | ')}`).toHaveLength(0)
   })
 
-  // NOTE (product finding): the topbar layout renders NO notification bell.
-  // The SDK's NotificationBell only mounts in the sidebar layout; BeautySoft
-  // uses `layout: 'topbar'`, so there is no "sino" to open here. Documented as
-  // an exploratory finding rather than a fake assertion.
-  test.skip('notification bell opens — N/A: no bell in topbar layout', async () => {})
+  // This was a documented skip while the app ran `layout: 'topbar'` — the SDK
+  // mounts NotificationBell only in the rail, so there was no "sino" to open.
+  // The app is on `layout: 'sidebar'` now and the control exists, so the finding
+  // is spent and the assertion is real.
+  test('notification bell opens', async ({ page }) => {
+    await page.goto('/')
+    const bell = page.getByRole('button', { name: 'Notifications' })
+    await expect(bell).toBeVisible()
+    await bell.click()
+    await expect(page.getByRole('dialog').or(page.getByRole('menu'))).toBeVisible()
+  })
 })
